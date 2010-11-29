@@ -13,7 +13,34 @@ Version 0.01
 
 =cut
 
+use base qw(Exporter);
+
+use vars qw( $VERSION @EXPORT_OK %EXPORT_TAGS );
+
+%EXPORT_TAGS = ( 'all' => [ qw(config pipeline process) ] );
+
+@EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
+
 our $VERSION = '0.01';
+
+# Context exported as global variable using :context tag:
+%EXPORT_TAGS = (
+    'config'   => [ qw( CONFIG1  ) ],
+    'pipeline' => [ qw( PLA1 ) ],
+    'process'  => [ qw( PRA1 ) ]
+    );
+
+@EXPORT_OK = ( @{ $EXPORT_TAGS{'config'} } );
+
+# Configuration constants:
+use constant CONFIG1 => 'Value1';
+
+# Pipeline constants:
+use constant PLA1 => 'Value2';
+
+# Process constants:
+use constant PRA1 => 'Value3';
+
 
 =head1 SYNOPSIS
 
