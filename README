@@ -1,0 +1,28 @@
+isdc-dp-pipelines-sw
+====================
+
+This distribution is a set of modules and scripts used for the INTEGRAL data
+processing pipelines at the ISDC.
+
+INSTALLATION
+
+To install this module, run the following commands:
+
+	perl Makefile.PL
+	make
+	make test
+	make install
+
+SUPPORT AND DOCUMENTATION
+
+After installing, you can find documentation for this module with the
+perldoc command.
+
+    perldoc ISDC::DataProcessing::API
+
+COPYRIGHT AND LICENCE
+
+Copyright (C) 2010 Shaun ASHBY
+
+This program is released under the following license: GPL+/Artistic
+
