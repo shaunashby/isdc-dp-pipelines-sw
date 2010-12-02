@@ -1,0 +1,24 @@
+
+!----------------------------------------------------------------------------
+!
+! PATH file for CONS pipeline.
+!
+!----------------------------------------------------------------------------
+! note that the first three, used by OPUS, must have the trailing "/".
+!
+ STAGE_FILE             = OPUS_DEFINITIONS_DIR:consscw_pipeline.stage
+ OPUS_OBSERVATIONS_DIR  = OPUS_WORK:consscw/obs/
+ rii_input              = OPUS_WORK:consscw/input/
+ rev_input              = OPUS_WORK:consrev/input/
+ inp_input              = OPUS_WORK:consinput/input/
+ rii                    = REP_BASE_PROD:
+ rii_scw                = REP_BASE_PROD:scw/
+ log_files              = OPUS_WORK:consscw/logs/
+ work                   = OPUS_WORK:consscw/scratch
+ parfiles               = OPUS_WORK:consscw/pfiles
+ cfg_dir                = ISDC_ENV:templates
+ arcingest              = OPUS_MISC_REP:/trigger/cons_scw
+ alerts                 = OPUS_MISC_REP:/alert/cons
+ rev_work               = OPUS_WORK:consrev/scratch/
+ rev_input              = OPUS_WORK:consrev/input
+

@@ -1,0 +1,22 @@
+
+!----------------------------------------------------------------------------
+!
+! PATH file for INPUT pipeline.
+!
+!----------------------------------------------------------------------------
+! note that the first three, used by OPUS, must have the trailing "/".
+!
+ STAGE_FILE             = OPUS_DEFINITIONS_DIR:consinput_pipeline.stage
+ OPUS_OBSERVATIONS_DIR  = OPUS_WORK:consinput/obs/
+ consinput_input        = OPUS_WORK:consinput/input/
+ rii                    = REP_BASE_PROD:
+ rii_scw                = REP_BASE_PROD:scw
+ scw_input              = OPUS_WORK:consscw/input/
+ log_files              = OPUS_WORK:consinput/logs/
+ parfiles               = OPUS_WORK:consinput/pfiles/
+ inp_work               = OPUS_WORK:consinput/scratch/
+ rttm_alerts            = OPUS_MISC_REP:/alert/consdr
+ pp_alerts              = OPUS_MISC_REP:/alert/conspp
+ cons_alerts            = OPUS_MISC_REP:/alert/cons
+
+

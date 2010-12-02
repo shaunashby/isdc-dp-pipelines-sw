@@ -1,0 +1,24 @@
+
+!----------------------------------------------------------------------------
+!
+! PATH file for NRT pipeline.
+!
+!----------------------------------------------------------------------------
+! note that the first three, used by OPUS, must have the trailing "/".
+!
+ STAGE_FILE             = OPUS_DEFINITIONS_DIR:nrtscw_pipeline.stage
+ OPUS_OBSERVATIONS_DIR  = OPUS_WORK:/nrtscw/obs/
+ rii_input              = OPUS_WORK:nrtscw/input/
+ rev_input              = OPUS_WORK:nrtrev/input/
+ inp_input              = OPUS_WORK:nrtinput/input/
+ rii                    = REP_BASE_PROD:
+ rii_scw                = REP_BASE_PROD:scw/
+ log_files              = OPUS_WORK:nrtscw/logs/
+ work                   = OPUS_WORK:nrtscw/scratch
+ parfiles               = OPUS_WORK:nrtscw/pfiles
+ cfg_dir                = ISDC_ENV:templates
+ arcingest              = OPUS_MISC_REP:/trigger/nrt_scw
+ alerts                 = OPUS_MISC_REP:/alert/nrt
+ rev_work               = OPUS_WORK:nrtrev/scratch/
+ rev_input              = OPUS_WORK:nrtrev/input
+

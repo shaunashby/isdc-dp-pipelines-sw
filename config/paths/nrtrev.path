@@ -1,0 +1,24 @@
+ 
+!----------------------------------------------------------------------------
+!
+! PATH file for NRT Rev pipeline.
+!
+!----------------------------------------------------------------------------
+!
+ STAGE_FILE             = OPUS_DEFINITIONS_DIR:nrtrev_pipeline.stage
+ OPUS_OBSERVATIONS_DIR  = OPUS_WORK:/nrtrev/obs/
+ rii                    = REP_BASE_PROD:
+ rii_scw                = REP_BASE_PROD:/scw/
+ log_files              = OPUS_WORK:nrtrev/logs/
+ rev_work               = OPUS_WORK:nrtrev/scratch/
+ rev_input              = OPUS_WORK:/nrtrev/input/
+ parfiles               = OPUS_WORK:nrtrev/pfiles/
+ arcingest              = OPUS_MISC_REP:/trigger/nrt_rev
+ arcingesting           = OPUS_MISC_REP:/trigger/ingest
+ archingest_done        = OPUS_MISC_REP:/log/ingest/trigger.COMPLETED
+ alerts                 = OPUS_MISC_REP:/alert/nrt
+ scw_work               = OPUS_WORK:nrtscw/scratch/
+ scw_input              = OPUS_WORK:nrtscw/input
+ inp_work               = OPUS_WORK:nrtinput/scratch/
+ inp_input              = OPUS_WORK:nrtinput/input
+

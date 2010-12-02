@@ -1,0 +1,21 @@
+
+!----------------------------------------------------------------------------
+!
+! PATH file for INPUT pipeline.
+!
+!----------------------------------------------------------------------------
+! note that the first three, used by OPUS, must have the trailing "/".
+!
+ STAGE_FILE             = OPUS_DEFINITIONS_DIR:nrtinput_pipeline.stage
+ OPUS_OBSERVATIONS_DIR  = OPUS_WORK:/nrtinput/obs/
+ nrtinput_input         = OPUS_WORK:nrtinput/input/
+ rii                    = REP_BASE_PROD:
+ rii_scw                = REP_BASE_PROD:scw/
+ scw_input              = OPUS_WORK:nrtscw/input/
+ log_files              = OPUS_WORK:nrtinput/logs/
+ parfiles               = OPUS_WORK:nrtinput/pfiles/
+ inp_work               = OPUS_WORK:nrtinput/scratch/
+ rttm_alerts            = OPUS_MISC_REP:/alert/nrtdrmon
+ pp_alerts              = OPUS_MISC_REP:/alert/nrtppmon
+ nrt_alerts             = OPUS_MISC_REP:/alert/nrt
+

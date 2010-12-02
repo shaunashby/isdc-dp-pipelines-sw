@@ -1,0 +1,20 @@
+
+!----------------------------------------------------------------------------
+!
+! PATH file for Standard Analysis Pipeline
+!
+!----------------------------------------------------------------------------
+!
+! note that the first three, used by OPUS, must have the trailing "/".
+!
+ STAGE_FILE             = OPUS_DEFINITIONS_DIR:conssa_pipeline.stage
+ OPUS_OBSERVATIONS_DIR  = OPUS_WORK:conssa/obs/
+ rii_input              = OPUS_WORK:conssa/input/
+ rii                    = REP_BASE_PROD:
+ rii_obs                = REP_BASE_PROD:obs/
+ log_files              = OPUS_WORK:conssa/logs/
+ work                   = OPUS_WORK:conssa/scratch
+ parfiles               = OPUS_WORK:conssa/pfiles
+ cfg_dir                = ISDC_ENV:templates
+ arcingest              = OPUS_MISC_REP:triggers/cons_sa/
+

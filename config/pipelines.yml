@@ -1,0 +1,235 @@
+---
+pipelines:
+  adp:
+    host: nrt
+    processes:
+    - name: adpst
+      resource: adpst.resource
+    - name: adpmon
+      resource: adpmon.resource
+    - name: adp
+      resource: adp.resource
+    - name: adpfin
+      resource: adpfin.resource
+    - name: cleanopus
+      resource: cleanopus.resource
+    - name: cleanosf
+      resource: cleanosf.resource
+  nrtinput:
+    host: nrt
+    processes:
+    - name: ninpst
+      resource: ninpst.resource
+    - name: ninput
+      resource: ninput.resource
+    - name: ninpmd
+      resource: ninpmd.resource
+    - name: ninpmp
+      resource: ninpmp.resource
+    - name: ninpmc
+      resource: ninpmc.resource
+    - name: ninpfi
+      resource: ninpfi.resource
+    - name: cleanopus
+      resource: cleanopus.resource
+    - name: cleanosf
+      resource: cleanosf.resource
+  nrtscw:
+    host: nrt
+    processes:
+    - name: nswst
+      resource:nswst.resource
+    - name: nswdp
+      resource:nswdp.resource
+    - name: nswosm
+      resource:nswosm.resource
+    - name: nswfin
+      resource:nswfin.resource
+    - name: nswmon
+      resource:nswmon.resource
+    - name: nswcor
+      resource:nswcor.resource
+    - name: cleanopus
+      resource:cleanopus.resource
+    - name: cleanosf
+      resource:cleanosf.resource
+  nrtrev:
+    host: nrt
+    processes:
+    - name: nrviii
+      resource:nrviii.resource
+    - name: nrvarc
+      resource:nrvarc.resource
+    - name: nrvfin
+      resource:nrvfin.resource
+    - name: nrvgen
+      resource:nrvgen.resource
+    - name: nrvidp
+      resource:nrvidp.resource
+    - name: nrvirc
+      resource:nrvirc.resource
+    - name: nrvire
+      resource:nrvire.resource
+    - name: nrvirn
+      resource:nrvirn.resource
+    - name: nrvirv
+      resource:nrvirv.resource
+    - name: nrvjme
+      resource:nrvjme.resource
+    - name: nrvjmf
+      resource:nrvjmf.resource
+    - name: nrvmon
+      resource:nrvmon.resource
+    - name: nrvspi
+      resource:nrvspi.resource
+    - name: nrvst
+      resource:nrvst.resource
+    - name: cleanopus
+      resource:cleanopus.resource
+    - name: cleanosf
+      resource:cleanosf.resource
+  nrtqla:
+    host: nrt
+    processes:
+    - name: nqlst
+      resource:nqlst.resource
+    - name: nqlscw
+      resource:nqlscw.resource
+    - name: nqlscw
+      resource:nqlscw.resource
+    - name: nqlscw
+      resource:nqlscw.resource
+    - name: nqlobs
+      resource:nqlobs.resource
+    - name: nqlfin
+      resource:nqlfin.resource
+    - name: nqlmon
+      resource:nqlmon.resource
+    - name: cleanopus
+      resource:cleanopus.resource
+    - name: cleanosf
+      resource:cleanosf.resource
+  consinput:
+    host: cons
+    processes:
+    - name: cinpst
+      resource:cinpst.resource
+    - name: cinput
+      resource:cinput.resource
+    - name: cinpfi
+      resource:cinpfi.resource
+    - name: cleanosf
+      resource:cleanosf.resource
+    - name: cleanopus
+      resource:cleanopus.resource
+  consscw:
+    host: cons
+    processes:
+    - name: cswst
+      resource:cswst.resource
+    - name: cswdp
+      resource:cswdp.resource
+    - name: cswdp
+      resource:cswdp.resource
+    - name: cswosm
+      resource:cswosm.resource
+    - name: cswosm
+      resource:cswosm.resource
+    - name: cswcor
+      resource:cswcor.resource
+    - name: cswcor
+      resource:cswcor.resource
+    - name: cswfin
+      resource:cswfin.resource
+    - name: cleanosf
+      resource:cleanosf.resource
+    - name: cleanopus
+      resource:cleanopus.resource
+  consrev:
+    host: cons
+    processes:
+    - name: crviii
+      resource:crviii.resource
+    - name: crvarc
+      resource:crvarc.resource
+    - name: crvfin
+      resource:crvfin.resource
+    - name: crvgen
+      resource:crvgen.resource
+    - name: crvidp
+      resource:crvidp.resource
+    - name: crvirc
+      resource:crvirc.resource
+    - name: crvire
+      resource:crvire.resource
+    - name: crvirn
+      resource:crvirn.resource
+    - name: crvirv
+      resource:crvirv.resource
+    - name: crvjme
+      resource:crvjme.resource
+    - name: crvjmf
+      resource:crvjmf.resource
+    - name: crvspi
+      resource:crvspi.resource
+    - name: crvst
+      resource:crvst.resource
+    - name: crvmon
+      resource:crvmon.resource
+    - name: cleanosf
+      resource:cleanosf.resource
+    - name: cleanopus
+      resource:cleanopus.resource
+  conssa:
+    host: cons
+    processes:
+    - name: csast
+      resource:csast.resource
+    - name: csaob1
+      resource:csaob1.resource
+    - name: csaob2
+      resource:csaob2.resource
+    - name: csasw1
+      resource:csasw1.resource
+    - name: csasw2
+      resource:csasw2.resource
+    - name: csafin
+      resource:csafin.resource
+    - name: cleanopus
+      resource:cleanopus.resource
+    - name: cleanosf
+      resource:cleanosf.resource
+  consssa:
+    host: cons
+    processes:
+    - name: cssst
+      resource:cssst.resource
+    - name: cssfin
+      resource:cssfin.resource
+    - name: cssfin
+      resource:cssfin.resource
+    - name: cssfin
+      resource:cssfin.resource
+    - name: cssfin
+      resource:cssfin.resource
+    - name: cssfin
+      resource:cssfin.resource
+    - name: cssscw
+      resource:cssscw.resource
+    - name: cssscw
+      resource:cssscw.resource
+    - name: cssscw
+      resource:cssscw.resource
+    - name: cssscw
+      resource:cssscw.resource
+    - name: cssscw
+      resource:cssscw.resource
+    - name: cleanopus
+      resource:cleanopus.resource
+    - name: cleanosf
+      resource:cleanosf.resource
+
+---
+comments:
+	This document is in YAML format so keep to the exact structure
+	as above when adding new configuration data.

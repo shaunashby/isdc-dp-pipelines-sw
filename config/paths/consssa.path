@@ -1,0 +1,76 @@
+!----------------------------------------------------------------------------
+!
+! PATH file for Standard Science window Analysis Pipeline
+!
+!----------------------------------------------------------------------------
+!
+! note that the first three, used by OPUS, must have the trailing "/".
+! values MUST exist
+!
+
+ STAGE_FILE             = OPUS_DEFINITIONS_DIR:consssa_pipeline.stage
+ OPUS_OBSERVATIONS_DIR  = OPUS_WORK:consssa/obs/
+ rii_input              = OPUS_WORK:consssa/input/
+ rii                    = REP_BASE_PROD:
+! rii_obs                = REP_BASE_PROD:obs/
+ log_files              = OPUS_WORK:consssa/logs/
+ work                   = OPUS_WORK:consssa/scratch/
+ parfiles               = OPUS_WORK:consssa/pfiles/
+ cfg_dir                = ISDC_ENV:templates/
+ rii_scw                = REP_BASE_PROD:scw/
+ arcingest              = OPUS_MISC_REP:trigger/cons_ssa/
+! alerts                 = OPUS_MISC_REP:alert/cons_ssa/
+
+
+!
+!	DO NOT COMMENT THESE VARIABLES OUT!
+!	Commenting them out will cause the resource files that use them to
+!	set the values to the variable name and not the variable's value 
+!	which will change the behavior of the scripts.
+!	If you really don't want them, uncomment them from the resource files.
+!
+
+!
+!	If OSA_VERSION is set, it is appended to obs_$inst, returning obs_$inst${OSA_VERSION}
+osa_version = ''	!	never used so far
+!
+!	variable to use local disks for processing.  0 if no, 1 if yes.
+uselocaldisks = 0
+!
+!	variable to redo correction step.  0 if no, 1 if yes.
+redo_correction = 0	!	never used so far
+!
+!	variable when set in conjunction with REDO_CORRECTION will copy rev_2 instead of link it
+!	uncomment to copy, comment out to link
+!	Here, it flags the running of evts_pick.
+create_rev_3 = 0	!	never used so far
+!
+
+!######################################################################
+!
+!	Multi-stage processing variables (currently this only works with IBIS)
+!
+multistage = 3 		!  0(default), but used as flag for some changed variables in IBISLIB
+
+og_tool = ''			!	og_create(default), og_copy or og_clean
+!	'og_create' or '' will completely cleanup the OBSDIR and run og_create at the beginning or on rerun
+!	'og_copy' requires og_read exists and is different than og_write.  og_write removed on rerun.
+!	'og_clean' will og_clean at the beginning and on rerun to the level before that given as isgri_startLevel
+
+!	og_read and og_write are 'extensions' added to the obs_isgri dir( '.S01' yields obs_isgri.S01 )
+og_read = ''			!	only used as source when using og_copy
+og_write = ''			!	can be used anytime, possibly for other purposes (like osa_version)
+
+!	Stage 1
+!isgri_startLevel = 'COR'
+!isgri_endLevel = 'BIN_I'
+
+!	Stage 2
+!isgri_startLevel = 'BKG_I'
+!isgri_endLevel = 'IMA'
+
+!	Stage Mosaic
+isgri_startLevel = 'CAT_I'
+isgri_endLevel = 'IMA'
+
+

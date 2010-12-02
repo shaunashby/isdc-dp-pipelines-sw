@@ -1,0 +1,23 @@
+
+!----------------------------------------------------------------------------
+!
+! PATH file for Standard Analysis Pipeline
+!
+!----------------------------------------------------------------------------
+!
+! note that the first three, used by OPUS, must have the trailing "/".
+!
+ STAGE_FILE             = OPUS_DEFINITIONS_DIR:nrtqla_pipeline.stage
+ OPUS_OBSERVATIONS_DIR  = OPUS_WORK:nrtqla/obs/
+ rii_input              = OPUS_WORK:nrtqla/input/
+ rii                    = REP_BASE_PROD:
+ rii_obs                = REP_BASE_PROD:obs/
+ log_files              = OPUS_WORK:nrtqla/logs/
+ mosaics                = OPUS_WORK:nrtqla/mosaics/
+ work                   = OPUS_WORK:nrtqla/scratch
+ parfiles               = OPUS_WORK:nrtqla/pfiles
+ cfg_dir                = ISDC_ENV:templates
+ rii_scw                = REP_BASE_PROD:scw/
+ arcingest              = OPUS_MISC_REP:trigger/nrt_qla
+ alerts                 = OPUS_MISC_REP:alert/nrt_qla
+

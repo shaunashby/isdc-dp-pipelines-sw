@@ -1,0 +1,18 @@
+
+!----------------------------------------------------------------------------
+!
+! PATH file for ADP pipeline.
+!
+!----------------------------------------------------------------------------
+!
+ STAGE_FILE             = OPUS_DEFINITIONS_DIR:adp_pipeline.stage
+ OPUS_OBSERVATIONS_DIR  = OPUS_WORK:adp/obs/
+ adp_input              = OPUS_MISC_REP:ifts/inbox/
+ rii                    = REP_BASE_PROD:
+ rii_aux                = REP_BASE_PROD:aux/
+ log_files              = OPUS_WORK:adp/logs/
+ alerts                 = OPUS_MISC_REP:alert/adp
+ adp_work               = OPUS_WORK:adp/scratch
+ parfiles               = OPUS_WORK:adp/pfiles
+ arcingest              = OPUS_MISC_REP:trigger/adp
+

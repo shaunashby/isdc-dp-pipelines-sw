@@ -1,0 +1,28 @@
+ 
+!----------------------------------------------------------------------------
+!
+! PATH file for CONS Rev pipeline.
+!
+!----------------------------------------------------------------------------
+!
+ STAGE_FILE             = OPUS_DEFINITIONS_DIR:consrev_pipeline.stage
+ OPUS_OBSERVATIONS_DIR  = OPUS_WORK:consrev/obs/
+ rii                    = REP_BASE_PROD:
+ rii_scw                = REP_BASE_PROD:/scw/
+ log_files              = OPUS_WORK:consrev/logs/
+ parfiles               = OPUS_WORK:consrev/pfiles/
+ arcingest              = OPUS_MISC_REP:/trigger/cons_rev
+ arcingesting           = OPUS_MISC_REP:/trigger/ingest
+ archingest_done        = OPUS_MISC_REP:/log/ingest/trigger.COMPLETED
+ alerts                 = OPUS_MISC_REP:/alert/cons
+ rev_work               = OPUS_WORK:consrev/scratch/
+ rev_input              = OPUS_WORK:/consrev/input/
+ scw_work               = OPUS_WORK:consscw/scratch/
+ scw_input              = OPUS_WORK:consscw/input
+ inp_work               = OPUS_WORK:consinput/scratch/
+ inp_input              = OPUS_WORK:consinput/input
+ ssa_work               = OPUS_WORK:consssa/scratch/
+ ssa_input              = OPUS_WORK:consssa/input
+ sma_work               = OPUS_WORK:consssa/scratch/
+ sma_input              = OPUS_WORK:consssa/input
+
