@@ -19,6 +19,7 @@ use Carp qw(croak);
 sub new() {
     my $proto = shift;
     my $class = ref($proto) || $proto;
+    my @required_fields = ('name','host');
     my $self = (@_ == 1) ? (ref($_[0]) eq 'HASH') ? shift
 	: croak("Argument to constructor must be hash reference.")
 	: croak("Constructor takes a hashref as first argument.");
@@ -27,6 +28,8 @@ sub new() {
 }
 
 sub name() { return shift->{name} }
+
+sub host() [ return shift->{host} || 'localhost' }
 
 sub stages() { return shift->{stages} || [] }
 
