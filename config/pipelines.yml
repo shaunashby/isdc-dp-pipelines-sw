@@ -38,197 +38,196 @@ pipelines:
     host: nrt
     processes:
     - name: nswst
-      resource:nswst.resource
+      resource: nswst.resource
     - name: nswdp
-      resource:nswdp.resource
+      resource: nswdp.resource
     - name: nswosm
-      resource:nswosm.resource
+      resource: nswosm.resource
     - name: nswfin
-      resource:nswfin.resource
+      resource: nswfin.resource
     - name: nswmon
-      resource:nswmon.resource
+      resource: nswmon.resource
     - name: nswcor
-      resource:nswcor.resource
+      resource: nswcor.resource
     - name: cleanopus
-      resource:cleanopus.resource
+      resource: cleanopus.resource
     - name: cleanosf
-      resource:cleanosf.resource
+      resource: cleanosf.resource
   nrtrev:
     host: nrt
     processes:
     - name: nrviii
-      resource:nrviii.resource
+      resource: nrviii.resource
     - name: nrvarc
-      resource:nrvarc.resource
+      resource: nrvarc.resource
     - name: nrvfin
-      resource:nrvfin.resource
+      resource: nrvfin.resource
     - name: nrvgen
-      resource:nrvgen.resource
+      resource: nrvgen.resource
     - name: nrvidp
-      resource:nrvidp.resource
+      resource: nrvidp.resource
     - name: nrvirc
-      resource:nrvirc.resource
+      resource: nrvirc.resource
     - name: nrvire
-      resource:nrvire.resource
+      resource: nrvire.resource
     - name: nrvirn
-      resource:nrvirn.resource
+      resource: nrvirn.resource
     - name: nrvirv
-      resource:nrvirv.resource
+      resource: nrvirv.resource
     - name: nrvjme
-      resource:nrvjme.resource
+      resource: nrvjme.resource
     - name: nrvjmf
-      resource:nrvjmf.resource
+      resource: nrvjmf.resource
     - name: nrvmon
-      resource:nrvmon.resource
+      resource: nrvmon.resource
     - name: nrvspi
-      resource:nrvspi.resource
+      resource: nrvspi.resource
     - name: nrvst
-      resource:nrvst.resource
+      resource: nrvst.resource
     - name: cleanopus
-      resource:cleanopus.resource
+      resource: cleanopus.resource
     - name: cleanosf
-      resource:cleanosf.resource
+      resource: cleanosf.resource
   nrtqla:
     host: nrt
     processes:
     - name: nqlst
-      resource:nqlst.resource
+      resource: nqlst.resource
     - name: nqlscw
-      resource:nqlscw.resource
+      resource: nqlscw.resource
     - name: nqlscw
-      resource:nqlscw.resource
+      resource: nqlscw.resource
     - name: nqlscw
-      resource:nqlscw.resource
+      resource: nqlscw.resource
     - name: nqlobs
-      resource:nqlobs.resource
+      resource: nqlobs.resource
     - name: nqlfin
-      resource:nqlfin.resource
+      resource: nqlfin.resource
     - name: nqlmon
-      resource:nqlmon.resource
+      resource: nqlmon.resource
     - name: cleanopus
-      resource:cleanopus.resource
+      resource: cleanopus.resource
     - name: cleanosf
-      resource:cleanosf.resource
+      resource: cleanosf.resource
   consinput:
     host: cons
     processes:
     - name: cinpst
-      resource:cinpst.resource
+      resource: cinpst.resource
     - name: cinput
-      resource:cinput.resource
+      resource: cinput.resource
     - name: cinpfi
-      resource:cinpfi.resource
+      resource: cinpfi.resource
     - name: cleanosf
-      resource:cleanosf.resource
+      resource: cleanosf.resource
     - name: cleanopus
-      resource:cleanopus.resource
+      resource: cleanopus.resource
   consscw:
     host: cons
     processes:
     - name: cswst
-      resource:cswst.resource
+      resource: cswst.resource
     - name: cswdp
-      resource:cswdp.resource
+      resource: cswdp.resource
     - name: cswdp
-      resource:cswdp.resource
+      resource: cswdp.resource
     - name: cswosm
-      resource:cswosm.resource
+      resource: cswosm.resource
     - name: cswosm
-      resource:cswosm.resource
+      resource: cswosm.resource
     - name: cswcor
-      resource:cswcor.resource
+      resource: cswcor.resource
     - name: cswcor
-      resource:cswcor.resource
+      resource: cswcor.resource
     - name: cswfin
-      resource:cswfin.resource
+      resource: cswfin.resource
     - name: cleanosf
-      resource:cleanosf.resource
+      resource: cleanosf.resource
     - name: cleanopus
-      resource:cleanopus.resource
+      resource: cleanopus.resource
   consrev:
     host: cons
     processes:
     - name: crviii
-      resource:crviii.resource
+      resource: crviii.resource
     - name: crvarc
-      resource:crvarc.resource
+      resource: crvarc.resource
     - name: crvfin
-      resource:crvfin.resource
+      resource: crvfin.resource
     - name: crvgen
-      resource:crvgen.resource
+      resource: crvgen.resource
     - name: crvidp
-      resource:crvidp.resource
+      resource: crvidp.resource
     - name: crvirc
-      resource:crvirc.resource
+      resource: crvirc.resource
     - name: crvire
-      resource:crvire.resource
+      resource: crvire.resource
     - name: crvirn
-      resource:crvirn.resource
+      resource: crvirn.resource
     - name: crvirv
-      resource:crvirv.resource
+      resource: crvirv.resource
     - name: crvjme
-      resource:crvjme.resource
+      resource: crvjme.resource
     - name: crvjmf
-      resource:crvjmf.resource
+      resource: crvjmf.resource
     - name: crvspi
-      resource:crvspi.resource
+      resource: crvspi.resource
     - name: crvst
-      resource:crvst.resource
+      resource: crvst.resource
     - name: crvmon
-      resource:crvmon.resource
+      resource: crvmon.resource
     - name: cleanosf
-      resource:cleanosf.resource
+      resource: cleanosf.resource
     - name: cleanopus
-      resource:cleanopus.resource
+      resource: cleanopus.resource
   conssa:
     host: cons
     processes:
     - name: csast
-      resource:csast.resource
+      resource: csast.resource
     - name: csaob1
-      resource:csaob1.resource
+      resource: csaob1.resource
     - name: csaob2
-      resource:csaob2.resource
+      resource: csaob2.resource
     - name: csasw1
-      resource:csasw1.resource
+      resource: csasw1.resource
     - name: csasw2
-      resource:csasw2.resource
+      resource: csasw2.resource
     - name: csafin
-      resource:csafin.resource
+      resource: csafin.resource
     - name: cleanopus
-      resource:cleanopus.resource
+      resource: cleanopus.resource
     - name: cleanosf
-      resource:cleanosf.resource
+      resource: cleanosf.resource
   consssa:
     host: cons
     processes:
     - name: cssst
-      resource:cssst.resource
+      resource: cssst.resource
     - name: cssfin
-      resource:cssfin.resource
+      resource: cssfin.resource
     - name: cssfin
-      resource:cssfin.resource
+      resource: cssfin.resource
     - name: cssfin
-      resource:cssfin.resource
+      resource: cssfin.resource
     - name: cssfin
-      resource:cssfin.resource
+      resource: cssfin.resource
     - name: cssfin
-      resource:cssfin.resource
+      resource: cssfin.resource
     - name: cssscw
-      resource:cssscw.resource
+      resource: cssscw.resource
     - name: cssscw
-      resource:cssscw.resource
+      resource: cssscw.resource
     - name: cssscw
-      resource:cssscw.resource
+      resource: cssscw.resource
     - name: cssscw
-      resource:cssscw.resource
+      resource: cssscw.resource
     - name: cssscw
-      resource:cssscw.resource
+      resource: cssscw.resource
     - name: cleanopus
-      resource:cleanopus.resource
+      resource: cleanopus.resource
     - name: cleanosf
-      resource:cleanosf.resource
-
+      resource: cleanosf.resource
 ---
 comments:
 	This document is in YAML format so keep to the exact structure

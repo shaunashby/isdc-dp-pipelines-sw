@@ -1,0 +1,40 @@
+---
+pipelines:
+  adp:
+    host: nrt
+    processes:
+    - name: adpst
+      resource: adpst.resource
+    - name: adpmon
+      resource: adpmon.resource
+    - name: adp
+      resource: adp.resource
+    - name: adpfin
+      resource: adpfin.resource
+    - name: cleanopus
+      resource: cleanopus.resource
+    - name: cleanosf
+      resource: cleanosf.resource
+  nrtinput:
+    host: nrt
+    processes:
+    - name: ninpst
+      resource: ninpst.resource
+    - name: ninput
+      resource: ninput.resource
+    - name: ninpmd
+      resource: ninpmd.resource
+    - name: ninpmp
+      resource: ninpmp.resource
+    - name: ninpmc
+      resource: ninpmc.resource
+    - name: ninpfi
+      resource: ninpfi.resource
+    - name: cleanopus
+      resource: cleanopus.resource
+    - name: cleanosf
+      resource: cleanosf.resource
+---
+comments:
+	This document is in YAML format so keep to the exact structure
+	as above when adding new configuration data.

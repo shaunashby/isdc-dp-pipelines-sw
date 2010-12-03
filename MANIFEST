@@ -3,4 +3,14 @@ MANIFEST
 Makefile.PL
 README
 lib/ISDC/DataProcessing/API.pm
+lib/ISDC/DataProcessing/Pipeline/Configuration/Pipeline.pm
+lib/ISDC/DataProcessing/Pipeline/Configuration/Process.pm
+lib/ISDC/DataProcessing/Pipeline/Configuration/Stage.pm
+lib/ISDC/DataProcessing/Pipeline/Configuration.pm
+lib/ISDC/DataProcessing/Pipeline.pm
 t/00-load.t
+t/01-api-load.t
+t/02-pipeline.t
+t/03-configuration.t
+t/pipelines-test-config.yml
+test.pl
