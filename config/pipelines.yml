@@ -1,13 +1,15 @@
 ---
 pipelines:
   adp:
-    host: nrt
     processes:
     - name: adpst
+      host: nrt
       resource: adpst.resource
     - name: adpmon
+      host: nrt
       resource: adpmon.resource
     - name: adp
+      host: nrt
       resource: adp.resource
     - name: adpfin
       resource: adpfin.resource
@@ -16,7 +18,6 @@ pipelines:
     - name: cleanosf
       resource: cleanosf.resource
   nrtinput:
-    host: nrt
     processes:
     - name: ninpst
       resource: ninpst.resource
@@ -35,7 +36,6 @@ pipelines:
     - name: cleanosf
       resource: cleanosf.resource
   nrtscw:
-    host: nrt
     processes:
     - name: nswst
       resource: nswst.resource
@@ -54,7 +54,6 @@ pipelines:
     - name: cleanosf
       resource: cleanosf.resource
   nrtrev:
-    host: nrt
     processes:
     - name: nrviii
       resource: nrviii.resource
@@ -89,7 +88,6 @@ pipelines:
     - name: cleanosf
       resource: cleanosf.resource
   nrtqla:
-    host: nrt
     processes:
     - name: nqlst
       resource: nqlst.resource
@@ -110,7 +108,6 @@ pipelines:
     - name: cleanosf
       resource: cleanosf.resource
   consinput:
-    host: cons
     processes:
     - name: cinpst
       resource: cinpst.resource
@@ -123,7 +120,6 @@ pipelines:
     - name: cleanopus
       resource: cleanopus.resource
   consscw:
-    host: cons
     processes:
     - name: cswst
       resource: cswst.resource
@@ -146,7 +142,6 @@ pipelines:
     - name: cleanopus
       resource: cleanopus.resource
   consrev:
-    host: cons
     processes:
     - name: crviii
       resource: crviii.resource
@@ -181,7 +176,6 @@ pipelines:
     - name: cleanopus
       resource: cleanopus.resource
   conssa:
-    host: cons
     processes:
     - name: csast
       resource: csast.resource
@@ -200,7 +194,6 @@ pipelines:
     - name: cleanosf
       resource: cleanosf.resource
   consssa:
-    host: cons
     processes:
     - name: cssst
       resource: cssst.resource
