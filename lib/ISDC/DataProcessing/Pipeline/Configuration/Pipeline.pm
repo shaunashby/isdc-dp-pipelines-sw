@@ -25,21 +25,21 @@ sub new() {
     my $class = ref($proto) || $proto;
     my $self = (@_ == 1) ? (ref($_[0]) eq 'HASH') ?
 	(exists($_[0]->{name}) && 
-	 exists($_[0]->{processes}) && exists($_[0]->{host}))
-	? shift : croak(__PACKAGE__." constructor needs a name, host and processes parameter")
+	 exists($_[0]->{processes}))
+	? shift : croak(__PACKAGE__." constructor needs a name and processes parameter")
         : croak("Argument to constructor must be hash reference.")
         : croak("Constructor takes a hashref as first argument.");
-    
+
+    my $processes = [];
     for my $process (@{ $self->{processes} }) {
-	ISDC::DataProcessing::Pipeline::Configuration::Process->new($process);
+	push(@$processes,ISDC::DataProcessing::Pipeline::Configuration::Process->new($process));
     }
+    $self->{processes} = $processes;
     
     return bless($self, $class);
 }
 
 sub name() { return shift->{name} }
-
-sub host() { return shift->{host} }
 
 sub processes() { return shift->{processes} || [] }
 

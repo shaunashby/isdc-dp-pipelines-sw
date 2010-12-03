@@ -1,38 +1,50 @@
 ---
 pipelines:
   adp:
-    host: nrt
     processes:
     - name: adpst
+      host: nrt
       resource: adpst.resource
     - name: adpmon
+      host: nrt
       resource: adpmon.resource
     - name: adp
+      host: nrt
       resource: adp.resource
     - name: adpfin
+      host: nrt
       resource: adpfin.resource
     - name: cleanopus
+      host: nrt
       resource: cleanopus.resource
     - name: cleanosf
+      host: nrt
       resource: cleanosf.resource
   nrtinput:
-    host: nrt
     processes:
     - name: ninpst
+      host: nrt
       resource: ninpst.resource
     - name: ninput
+      host: nrt
       resource: ninput.resource
     - name: ninpmd
+      host: nrt
       resource: ninpmd.resource
     - name: ninpmp
+      host: nrt
       resource: ninpmp.resource
     - name: ninpmc
+      host: nrt
       resource: ninpmc.resource
     - name: ninpfi
+      host: nrt
       resource: ninpfi.resource
     - name: cleanopus
+      host: nrt
       resource: cleanopus.resource
     - name: cleanosf
+      host: nrt
       resource: cleanosf.resource
 ---
 comments:

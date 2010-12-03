@@ -13,12 +13,8 @@
 use warnings;
 use strict;
 
-use ISDC::DataProcessing::Pipeline::Configuration;
+use ISDC::DataProcessing::Pipeline;
 
-my $config = ISDC::DataProcessing::Pipeline::Configuration->new({ file => "t/pipelines-test-config.yml" });
+my $pipeline = ISDC::DataProcessing::Pipeline->new({ name => "adp", config => "t/pipelines-test-config.yml" });
 
-
-use Data::Dumper;
-
-print Dumper($config),"\n";
-
+print "$pipeline\n";

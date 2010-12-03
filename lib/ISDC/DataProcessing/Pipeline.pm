@@ -20,6 +20,8 @@ use ISDC::DataProcessing::Pipeline::Configuration;
 
 our $VERSION = '0.01';
 
+use overload q{""} => \&to_string;
+
 sub new() {
     my $proto = shift;
     my $class = ref($proto) || $proto;
@@ -29,15 +31,25 @@ sub new() {
         : croak("Argument to constructor must be hash reference.")
         : croak("Constructor takes a hashref as first argument.");
     
+    $self->{configuration} = ISDC::DataProcessing::Pipeline::Configuration->new(
+	{ file => $self->{config} }
+	)->getPipeline($self->{name});
+    
     return bless($self, $class);
 }
 
 sub configuration() {
     my $self = shift;
-    $self->{configuration} = ISDC::DataProcessing::Pipeline::Configuration->new(
-	{ file => $self->{config} }
-	);
-    return $self->{configuration}->getPipeline($self->{name});
+    return $self->{configuration};
+}
+
+sub to_string() {
+    my $self = shift;
+    my $string = "";
+    map {
+	$string.="$_";
+    } @{ $self->{configuration}->processes };
+    return $string;
 }
 
 1;
