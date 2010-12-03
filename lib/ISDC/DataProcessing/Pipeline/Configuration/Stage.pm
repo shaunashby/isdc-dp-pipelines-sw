@@ -14,6 +14,8 @@ package ISDC::DataProcessing::Pipeline::Configuration::Stage;
 use strict;
 use warnings;
 
+use overload q{""} => \&to_string;
+
 sub new() {
     my $proto = shift;
     my $class = ref($proto) || $proto;
@@ -23,6 +25,10 @@ sub new() {
 sub title() { return shift->{title} }
 
 sub description() { return shift->{description} }
+
+sub to_string() {
+    my $self = shift;
+}
 
 1;
 
