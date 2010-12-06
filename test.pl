@@ -15,6 +15,6 @@ use strict;
 
 use ISDC::DataProcessing::Pipeline;
 
-my $pipeline = ISDC::DataProcessing::Pipeline->new({ name => "adp", config => "t/pipelines-test-config.yml" });
+my $pipeline = ISDC::DataProcessing::Pipeline->new({ name => "nrtrev", config => "t/pipelines-test-config.yml" });
 
 print "$pipeline\n";

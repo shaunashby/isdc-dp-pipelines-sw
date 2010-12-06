@@ -12,214 +12,310 @@ pipelines:
       host: nrt
       resource: adp.resource
     - name: adpfin
+      host: nrt
       resource: adpfin.resource
     - name: cleanopus
+      host: nrt
       resource: cleanopus.resource
     - name: cleanosf
+      host: nrt
       resource: cleanosf.resource
   nrtinput:
     processes:
     - name: ninpst
+      host: nrt
       resource: ninpst.resource
     - name: ninput
+      host: nrt
       resource: ninput.resource
     - name: ninpmd
+      host: nrt
       resource: ninpmd.resource
     - name: ninpmp
+      host: nrt
       resource: ninpmp.resource
     - name: ninpmc
+      host: nrt
       resource: ninpmc.resource
     - name: ninpfi
+      host: nrt
       resource: ninpfi.resource
     - name: cleanopus
+      host: nrt
       resource: cleanopus.resource
     - name: cleanosf
+      host: nrt
       resource: cleanosf.resource
   nrtscw:
     processes:
     - name: nswst
+      host: nrt
       resource: nswst.resource
     - name: nswdp
+      host: nrt
       resource: nswdp.resource
     - name: nswosm
+      host: nrt
       resource: nswosm.resource
     - name: nswfin
+      host: nrt
       resource: nswfin.resource
     - name: nswmon
+      host: nrt
       resource: nswmon.resource
     - name: nswcor
+      host: nrt
       resource: nswcor.resource
     - name: cleanopus
+      host: nrt
       resource: cleanopus.resource
     - name: cleanosf
+      host: nrt
       resource: cleanosf.resource
   nrtrev:
     processes:
     - name: nrviii
+      host: nrt
       resource: nrviii.resource
     - name: nrvarc
+      host: nrt
       resource: nrvarc.resource
     - name: nrvfin
+      host: nrt
       resource: nrvfin.resource
     - name: nrvgen
+      host: nrt
       resource: nrvgen.resource
     - name: nrvidp
+      host: nrt
       resource: nrvidp.resource
     - name: nrvirc
+      host: nrt
       resource: nrvirc.resource
     - name: nrvire
+      host: nrt
       resource: nrvire.resource
     - name: nrvirn
+      host: nrt
       resource: nrvirn.resource
     - name: nrvirv
+      host: nrt
       resource: nrvirv.resource
     - name: nrvjme
+      host: nrt
       resource: nrvjme.resource
     - name: nrvjmf
+      host: nrt
       resource: nrvjmf.resource
     - name: nrvmon
+      host: nrt
       resource: nrvmon.resource
     - name: nrvspi
+      host: nrt
       resource: nrvspi.resource
     - name: nrvst
+      host: nrt
       resource: nrvst.resource
     - name: cleanopus
+      host: nrt
       resource: cleanopus.resource
     - name: cleanosf
+      host: nrt
       resource: cleanosf.resource
   nrtqla:
     processes:
     - name: nqlst
+      host: nrt
       resource: nqlst.resource
     - name: nqlscw
+      host: nrt
       resource: nqlscw.resource
     - name: nqlscw
+      host: nrt
       resource: nqlscw.resource
     - name: nqlscw
+      host: nrt
       resource: nqlscw.resource
     - name: nqlobs
+      host: nrt
       resource: nqlobs.resource
     - name: nqlfin
+      host: nrt
       resource: nqlfin.resource
     - name: nqlmon
+      host: nrt
       resource: nqlmon.resource
     - name: cleanopus
+      host: nrt
       resource: cleanopus.resource
     - name: cleanosf
+      host: nrt
       resource: cleanosf.resource
   consinput:
     processes:
     - name: cinpst
+      host: cons
       resource: cinpst.resource
     - name: cinput
+      host: cons
       resource: cinput.resource
     - name: cinpfi
+      host: cons
       resource: cinpfi.resource
     - name: cleanosf
+      host: cons
       resource: cleanosf.resource
     - name: cleanopus
+      host: cons
       resource: cleanopus.resource
   consscw:
     processes:
     - name: cswst
+      host: cons
       resource: cswst.resource
     - name: cswdp
+      host: cons
       resource: cswdp.resource
     - name: cswdp
+      host: cons
       resource: cswdp.resource
     - name: cswosm
+      host: cons
       resource: cswosm.resource
     - name: cswosm
+      host: cons
       resource: cswosm.resource
     - name: cswcor
+      host: cons
       resource: cswcor.resource
     - name: cswcor
+      host: cons
       resource: cswcor.resource
     - name: cswfin
+      host: cons
       resource: cswfin.resource
     - name: cleanosf
+      host: cons
       resource: cleanosf.resource
     - name: cleanopus
+      host: cons
       resource: cleanopus.resource
   consrev:
     processes:
     - name: crviii
+      host: cons
       resource: crviii.resource
     - name: crvarc
+      host: cons
       resource: crvarc.resource
     - name: crvfin
+      host: cons
       resource: crvfin.resource
     - name: crvgen
+      host: cons
       resource: crvgen.resource
     - name: crvidp
+      host: cons
       resource: crvidp.resource
     - name: crvirc
+      host: cons
       resource: crvirc.resource
     - name: crvire
+      host: cons
       resource: crvire.resource
     - name: crvirn
+      host: cons
       resource: crvirn.resource
     - name: crvirv
+      host: cons
       resource: crvirv.resource
     - name: crvjme
+      host: cons
       resource: crvjme.resource
     - name: crvjmf
+      host: cons
       resource: crvjmf.resource
     - name: crvspi
+      host: cons
       resource: crvspi.resource
     - name: crvst
+      host: cons
       resource: crvst.resource
     - name: crvmon
+      host: cons
       resource: crvmon.resource
     - name: cleanosf
+      host: cons
       resource: cleanosf.resource
     - name: cleanopus
+      host: cons
       resource: cleanopus.resource
   conssa:
     processes:
     - name: csast
+      host: cons
       resource: csast.resource
     - name: csaob1
+      host: cons
       resource: csaob1.resource
     - name: csaob2
+      host: cons
       resource: csaob2.resource
     - name: csasw1
+      host: cons
       resource: csasw1.resource
     - name: csasw2
+      host: cons
       resource: csasw2.resource
     - name: csafin
+      host: cons
       resource: csafin.resource
     - name: cleanopus
+      host: cons
       resource: cleanopus.resource
     - name: cleanosf
+      host: cons
       resource: cleanosf.resource
   consssa:
     processes:
     - name: cssst
+      host: cons
       resource: cssst.resource
     - name: cssfin
+      host: cons
       resource: cssfin.resource
     - name: cssfin
+      host: cons
       resource: cssfin.resource
     - name: cssfin
+      host: cons
       resource: cssfin.resource
     - name: cssfin
+      host: cons
       resource: cssfin.resource
     - name: cssfin
+      host: cons
       resource: cssfin.resource
     - name: cssscw
+      host: cons
       resource: cssscw.resource
     - name: cssscw
+      host: cons
       resource: cssscw.resource
     - name: cssscw
+      host: cons
       resource: cssscw.resource
     - name: cssscw
+      host: cons
       resource: cssscw.resource
     - name: cssscw
+      host: cons
       resource: cssscw.resource
     - name: cleanopus
+      host: cons
       resource: cleanopus.resource
     - name: cleanosf
+      host: cons
       resource: cleanosf.resource
 ---
 comments:
