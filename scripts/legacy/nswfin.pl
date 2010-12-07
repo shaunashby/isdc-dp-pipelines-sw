@@ -55,9 +55,10 @@ This is the centralized alerts repository.  This is set to the B<nrt_alerts> ent
 =cut
 
 use strict;
+use warnings;
+
 use File::Basename;
 use File::Copy;
-use lib "$ENV{ISDC_OPUS}/pipeline_lib/";
 use ISDCPipeline;
 use ISDCLIB;
 use UnixLIB;
@@ -70,29 +71,15 @@ my ($retval,@result);
 my $proc = &ISDCLIB::Initialize();
 #my $proc = &ProcStep();
 my $stream = ( $ENV{PATH_FILE_NAME} =~ /cons/ ) ? "consolidated" : "realTime";
-my $inst   = ( $ENV{PATH_FILE_NAME} =~ /cons/ ) ? "cons"         : "nrt";				#	Why $inst?  This is misleading.  It has nothing to do with instruments
+my $inst   = ( $ENV{PATH_FILE_NAME} =~ /cons/ ) ? "cons"         : "nrt";
 
 &Message ( "STARTING" );
-
-#	&ISDCPipeline::PipelineStep(
-#		"step"            => "$proc - quick dal_list to check swg.fits",
-#		"program_name"    => "dal_list",
-#		"par_dol"         => "swg.fits+1",
-#		"par_extname"     => "",
-#		"par_exact"       => "no",
-#		"par_longlisting" => "yes",
-#		"par_fulldols"    => "no",
-#		"par_mode"        => "ql",
-#		);
 
 #########
 
 my $scwid   = $ENV{OSF_DATASET};
 my $revno   = &ISDCPipeline::RevNo("$scwid");
 my $osf_dir = "$ENV{SCWDIR}/$revno/$scwid.000";		
-
-#
-#  Get raw list here and access it throughout this script   - 040206 - Jake - SCREW 1386
 #
 my @raw_list = &ISDCLIB::ParseConfigFile ( "GNRL_SCWG_RAW.cfg" );
 my @grp_list = &ISDCLIB::ParseConfigFile ( "GNRL_SCWG_GRP.cfg" );
@@ -266,20 +253,17 @@ my $scw_osm_index = "$ENV{REP_BASE_PROD}/idx/scw/GNRL-SCWG-GRP-IDX.fits[GROUPING
 	"par_DataStream" => "$stream",
 	"par_ScWIndex"   => $scw_osm_index,
 	"subdir"         => "$osf_dir",
-#	"subdir"         => "$ENV{SCWDIR}/$revno/$ENV{OSF_DATASET}.000",	
 	) if ( $ENV{PATH_FILE_NAME} =~ /nrt/ );	
 
 &ISDCPipeline::PipelineStep(
 	"step"         => "$proc - chmod +w cons alerts",
 	"program_name" => "$mychmod +w *alert*",
 	) if ( (`$myls $osf_dir/*alert* 2> /dev/null`) && ( $ENV{PATH_FILE_NAME} =~ /cons/ ) );	
-#	) if ( (`$myls $ENV{SCWDIR}/$revno/$ENV{OSF_DATASET}.000/*alert* 2> /dev/null`) && ( $ENV{PATH_FILE_NAME} =~ /cons/ ) );	
 
 &ISDCPipeline::PipelineStep(
 	"step"         => "$proc - remove cons alerts",
 	"program_name" => "$myrm *alert*",
 	) if ( (`$myls $osf_dir/*alert* 2> /dev/null`) && ( $ENV{PATH_FILE_NAME} =~ /cons/ ) );	
-#	) if ( (`$myls $ENV{SCWDIR}/$revno/$ENV{OSF_DATASET}.000/*alert* 2> /dev/null`) && ( $ENV{PATH_FILE_NAME} =~ /cons/ ) );	
 
 #  End of Alert copying
 ########################################################################
@@ -292,9 +276,7 @@ my $scw_osm_index = "$ENV{REP_BASE_PROD}/idx/scw/GNRL-SCWG-GRP-IDX.fits[GROUPING
 # Check contents of ScW dir
 #
 print "*******     Checking contents of ScW directory\n";
-#my @contents  = sort ( glob ("$ENV{SCWDIR}/$revno/$ENV{OSF_DATASET}.000/*" ));
-#push @contents, sort ( glob ("$ENV{SCWDIR}/$revno/$ENV{OSF_DATASET}.000/*/*" ));
-#push @contents, sort ( glob ("$ENV{SCWDIR}/$revno/$ENV{OSF_DATASET}.000/*/*/*" ));
+
 my @contents  = sort ( glob ("$osf_dir/*" ));
 push @contents, sort ( glob ("$osf_dir/*/*" ));
 push @contents, sort ( glob ("$osf_dir/*/*/*" ));
@@ -359,10 +341,8 @@ foreach my $one (@contents) {
 
 ##  Now recursively write protect, and hereafter log  only to process log
 ($retval,@result) = &ISDCPipeline::RunProgram("$mychmod -R -w $osf_dir");
-#($retval,@result) = &ISDCPipeline::RunProgram("$mychmod -R -w $ENV{SCWDIR}/$revno/$ENV{OSF_DATASET}.000/");
 
 die "*******  ERROR:  cannot write protect $osf_dir:\n@result" if ($retval);
-#die "*******  ERROR:  cannot write protect $ENV{SCWDIR}/$revno/$ENV{OSF_DATASET}.000:\n@result" if ($retval);
 
 # write trigger file for archive ingest
 &ISDCLIB::DoOrDie ( "$mymkdir -p $ENV{ARC_TRIG}" ) unless ( -d "$ENV{ARC_TRIG}" );
@@ -378,8 +358,7 @@ close(AIT);
 die "******     ERROR:  Cannot make trigger $ENV{ARC_TRIG}/scw_$ENV{OSF_DATASET}0000.trigger:\n@result" if ($retval);
 
 #  trigger QLA (NRT case only):
-#if ($inst =~ /nrt/) {
-if ( ($inst =~ /nrt/) && ($scwid =~ /0$/) ){ #  071121 - Jake - SPR 4761 - added pointing check
+if ( ($inst =~ /nrt/) && ($scwid =~ /0$/) ){
 	($retval,@result) = &ISDCPipeline::RunProgram("$mytouch $ENV{OPUS_WORK}/nrtqla/input/$scwid.trigger");
 	die "******     ERROR:  Cannot make trigger $ENV{OPUS_WORK}/nrtqla/input/$scwid.trigger:\n@result" if ($retval);
 }
@@ -403,7 +382,7 @@ print "Removing input log file:\n --> $logfile\n";
 	`$mychmod +w $logfile`;
 	`$myrm -f $logfile`;
 }
-`$mychmod -w $osf_dir`;	#	060503 - was accidentally left here as +w
+`$mychmod -w $osf_dir`;
 
 exit 0;
 
@@ -412,13 +391,6 @@ exit 0;
 ##            DONE
 ##
 ########################################################################
-
-
-
-
-
-
-__END__ 
 
 =back
 

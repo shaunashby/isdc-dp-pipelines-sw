@@ -72,6 +72,8 @@ This is the time in minutes between multiple alerts, currently 10 minutes.
 #
 
 use strict;
+use warnings;
+
 use ISDCPipeline;
 use UnixLIB;
 use TimeLIB;
@@ -160,12 +162,6 @@ exit 0;
 
 
 ######################################################################
-
-
-
-
-__END__ 
-
 
 =head1 REFERENCES
 

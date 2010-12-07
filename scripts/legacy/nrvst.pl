@@ -84,6 +84,8 @@ write alerts.
 =cut
 
 use strict;
+use warnings;
+
 use File::Basename;
 use ISDCPipeline;
 use ISDCLIB;
@@ -97,8 +99,6 @@ my $retval;
 my @output;
 my $scw;
 my $time = &TimeLIB::MyTime();
-
-
 my ($osfname,$path,$suffix) = &File::Basename::fileparse($ENV{EVENT_NAME}, '\..*');
 
 print "\n========================================================================\n";
@@ -120,22 +120,14 @@ die "*******     ERROR:   Cannot find revolution $revno!" unless (-d "$ENV{SCWDI
 my $logfile = "$ENV{LOG_FILES}/$osfname.log";
 my $reallogfile = "$ENV{SCWDIR}/$revno/rev.000/logs/$dataset";
 $reallogfile =~ s/\.fits/_log\.txt/;
-$reallogfile .= "_log.txt" if ( ($type =~ "arc") || ($type =~ "iii" ) );		#	040621 - Jake - SPR 3710
-#	if (!-d "$ENV{SCWDIR}/$revno/rev.000/logs/") {
-#		`$mymkdir -p $ENV{SCWDIR}/$revno/rev.000/logs`;
-#		die "*******     ERROR:  connot mkdir $ENV{SCWDIR}/$revno/rev.000/logs\n" if ($?);
-#	}
+$reallogfile .= "_log.txt" if ( ($type =~ "arc") || ($type =~ "iii" ) );
+
 &ISDCLIB::DoOrDie ( "$mymkdir -p $ENV{SCWDIR}/$revno/rev.000/logs" ) unless ( -d "$ENV{SCWDIR}/$revno/rev.000/logs" );
 print "Dataset is $dataset.\nOSF is $osfname.\n";
 
 my $error;
 my $status;
-
-#my $proc;
-#$proc = "NRT" if ($ENV{PATH_FILE_NAME} =~ /nrtrev/);
-#$proc = "CONS" if ($ENV{PATH_FILE_NAME} =~ /consrev/);
 my $proc = &ISDCLIB::Initialize();
-#	my $proc = &ProcStep();
 
 ##########################################################################
 #  Look at what we got
@@ -233,8 +225,6 @@ exit 0;
 ##########################################################################
 #                                DONE
 ##########################################################################
-
-__END__ 
 
 =head1 REFERENCES
 

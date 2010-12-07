@@ -53,22 +53,16 @@ This is the centralized alerts repository.  This is set to the B<nrt_alerts> ent
 =cut
 
 use strict;
-use lib "$ENV{ISDC_OPUS}/pipeline_lib/";
+use warnings;
+
 use ISDCPipeline;
 use ISDCLIB;
 use UnixLIB;
 
-sub genericOSM;
-sub spiOSM;
-
 &ISDCPipeline::EnvStretch("OUTPATH","WORKDIR","SCWDIR","LOG_FILES","PARFILES","CFG_DIR","ALERTS","REV_WORK");
-
 
 #########              set processing type:  NRT or CONS
 my $proc = &ISDCLIB::Initialize();
-#	my $proc = &ProcStep();
-
-#	&Message ( "STARTING" );  
 
 #########
 
@@ -87,13 +81,8 @@ my $grpdol = "swg.fits[GROUPING]";
 #	or write log information to the wrong log file or even create a common_log.txt
 #	which may cause a crash because it will be an unexpected "junk" file.
 #
-#$ENV{COMMONLOGFILE} = "+$ENV{LOG_FILES}/$ENV{OSF_DATASET}.log";
 chdir &ISDCPipeline::FindScw( "$ENV{OSF_DATASET}" );
 &Message ( `pwd` );
-#	&ISDCPipeline::PipelineStep(
-#		"step"         => "$proc - dummy step to set COMMONLOGFILE variable that swg_clean on swg_prp.fits used to do",
-#		"program_name" => "$myecho",
-#		);
 
 ########################################################################
 #########             find required limit files
@@ -260,14 +249,6 @@ sub spiOSM {
 		"par_SC_Params"    => "",
 		);
 } # spiOSM
-
-
-
-
-
-########################################################################
-
-__END__ 
 
 =back
 

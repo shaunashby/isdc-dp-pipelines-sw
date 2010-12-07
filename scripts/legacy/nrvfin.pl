@@ -56,13 +56,13 @@ directory where triggers are written by preprocessing.
 =cut
 
 use strict;
+use warnings;
+
 use ISDCPipeline;
 use ISDCLIB;
 use UnixLIB;
 use Datasets;
-use lib "$ENV{ISDC_OPUS}/nrtrev/";
 use Archiving;
-
 
 ##########################################################################
 # machinations to get correct environment variables through path file
@@ -71,18 +71,7 @@ use Archiving;
 
 #########              set processing type:  NRT or CONS
 my $proc = &ISDCLIB::Initialize();
-#	my $proc = &ProcStep();
 my $path = ( $ENV{PATH_FILE_NAME} =~ /cons/ ) ? "consrev" : "nrtrev";
-
-#if ($ENV{PATH_FILE_NAME} =~ /cons/) {
-#	$path = "consrev";
-#}
-#else {
-#	$path = "nrtrev";
-#}
-
-#	040820 - Jake - SCREW 1533
-#&Message ( "STARTING" );
 
 ##########################################################################
 # machinations to get correct log file, link, and OSF name
@@ -94,15 +83,11 @@ my $logfile = "$ENV{LOG_FILES}/$osfname.log";
 my $reallogfile = "$ENV{SCWDIR}/$revno/rev.000/logs/${dataset}_log.txt";
 $reallogfile =~ s/\.fits//;
 
-
 #  If NRT, nothing to do.  Arc checking done in nrvmon.
 #  Otherwise, here we do checking for archiving in Cons.  This will probably
 #   have to be redone as we figure out in reality how this will work.
 
-if ($dataset =~ /arc_prep/) {
-	#	050301 - Jake - What does this next line mean?
-	# Can't do next steps after this one, which locks rev dir. 
-	
+if ($dataset =~ /arc_prep/) {	
 	&Message ( "cleaning and archiving revolution $revno" );
 	
 	&Archiving::RevArchiving("$revno");
@@ -129,22 +114,15 @@ if ($dataset =~ /arc_prep/) {
 
 &ISDCPipeline::PipelineFinish(); 
 
-#	050301 - Jake - Why is this chmod after PipelineFinish?
 &ISDCPipeline::RunProgram("$mychmod -w $reallogfile"); 
 
 print "\n========================================================================\n";
-
-#	unlink "/tmp/rfinjunk$$" if (-e "/tmp/rfinjunk$$"); #	060111 - Jake - don't think this is used anymore
 
 exit 0;
 
 ########################################################################
 ##     DONE
 ########################################################################
-
-
-
-__END__ 
 
 =head1 REFERENCES
 
@@ -167,4 +145,3 @@ Tess Jaffe <theresa.jaffe@obs.unige.ch>
 Jake Wendt <Jake.Wendt@obs.unige.ch>
 
 =cut
-

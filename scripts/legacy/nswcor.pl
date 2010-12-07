@@ -19,20 +19,13 @@ I<nswcor.pl> - Run from within B<OPUS>.
 =cut
 
 use strict;
+use warnings;
+
 use File::Basename;
-use lib "$ENV{ISDC_OPUS}/pipeline_lib/";
 use ISDCPipeline;
 use ISDCLIB;
 use UnixLIB;
 use CorLIB;
-
-sub DataMerge;				#	evts_pick, dal_detach
-sub ibisAnalysis;			#	ibis_correction, ibis_gti, CopyGTIExtension, gti_merge and ibis_dead
-sub jemxAnalysis;			#	j_correction, gti_create, gti_merge, CopyGTIExtension, j_dead
-sub spiAnalysis;			#	spi_gain_corr, gti_create, gti_merge, CopyGTIExtension
-sub scGTI;					#	gti_create, gti_merge
-sub omcGTI;					#	gti_create, gti_merge
-sub GTI_Create;			    #	generic wrapper around gti_create
 
 &ISDCPipeline::EnvStretch("OUTPATH","WORKDIR","SCWDIR","LOG_FILES","PARFILES","CFG_DIR","ALERTS","REV_WORK","REV_INPUT");
 
@@ -41,15 +34,6 @@ my $revno = &ISDCPipeline::RevNo( $ENV{OSF_DATASET} );
 my $prevrev = sprintf "%04d", ( $revno - 1 );
 my $grpdol = "swg.fits[GROUPING]";
 
-#
-#	DO NOT REMOVE THIS STEP, UNLESS YOU REPLACE IT WITH SOMETHING 
-#	ELSE THAT WILL SET THE COMMONLOGFILE VARIABLE!! - JAKE 040308
-#
-#	Failure to do this may either cause a crash, because the variable is not set
-#	or write log information to the wrong log file or even create a common_log.txt
-#	which may cause a crash because it will be an unexpected "junk" file.
-#
-#	$ENV{COMMONLOGFILE} = "+$ENV{LOG_FILES}/$ENV{OSF_DATASET}.log";
 chdir &ISDCPipeline::FindScw( "$ENV{OSF_DATASET}" );
 &Message ( `pwd` );
 
@@ -554,5 +538,3 @@ For further information about the NRT pipelines, please see the Top Level Archit
 Jake Wendt <Jake.Wendt@obs.unige.ch>
 
 =cut
-
-#	last line

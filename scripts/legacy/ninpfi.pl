@@ -43,8 +43,9 @@ triggers are written for the Science Window Pipeline.
 
 =cut
 
-
 use strict;
+use warnings;
+
 use ISDCPipeline;
 use UnixLIB;
 use ISDCLIB;
@@ -54,10 +55,7 @@ use ISDCLIB;
 my $scw_trigger = "$ENV{SCW_INPUT}/$ENV{OSF_DATASET}.trigger";
 
 my $proc = &ISDCLIB::Initialize();
-#my $proc = &ProcStep();
 my $path = ( $ENV{PATH_FILE_NAME} =~ /cons/ ) ? "consinput" : "nrtinput";
-#my $path = ( $ENV{PATH_FILE_NAME} =~ /consscw/ ) ? "consinput" : "nrtinput";		#	I think that this is a typo
-
 my $inp_trigger = "$ENV{OPUS_WORK}/$path/input/$ENV{OSF_DATASET}";
 
 &ISDCPipeline::PipelineStep (
@@ -91,11 +89,7 @@ print "logfile locked;  finished\n\n";
 
 exit 0;
 
-
 ######################################################################
-
-
-__END__ 
 
 =head1 REFERENCES
 

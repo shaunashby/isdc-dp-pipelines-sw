@@ -38,6 +38,8 @@ These are a set of variables controlling the age limits of OSFs, i.e.  OSFs olde
 =cut
 
 use strict;
+use warnings;
+
 use ISDCPipeline;
 use OPUSLIB;
 use ISDCLIB;
@@ -57,8 +59,6 @@ use ISDCLIB;
 exit 0;
 
 ######################################################################
-
-__END__ 
 
 =head1 REFERENCES
 
@@ -81,4 +81,3 @@ Tess Jaffe <theresa.jaffe@obs.unige.ch>
 Jake Wendt <Jake.Wendt@obs.unige.ch>
 
 =cut
-

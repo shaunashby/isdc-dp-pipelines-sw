@@ -1,6 +1,4 @@
-#! /bin/sh
-eval '  exec perl -x $0 ${1+"$@"} '
-#! perl -w
+#!perl
 
 =head1 NAME
 
@@ -17,7 +15,8 @@ Utility for summarizing a blackboard in a readable form.
 =cut
 
 use strict;
-use lib "$ENV{ISDC_OPUS}/pipeline_lib/";	#	do I really need this since the libs are in the same place?
+use warnings;
+
 use OPUSLIB;
 use UnixLIB;
 use TimeLIB;

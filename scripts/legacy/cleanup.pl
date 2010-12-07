@@ -1,18 +1,14 @@
-#! /bin/sh
-eval '  exec perl -x $0 ${1+"$@"} '
-#! perl -w
+#!perl
 
 use strict;
+use warnings;
 use Cwd;
 use File::Basename;
-use lib "$ENV{ISDC_OPUS}/pipeline_lib/";	#  do I really need this since the libs are in the same place?
-#use lib "/home/wendt/";
+
 use UnixLIB;
-use ISDCLIB;		#	very generic functions ( don't need &ISDCLIB:: prefix )
+use ISDCLIB;
 use CleanLIB;
 
-#
-#	General FIX es
 #	cleanup.pl --DEBUG --do_not_confirm --path=consscw --level=raw --dataset=002400090010
 #	actually deletes the scw directory.  Should make like everything else and just use &MoveData(), No?
 #

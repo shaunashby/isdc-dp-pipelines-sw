@@ -25,10 +25,10 @@ Days to keep around datasets of each type.
 =cut
 
 use strict;
-use lib "$ENV{ISDC_OPUS}/pipeline_lib/";
+use warnings;
+
 use ISDCPipeline;
 use OPUSLIB;
-
 
 ##########################################################################
 # machinations to get correct environment variables through path file
@@ -37,7 +37,6 @@ use OPUSLIB;
 &ISDCPipeline::EnvStretch("OUTPATH","WORKDIR","LOG_FILES");
 
 
-#  OSF_AGELIMIT's are in days
 &ISDCPipeline::BBUpdate(
 	"agelimit"  => "$ENV{OSF_AGELIMIT_DEFAULT}",
 	"matchstat" => $osf_stati{SCW_COMPLETE},	
@@ -51,9 +50,7 @@ use OPUSLIB;
 
 exit 0;
 
-
 ##########################################################################
-__END__ 
 
 =head1 REFERENCES
 

@@ -65,6 +65,8 @@ seconds, not to be confused with the DELTA between alert generations above.
 # spsvrpp - monitors to see if the pp process is still running *NOT WRITTEN*
 
 use strict;
+use warnings;
+
 use ISDCPipeline;
 use UnixLIB;
 use TimeLIB;
@@ -154,13 +156,7 @@ else { # in case of error
 	exit 0;
 } # end of else (from if ($retval) )
 
-
 ######################################################################
-
-
-
-__END__ 
-
 
 =head1 REFERENCES
 

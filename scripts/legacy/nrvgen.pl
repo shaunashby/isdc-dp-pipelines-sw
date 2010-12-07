@@ -107,13 +107,13 @@ Where to copy Exposure Completion Status report to be sent to MOC via IFTS.
 =cut
 
 use strict;
-#use File::Basename;
+use warnings;
+
 use ISDCPipeline;
 use ISDCLIB;
 use UnixLIB;
 use OPUSLIB;
 use Datasets;
-use lib "$ENV{ISDC_OPUS}/nrtrev/";
 use Archiving;
 use RevIBIS;
 use RevJMX;
@@ -121,12 +121,7 @@ use RevOMC;
 use RevSPI;
 use RevIREM;
 
-sub WriteProtect;
-sub MoveProducts;
-sub DummyStep;
-sub Indexing;
-
-my $DoNOTIndex;	#	040412 - Jake - SCREW 1344 
+my $DoNOTIndex;
 
 my ($retval,@results);
 
@@ -998,10 +993,6 @@ sub Indexing {
 	return;
 } # sub Indexing
 ########################################################################
-
-
-
-__END__ 
 
 =back
 

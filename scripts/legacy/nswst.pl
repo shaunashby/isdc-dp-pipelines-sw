@@ -50,8 +50,9 @@ This is set to the B<rii_input> entry in the path file and is where the input tr
 
 
 use strict;
+use warnings;
+
 use File::Basename;
-use lib "$ENV{ISDC_OPUS}/pipeline_lib/";
 use ISDCPipeline;
 use UnixLIB;
 use ISDCLIB;
@@ -64,7 +65,6 @@ my $retval;
 my ($scwid, $path, $suffix) = &File::Basename::fileparse($ENV{EVENT_NAME}, '\..*');
 
 my $proc = &ISDCLIB::Initialize();
-#	my $proc = &ProcStep();
 
 ########################################################################
 #########              check that not already triggered
@@ -143,15 +143,6 @@ $retval = 1 if ($status =~ /x/);
 exit;
 
 ########################################################################
-
-
-
-
-
-
-
-
-__END__ 
 
 =head1 REFERENCES
 

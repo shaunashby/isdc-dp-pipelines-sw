@@ -15,10 +15,11 @@ This script creates the appropriate OSFs and logs via PipelineStart.
 =cut
 
 use strict;
+use warnings;
+
 use ISDCPipeline;
 use ISDCLIB;
 use OPUSLIB;
-use lib "$ENV{ISDC_ENV}/opus/nrtqla/";
 use QLALIB;
 
 print "\n========================================================================\n";
@@ -31,9 +32,6 @@ print "*******     Trigger $ENV{EVENT_NAME} received\n";
 my ( $dataset, $path, $suffix ) = &File::Basename::fileparse ( $ENV{EVENT_NAME}, '\..*' );
 
 if ( ! ( $ENV{RUN_SLEWS} ) && ( $dataset !~ /0$/ ) ) {
-	#  TO BE FIXED:  how to delete the OSF?  Can't do it here, or get xpoll
-	#   errors.  Can't do it in resource file because OPUS too stupid.  Grr.
-	#	060112 - Jake - couldn't I just mark it for cleaning????
 	print "*******     Dataset $dataset not a pointing and RUN_SLEWS not set.  Quitting.\n";
 	exit 0;
 }
@@ -83,7 +81,6 @@ foreach my $inst ( @insts ) {
 
 exit 0;
 
-
 =head1 REFERENCES
 
 For further information on the other processes in this pipeline, please run
@@ -105,5 +102,3 @@ Tess Jaffe <theresa.jaffe@obs.unige.ch>
 Jake Wendt <Jake.Wendt@obs.unige.ch>
 
 =cut
-
-#	last line

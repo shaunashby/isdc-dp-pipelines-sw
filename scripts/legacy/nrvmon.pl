@@ -23,19 +23,15 @@ I<nrvmon.pl> - Run from within B<OPUS>.
 =cut
 
 use strict;
+use warnings;
+
 use ISDCPipeline;
 use ISDCLIB;
 use UnixLIB;
 use OPUSLIB;
 use TimeLIB;
-use lib "$ENV{ISDC_OPUS}/nrtrev/";
 use Archiving;
 use File::Basename;
-
-sub ILTcheck;
-sub PSDcheck;
-sub OSFcheck;
-sub ARCcheck;
 
 my @result;
 my $retval;
@@ -425,13 +421,6 @@ sub ARCcheck {
 	
 } # end sub ARCcheck
 ##########################################################################
-
-
-
-
-
-
-__END__ 
 
 =back
 

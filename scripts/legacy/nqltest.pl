@@ -1,8 +1,8 @@
 #!perl -w
 
 use strict;
-use lib "$ENV{ISDC_OPUS}/pipeline_lib/";
-use lib "$ENV{ISDC_OPUS}/nrtqla/";
+use warnings;
+
 use QLALIB;
 
 my ( $obsid, $revno, $inst, $INST, $og, $pdefv ) = &QLALIB::ParseOSF ( "qmj2_0557_04200340023_0007" );

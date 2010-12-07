@@ -25,9 +25,10 @@ Days to keep around datasets of each type.
 =cut
 
 use strict;
+use warnings;
+
 use ISDCPipeline;
 use OPUSLIB;
-use lib "$ENV{ISDC_ENV}/opus/nrtqla";
 use QLAMOS;
 
 &ISDCPipeline::EnvStretch ( "OUTPATH", "WORKDIR", "LOG_FILES", "MOSAICS", "OBSDIR" );
@@ -52,8 +53,6 @@ my ( $rev ) = ( $triggers[$#triggers] =~ /.*\/(\d{4})\d{8}\.trigger.*/ );
 exit 0;
 
 ##########################################################################
-
-__END__ 
 
 =head1 REFERENCES
 

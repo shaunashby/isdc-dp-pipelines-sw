@@ -15,12 +15,13 @@ This script does a cleanup of any potential residue from previous runs, creates 
 =cut
 
 use strict;
+use warnings;
+
 use ISDCPipeline;
 use UnixLIB;
 use ISDCLIB;
 use IBISLIB;
 use JMXLIB;
-use lib "$ENV{ISDC_OPUS}/nrtqla";
 use QLALIB;
 
 print "\n========================================================================\n";
@@ -40,7 +41,7 @@ print "*******     ObsID is $ENV{OSF_DATASET};  Instrument is $INST;  group is $
 
 if ( -d "$ENV{OBSDIR}/$ENV{OSF_DATASET}.000" ) {
 	#  Clean up previous run:
-	`$mychmod -R 755 $ENV{OBSDIR}/$ENV{OSF_DATASET}.000`;	#	SPR 4431
+	`$mychmod -R 755 $ENV{OBSDIR}/$ENV{OSF_DATASET}.000`;
 	
 	#  Move log back to central dir (assuming it exists and the previous
 	#   run had gotten that far.
@@ -60,12 +61,12 @@ if ( -d "$ENV{OBSDIR}/$ENV{OSF_DATASET}.000" ) {
 #	this should always be 000, but for the re-qla processing, we need this
 my ( $dirvers ) = ( &ISDCLIB::FindDirVers ( "$ENV{REP_BASE_PROD}/scw/$revno/$scwid" ) =~ /\.(\d{3})$/ );
 
-my $swg = ( -e "$ENV{REP_BASE_PROD}/scw/$revno/$scwid.$dirvers/swg.fits" ) ? "swg" : "swg_prp";	#	SPR 4432
+my $swg = ( -e "$ENV{REP_BASE_PROD}/scw/$revno/$scwid.$dirvers/swg.fits" ) ? "swg" : "swg_prp";
 
 &ISDCPipeline::PipelineStep (
 	"step"           => "$proc - create OG of one science window",
 	"program_name"   => "og_create",
-	"par_idxSwg"     => "scw/$revno/$scwid.$dirvers/$swg.fits[GROUPING]",	#	050321 - Jake - SPR 4055
+	"par_idxSwg"     => "scw/$revno/$scwid.$dirvers/$swg.fits[GROUPING]",
 	"par_instrument" => "$INST",
 	"par_ogid"       => "$ENV{OSF_DATASET}",
 	"par_baseDir"    => "./",
@@ -81,8 +82,6 @@ my $swg = ( -e "$ENV{REP_BASE_PROD}/scw/$revno/$scwid.$dirvers/swg.fits" ) ? "sw
 	);
 
 # Move log to directory where we want it now:
-#	`$mymkdir $ENV{OBSDIR}/$ENV{OSF_DATASET}.000/logs`;
-#	die "*******     ERROR:  couldn't make dir $ENV{OBSDIR}/$ENV{OSF_DATASET}.000/logs.\n" if ($?);
 &ISDCLIB::DoOrDie ( "$mymkdir -p $ENV{OBSDIR}/$ENV{OSF_DATASET}.000/logs" ) unless ( -d "$ENV{OBSDIR}/$ENV{OSF_DATASET}.000/logs" );
 &ISDCPipeline::MoveLog (
 	"$ENV{LOG_FILES}/$ENV{OSF_DATASET}_qla.txt",
@@ -99,8 +98,6 @@ print "*******     Current directory is $ENV{OBSDIR}/$ENV{OSF_DATASET}.000\n";
 if    ( $INST =~ /IBI/ ) {
 	&IBISLIB::ISA (
 		"INST"    => "$INST",
-#		"INST"    => "ISGRI",
-#		"instdir" => "obs",
 		);	
 }
 elsif ( $INST =~ /JMX(\d)/ ) {
@@ -114,13 +111,9 @@ elsif ( $INST =~ /JMX(\d)/ ) {
 	"INST"  => "$INST"
 	);
 
-
-#	SPR 4445
 `$myrm -rf $ENV{PARFILES}` if ( -e "$ENV{PARFILES}" );
-#	&ISDCLIB::DoOrDie ???
 
 exit 0;
-
 
 =head1 REFERENCES
 
@@ -143,5 +136,3 @@ Tess Jaffe <theresa.jaffe@obs.unige.ch>
 Jake Wendt <Jake.Wendt@obs.unige.ch>
 
 =cut
-
-#	last line

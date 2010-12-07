@@ -79,6 +79,8 @@ the science windows.
 =cut
 
 use strict;
+use warnings;
+
 use ISDCPipeline;
 use UnixLIB;
 use ISDCLIB;
@@ -86,11 +88,9 @@ use ISDCLIB;
 &ISDCPipeline::EnvStretch ( "SCWDIR", "LOG_FILES", "PARFILES", "WORKDIR", "ALERTS" );
 
 my $proc = &ISDCLIB::Initialize();
-#my $proc = &ProcStep();
 my $path = ( $ENV{PATH_FILE_NAME} =~ /cons/ ) ? "consinput" : "nrtinput";
 
 # Set group name and extension
-#	why both grpdol and grpname??????????????	- because its easier in some cases
 my $grpdol  = "swg_raw.fits[1]";
 my $grpname = "swg_raw.fits";
 my $newname = "swg.fits";
@@ -137,9 +137,6 @@ if ( ! -w "$grpname" ) {
 	"type"         => "inp",
 	);
 
-
-#	050331 - SCREW 1693 - We used to gzip the raw data here, but it seems pointless as we just throw it away
-
 $fitslist = "";
 foreach my $raw ( @raw_list ) {
 	$fitslist .= "$raw.fits " if ( -r "$ENV{SCWDIR}/$revno/$ENV{OSF_DATASET}.000/$raw.fits" );
@@ -163,7 +160,6 @@ foreach my $raw ( @raw_list ) {
 	"files"    => "$grpname",
 	"add"      => "1",
 	"template" => "GNRL-SCWG-GRP-IDX.tpl",
-	# can't sort on TSTART as elsewhere;  not set!
 	"sort"     => "",
 	);
 
@@ -197,9 +193,6 @@ exit 0;
 
 
 ######################################################################
-
-
-__END__ 
 
 
 =head1 REFERENCES

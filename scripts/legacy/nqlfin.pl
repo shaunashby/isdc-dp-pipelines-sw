@@ -19,10 +19,11 @@ Also, the triggers for the slews, since we only ever process the pointings conti
 =cut
 
 use strict;
+use warnings;
+
 use ISDCPipeline;
 use UnixLIB;
 use ISDCLIB;
-use lib "$ENV{ISDC_OPUS}/nrtqla";
 use QLALIB;
 
 my ($retval,@result);
@@ -143,5 +144,3 @@ Tess Jaffe <theresa.jaffe@obs.unige.ch>
 Jake Wendt <Jake.Wendt@obs.unige.ch>
 
 =cut
-
-#	last line

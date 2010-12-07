@@ -19,10 +19,11 @@ Also, the triggers for the slews, since we only ever process the pointings conti
 =cut
 
 use strict;
+use warnings;
+
 use ISDCPipeline;
 use UnixLIB;
 use ISDCLIB;
-use lib "$ENV{ISDC_OPUS}/nrtqla";
 use QLALIB;
 
 my ($retval,@result);
@@ -45,25 +46,6 @@ print "*******     Obs is $obsid;  Instrument is $INST;  group is $og.\n";
 	"subdir"       => "$ENV{OBSDIR}/$ENV{OSF_DATASET}.000",
 	);
 
-#	&ISDCPipeline::MakeIndex (
-#		"root"     => "GNRL-OBSG-GRP-IDX",
-#		"subdir"   => "$ENV{OUTPATH}/idx/obs",
-#		"add"      => "1",
-#		"osfname"  => "$ENV{OSF_DATASET}",
-#		"files"    => "$og",
-#		"filedir"  => "../../obs/$ENV{OSF_DATASET}.000/",
-#		"ext"      => "[GROUPING]",
-#		"template" => "GNRL-OBSG-GRP-IDX.tpl",
-#		"clean"    => "3",
-#		);
-#	
-#	&ISDCPipeline::LinkUpdate (
-#		"root"    => "GNRL-OBSG-GRP-IDX",
-#		"ext"     => ".fits",
-#		"subdir"  => "$ENV{REP_BASE_PROD}/idx/obs",
-#		"logfile" => "$ENV{LOG_FILES}/$ENV{OSF_DATASET}.log",
-#		);
-
 #  Move alerts into logs subdirectory
 &ISDCPipeline::PipelineStep (
 	"step"         => "$proc - move alerts to logs dir",
@@ -71,25 +53,6 @@ print "*******     Obs is $obsid;  Instrument is $INST;  group is $og.\n";
 	"subdir"       => "$ENV{OBSDIR}/$ENV{OSF_DATASET}.000/",
 	) if ( `$myls $ENV{OBSDIR}/$ENV{OSF_DATASET}.000/*alert* 2> /dev/null` );
 
-#	if ( ! -d "$ENV{ALERTS}" ) {
-#		( $retval, @result ) = &ISDCPipeline::RunProgram ( "$mymkdir -p $ENV{ALERTS}" );
-#		die "*******     Cannot \'$mymkdir -p $ENV{ALERTS}\':  @result" if ($retval);
-#	}
-#	
-#	my $scw_prp_index;
-#	$scw_prp_index = "$ENV{REP_BASE_PROD}/idx/scw/prp/GNRL-SCWG-GRP-IDX.fits[GROUPING]" 
-#	if ( -e "$ENV{REP_BASE_PROD}/idx/scw/prp/GNRL-SCWG-GRP-IDX.fits" );
-#&ISDCPipeline::PipelineStep (
-#	"step"           => "$proc - copy alerts to $ENV{ALERTS}",
-#	"program_name"   => "am_cp",
-#	"par_OutDir"     => "$ENV{ALERTS}",
-#	"par_OutDir2"    => "",
-#	"par_Subsystem"  => "QLA",
-#	"par_DataStream" => "realTime",
-#	"par_ScWIndex"   => $scw_prp_index,
-#	"subdir"         => "$ENV{OBSDIR}/$ENV{OSF_DATASET}.000/logs",
-#	);
-#
 &Message ( "$proc - write protect obs dir" );
 
 ##  Now recursively write protect, and hereafter log  only to process log
@@ -97,25 +60,7 @@ print "*******     Obs is $obsid;  Instrument is $INST;  group is $og.\n";
 
 die "*******  ERROR:  cannot write protect $ENV{OBSDIR}/$ENV{OSF_DATASET}.000:\n@result" if ( $retval );
 
-#	##  Move trigger to done:
-#	( $retval, @result ) = &ISDCPipeline::RunProgram (
-#		"$mymv $ENV{INPUT}/$ENV{OSF_DATASET}.trigger_processing "
-#			."$ENV{INPUT}/$ENV{OSF_DATASET}.trigger_done"
-#		) if ( -e "$ENV{INPUT}/$ENV{OSF_DATASET}.trigger_processing" ); 
-#	die "******     ERROR:  Cannot move trigger file $ENV{INPUT}/$ENV{OSF_DATASET}.trigger_processing "
-#		."to done:\n@result" if ( $retval );
-
-#	# if it had an error during processing, was fixed and reset by hand,
-#	#  then this needs to find the "_bad" trigger file instead.  
-#	( $retval, @result ) = &ISDCPipeline::RunProgram (
-#		"$mymv $ENV{INPUT}/$ENV{OSF_DATASET}.trigger_bad "
-#			."$ENV{INPUT}/$ENV{OSF_DATASET}.trigger_done"
-#		) if ( -e "$ENV{INPUT}/$ENV{OSF_DATASET}.trigger_bad" ); 
-#	die "******     ERROR:  Cannot move trigger file $ENV{INPUT}/$ENV{OSF_DATASET}.trigger_bad "
-#		."to done:\n@result" if ( $retval );
-
 exit;
-
 
 =head1 REFERENCES
 
@@ -138,5 +83,3 @@ Tess Jaffe <theresa.jaffe@obs.unige.ch>
 Jake Wendt <Jake.Wendt@obs.unige.ch>
 
 =cut
-
-#	last line

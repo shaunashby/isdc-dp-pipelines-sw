@@ -1,6 +1,4 @@
-#! /bin/sh
-eval '  exec perl -x $0 ${1+"$@"} '
-#! perl
+#!perl
 
 =head1 NAME
 
@@ -17,13 +15,9 @@ I<proc_man.pl>
 =cut
 
 use strict;
+use warnings;
+
 use File::Basename;
-
-#	just for testing because NRT doesn't have ISDCConstants
-#use lib "/isdc/integration/isdc_int/sw/dev/prod/opus/pipeline_lib/";
-#use lib "/home/wendt/";
-
-use lib "$ENV{ISDC_OPUS}/pipeline_lib/";	#  do I really need this since the libs are in the same place?
 use ISDCPipeline;
 use OPUSLIB;
 use ISDCLIB;
@@ -69,11 +63,11 @@ my @running;
 my ( $real_pid, $time );
 my $warnings = 0;
 my $runline;
-my $donotconfirm;		#	040726 - Jake - SCREW 1524 - added to assist with --command=restart
-my $donotabscheck;	#	040809 - Jake - Absent OSF checking
-my $pipelinefile;		#	050307 - Jake - SCREW 1674
-my @opusworks;			#	050628 - Jake - to see ALL processes on ALL machines in ALL paths
-my $printedwarning = 0;	#	050628 - Jake
+my $donotconfirm;
+my $donotabscheck;
+my $pipelinefile;
+my @opusworks;
+my $printedwarning = 0;
 
 &GetParameters();
 

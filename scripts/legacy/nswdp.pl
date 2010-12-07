@@ -51,16 +51,11 @@ This is the centralized alerts repository.  This is set to the B<nrt_alerts> ent
 =cut
 
 use strict;
-use lib "$ENV{ISDC_OPUS}/pipeline_lib/";
+use warnings;
+
 use ISDCPipeline;
 use ISDCLIB;
 use UnixLIB;
-
-sub scDP;
-sub ibisDP;
-sub jmxDP;
-sub omcDP;
-sub spiDP;
 
 my ($retval,@results);
 
@@ -68,14 +63,11 @@ my ($retval,@results);
 &ISDCPipeline::PipelineEnvVars();
 
 my $proc = &ISDCLIB::Initialize();
-#my $proc = &ProcStep();
-
 my $revno = &ISDCPipeline::RevNo($ENV{OSF_DATASET});
 
 my $osf_dir = "$ENV{REP_BASE_PROD}/scw/$revno/$ENV{OSF_DATASET}.000/";
-`$mychmod +w $osf_dir`;	#  060508 - Jake - SPR 4477
-chdir "$osf_dir" or &Error ( "cannot chdir to $osf_dir" );	#	061113
-#chdir "$osf_dir" or die "*******     ERROR:  cannot chdir to $osf_dir";
+`$mychmod +w $osf_dir`;
+chdir "$osf_dir" or &Error ( "cannot chdir to $osf_dir" );
 
 #  Must use relative paths here.
 my $revnodir = &ISDCLIB::FindDirVers("../../../aux/adp/$revno");
@@ -86,13 +78,10 @@ my $scw_log_file   = "$osf_dir/$ENV{OSF_DATASET}_scw.txt";
 #  Remove a previous log file.  (There will always be one, either initialized 
 #   in startup, or in a previous DP run.)
 
-#	060502 - Jake - SPR 4477
 if ( -e $input_log_file ) {
 	unlink $scw_log_file ;
 	`$mycp $input_log_file $scw_log_file`;	
 }
-#unlink $scw_log_file;
-#unlink "$ENV{SCWDIR}/$revno/$ENV{OSF_DATASET}.000/$ENV{OSF_DATASET}_scw.txt";	
 
 `$mychmod +w $scw_log_file`;				
 
@@ -105,8 +94,7 @@ $retval = &ISDCPipeline::PipelineStart(
 	"logonly"  => 1, # OSF already there
 	"dataset"  => "$ENV{OSF_DATASET}",
 	);
-&Error ( "Cannot start pipeline" ) if ($retval);	#	061113
-#die "*******     ERROR:  Cannot start pipeline" if ($retval);	#	061113
+&Error ( "Cannot start pipeline" ) if ($retval);
 
 &Message ( "STARTING" );	
 
@@ -135,7 +123,7 @@ foreach my $grp ( @grp_list ) {
 &ISDCPipeline::PipelineStep(							
 	"step"         => "$proc - chmod the raw directory",
 	"program_name" => "$mychmod u+w raw",
-	);	#	060404 - Jake - SPR 4459
+	);
 
 &ISDCPipeline::PipelineStep(							
 	"step"         => "$proc - chmod the old data",
@@ -166,7 +154,7 @@ foreach my $grp ( @grp_list ) {
 	"program_name" => "swg_create",
 	"par_SWGroup"  => "swg",										
 	"par_Level"    => "DEAD",										
-	"par_Config"   => "$ENV{CFG_DIR}/GNRL_SCWG_GRP.cfg",							#	Why is this CFG_DIR and not CFITSIO_INCLUDE_FILES
+	"par_Config"   => "$ENV{CFG_DIR}/GNRL_SCWG_GRP.cfg",
 	"par_BaseDir"  => "./",
 	"par_InGroup"  => "swg_raw.fits[GROUPING]",
 	"par_KeywordError"  => "yes",
@@ -201,15 +189,8 @@ foreach $inst ( "intl", "ibis", "spi", "omc", "jmx1", "jmx2" )
 	$struct =~ s/(OMC|SPI)/$1\./;
 	$dpe = "";
 	if ($inst =~ /spi|ibis/) {
-		
-		#	040825 - Jake - could use a grep or foreach here for clarity
 		my ( $raw_hk_file ) = grep /${inst}_raw_hk/, @raw_list;
 
-		#	my $raw_hk_file = "";
-		#	for ( my $i=0; $i <= $#raw_list; $i++ ) {			
-		#		$raw_hk_file = "$raw_list[$i].fits" if ( $raw_list[$i] =~ /${inst}_raw_hk\s*$/ );
-		#	}
-		#	die "*******     ERROR:  Did not find ${inst}_raw_hk match" #	061113
 		&Error ( "Did not find ${inst}_raw_hk match" ) unless ( $raw_hk_file );		
 
 		if ( -r $raw_hk_file or -r "$raw_hk_file.gz" ) {	
@@ -307,8 +288,6 @@ if ($retval) {
 		#
 	}
 	elsif ( ( $retval == 11452 ) && ( $ENV{PV_ALLOW_AUX_ERR} =~ /TRUE/ ) ) {
-		#	This block of code is going to be different from the rest.
-		#	061113 - Jake - SPR 3674
 		my @scwdirs =  grep /\d{12}\.\d{3}/, glob ( "$ENV{SCWDIR}/$revno/*" );
 		if ( ( $scwdirs[$#scwdirs] =~ /$ENV{OSF_DATASET}/ )
 			&& ( $ENV{OSF_DATASET} =~ /1$/ ) ) {
@@ -316,40 +295,14 @@ if ($retval) {
 			$yr+=1900;
 			my @months = qw/Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec/;
 			open  IGN_ERRORS, ">> $ENV{OPUS_HOME_DIR}/ignored_errors.cfg";
-			#                       007600360030            dp_aux_attr             11452           added by MB on 18-Jun-2003
 			print IGN_ERRORS  "$ENV{OSF_DATASET}            dp_aux_attr             11452           added by cswdp on $dom-$months[$mon]-$yr\n";
 			close IGN_ERRORS;
 		} else {
-			#	not the last scw or its not a slew
-			#	061113 - Jake - Why isn't this "die" or "&Error"????
 			print "*******     ERROR:  return status of $retval from dp_aux_attr is not allowed for $ENV{OSF_DATASET}\n";
 			exit 1;
 		}
 	}
-
-
-#	061113 - Jake
-#	This entire if/elsif/elsif/elsif structure contains the same groups of code
-#
-#	if ( ($retval =~ /1145[256]/) && ($ENV{PATH_FILE_NAME} =~ /nrt/) ){
-#		$warning = "WARNING:  dp_aux_attr missing AUX data in NRT pipeline;  sending alert and continuing.";
-#		$alertmsg = "Missing AUX data in NRT processing of SWID $ENV{OSF_DATASET}";
-#		$alertid = "504";
-#	}
-#	#  For Consolidated cases, treat 1145[56] separately to make it easy to 
-#	#   change them later.  
-#	elsif (($retval == 11455) && ($ENV{PV_ALLOW_AUX_ERR} =~ /TRUE/)){
-#		$warning = "WARNING:  dp_aux_attr missing AUX data in NRT pipeline;  sending alert and continuing.";
-#		$alertmsg = "Missing AUX data in NRT processing of SWID $ENV{OSF_DATASET}";
-#		$alertid = "504";
-#	}
-#	elsif (($retval == 11456) && ($ENV{PV_ALLOW_AUX_ERR} =~ /TRUE/)){
-#		$warning = "WARNING:  dp_aux_attr missing AUX data in NRT pipeline;  sending alert and continuing.";
-#		$alertmsg = "Missing AUX data in NRT processing of SWID $ENV{OSF_DATASET}";
-#		$alertid = "504";
-#	}
 	else {
-		#	061113 - Jake - Why isn't this "die" or "&Error"????
 		print "*******     ERROR:  return status of $retval from dp_aux_attr is not allowed\n";
 		exit 1;
 	}
@@ -359,8 +312,7 @@ if ($retval) {
 	&ISDCPipeline::WriteAlert(
 		"message" => "$alertmsg",
 		"level"   => 1,
-#		"id"      => "504",
-		"id"      => "$alertid",	#	061113 - Jake - before now, this value was hard coded and the variable set above wasn't used ???
+		"id"      => "$alertid",
 		);
 }
 
@@ -1163,10 +1115,7 @@ sub QuickDPHKC {
 		);
 }
 
-
 ########################################################################
-
-__END__ 
 
 =back
 

@@ -1,6 +1,4 @@
-#! /bin/sh
-eval '  exec perl -x $0 ${1+"$@"} '
-#! perl -w
+#!perl
 
 =head1 NAME
 
@@ -17,7 +15,8 @@ Utility for modifying OSFs outside of OPUS OMG.
 =cut
 
 use strict;
-use lib "$ENV{ISDC_OPUS}/pipeline_lib/";	#  do I really need this since the libs are in the same place?
+use warnings;
+
 use ISDCPipeline;
 use OPUSLIB;
 use UnixLIB;
@@ -115,10 +114,10 @@ die "$prefix1 ERROR:  you must give either a new status, newcom, or specify --de
 die "$prefix1 ERROR:  can't find $ENV{OPUS_WORK}/${pipeline}/obs" unless ( -d "$ENV{OPUS_WORK}/${pipeline}/obs" );
 die "$prefix1 ERROR:  newcom must be either suspend or resume" if ( ( $newcom ) && ( $newcom !~ /^susp|resu/ ) );
 
-$type   = "" unless ( defined ( $type ) );		#	050831 - Jake - to avoid the "Use of uninitialized variable ..." message
-$match  = "" unless ( defined ( $match ) );		#	050831 - Jake - to avoid the "Use of uninitialized variable ..." message
-$askdcf = "" unless ( defined ( $askdcf ) );		#	050831 - Jake - to avoid the "Use of uninitialized variable ..." message
-$newcom = "" unless ( defined ( $newcom ) );		#	050831 - Jake - to avoid the "Use of uninitialized variable ..." message
+$type   = "" unless ( defined ( $type ) );
+$match  = "" unless ( defined ( $match ) );
+$askdcf = "" unless ( defined ( $askdcf ) );
+$newcom = "" unless ( defined ( $newcom ) );
 
 ###########################################################################
 # Get lists of things to modify

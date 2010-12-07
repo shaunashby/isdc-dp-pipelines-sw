@@ -45,8 +45,9 @@ input triggers are written by the NRT Input pipeline.
 =cut
 
 use strict;
+use warnings;
+
 use ISDCPipeline;
-#use ISDCLIB;
 use OPUSLIB;
 
 &ISDCPipeline::EnvStretch ( "SCWDIR", "LOG_FILES", "PARFILES" );
@@ -63,9 +64,6 @@ die "*******     ERROR:  cannot start pipeline"
 exit 0;
 
 ######################################################################
-
-
-__END__ 
 
 =head1 REFERENCES
 
