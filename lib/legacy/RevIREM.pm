@@ -62,13 +62,11 @@ The next revolution number.
 =cut
 
 use strict;
+use warnings;
+
 use ISDCPipeline;
 use ISDCLIB;
 use UnixLIB;
-
-sub RevIREM::DPire;
-sub RevIREM::ICAire;
-sub RevIREM::ACAire;
 
 $| = 1;
 
@@ -129,7 +127,7 @@ sub DPire {
 		"subdir"       => "$workdir/prp",
 		);
 	chdir("$workdir") or &Error ( "Cannot change back to $workdir" );
-#		or die "cannot change back to $workdir";
+
 	&ISDCPipeline::PipelineStep(
 		"step"         => "$proc - IREM attach raw data",
 		"program_name" => "dal_attach",
@@ -156,20 +154,16 @@ sub DPire {
 	my $newvers;
 	my $ilcthist;
 	
-	my @ilcthists = sort(glob("$ENV{REP_BASE_PROD}/aux/adp/ref/crst/irem_clock_reset_*.fits*"));	#	060518 - Jake - currently not, but could be gzipped
-	#  The above is correct after SPR 2132, but add the below for backward
-	#   compatibility.
-	@ilcthists = sort(glob("$ENV{REP_BASE_PROD}/aux/adp/ref/crst/irem_lctr_*.fits*")) 	#	060518 - Jake - currently not, but could be gzipped
+	my @ilcthists = sort(glob("$ENV{REP_BASE_PROD}/aux/adp/ref/crst/irem_clock_reset_*.fits*"));
+
+	@ilcthists = sort(glob("$ENV{REP_BASE_PROD}/aux/adp/ref/crst/irem_lctr_*.fits*"))
 			unless (-e "$ilcthists[$#ilcthists]");
 	
 	if (-e "$ilcthists[$#ilcthists]") {
 		$ilcthist = $ilcthists[$#ilcthists]."[IREM-LCTR-HIS]";
 	}
 	else {
-		#  Can't do this anymore;  must have an initialized file.
-		
-		&Error ( "No ILCT file found in $ENV{REP_BASE_PROD}/aux/adp/ref/crst/irem_clock_reset_*.fits*" );
-		
+	    &Error ( "No ILCT file found in $ENV{REP_BASE_PROD}/aux/adp/ref/crst/irem_clock_reset_*.fits*" );		
 	} # end if not found in aux/adp/ref/crst
 	
 	#  Also need previous IREM group, but previous just befor this one!
@@ -177,14 +171,12 @@ sub DPire {
 	my $histstamp;
 	my $i;
 	my @others = sort(glob("$ENV{SCWDIR}/$revno/rev.000/prp/irem_prp*.fits"));
-	@others = sort(glob("$ENV{SCWDIR}/$prevrev/rev.000/prp/irem_prp*.fits*")) 												#	060517 - Jake - these could be gzip'd ??
+	@others = sort(glob("$ENV{SCWDIR}/$prevrev/rev.000/prp/irem_prp*.fits*"))
 			unless (@others);
 	#  Go backward through current results and stop at first which has the
 	#    time just before this one (of those that finished;  this means it
 	#    doesn't right now spot a missing file):
 	for ($i = $#others; $i >= 0; $i--) {
-#		$histstamp = $others[$i];
-#		$histstamp =~ s/^.*prp_(\d{14})\.fits/$1/;
 		( $histstamp = $others[$i] ) =~ s/^.*prp_(\d{14})\.fits/$1/;
 		print "*******     Found $others[$i];  comparing $histstamp with $stamp (current)\n";
 		next if ($histstamp > $stamp);
@@ -265,15 +257,11 @@ sub DPire {
 			&Message ( "WARNING:  IREM clock reset found;  suspending all IREM processing." );
 			
 			($retval,@result) = &ISDCPipeline::RunProgram("$mytouch $ENV{WORKDIR}/IREM_clock_reset.stop");
-#			die "*******     ERROR:  cannot touch $ENV{WORKDIR}/IREM_clock_reset.stop:  @result" 
 			&Error ( "Cannot touch $ENV{WORKDIR}/IREM_clock_reset.stop:  @result" ) if ($retval);
 			
 			#  irem_tele_check should have written an alert
 			
 			if (`$myls $workdir/*alert* 2> /dev/null`) {
-#				my $stream;
-#				$stream = "realTime" if ($ENV{PROCESS_NAME} =~ /^n/);
-#				$stream = "consolidated" if ($ENV{PROCESS_NAME} =~ /^c/);
 				my $stream = ( $ENV{PROCESS_NAME} =~ /^n/ ) ? "realTime" : "consolidated";
 				&ISDCPipeline::PipelineStep(
 					"step"           => "$proc - am_cp",
@@ -283,14 +271,13 @@ sub DPire {
 					"par_Subsystem"  => "REV",
 					"par_DataStream" => "$stream",
 					"subdir"         => "$workdir",
-					"par_ScWIndex"   => "$ENV{REP_BASE_PROD}/idx/scw/GNRL-SCWG-GRP-IDX.fits[1]",	#	050131 - jake - SPR 3978
+					"par_ScWIndex"   => "$ENV{REP_BASE_PROD}/idx/scw/GNRL-SCWG-GRP-IDX.fits[1]",
 					);
 			}
 			else {
 				#  If irem_tele_check exited 550000 but didn't send an alert, 
 				#   exit with error
 				&Error ( "irem_tele_check exited 550000 but didn't issue an alert!" );
-#				die "*******     ERROR:  irem_tele_check exited 550000 but didn't issue an alert!";
 			}
 			#  Exit special status to put this on hold.
 			exit 5;
@@ -305,7 +292,6 @@ sub DPire {
 	}
 	
 	chdir("$workdir") or &Error ( "Cannot chdir back to $workdir" );
-#		or die "cannot chdir back to $workdir";
 	
 	#  SPR 2149:  must copy keywords, in case raw HK is empty
 	&ISDCPipeline::PipelineStep (
@@ -315,8 +301,7 @@ sub DPire {
 		"par_outdol"   => "prp/$outgroup"."[IREM-HK..-CNV]",
 		"par_keylist"  => "CREATOR,CONFIGUR,REVOL,ERTFIRST,ERTLAST,OBTSTART,OBTEND,TSTART,TSTOP",
 		);
-	
-#	my $irem_cnv;
+
 	my $irem_cnv = &ISDCPipeline::GetICFile(
 		"structure" => "IREM-CONV-MOD",
 		"filematch" => "prp/$outgroup"."[GROUPING]",
@@ -380,7 +365,7 @@ sub ICAire {
 	
 	my ($status,$ertlast) = &ISDCPipeline::GetAttribute("prp/$outgroup"."[GROUPING]","ERTLAST");
 	
-	&Error ( "Cannot find ERTLAST of prp/$outgroup:\n$ertlast" ) if ($status);	#	040820 - Jake - SCREW 1533
+	&Error ( "Cannot find ERTLAST of prp/$outgroup:\n$ertlast" ) if ($status);
 	print "*******     ERTLAST is $ertlast\n";
 	
 	my $ijdthis = &ISDCPipeline::ConvertTime (
@@ -394,7 +379,7 @@ sub ICAire {
 	#  IREM_STATUS_SELECT is hours of HK data to give to irem_status, and
 	#   select using IJD, therefore turn into days:
 	
-	my $diff = $ENV{IREM_STATUS_SELECT} / 24; # h
+	my $diff = $ENV{IREM_STATUS_SELECT} / 24;
 	my $ijdmin = $ijdthis - $diff;  
 	print "*******     IJD minimum is then $ijdmin\n";
 	
@@ -404,9 +389,6 @@ sub ICAire {
 		"outformat" => "UTC",
 		);
 	
-
-#	060302 - Jake - Added REVOL to selection expr instead of using dal_clean
-
 	my $expr = "( ERTLAST >= '$utcmin' ) && (ERTFIRST <= '$ertlast') && (REVOL == $revno)";
 	print "expression is $expr\n";
 	
@@ -419,8 +401,6 @@ sub ICAire {
 		"subdir"   => "$workdir",
 		);
 	&Error ( "index selection resulted in no members." ) unless (-e "$workdir/working_rawscws_index.fits");
-
-#	&ISDCLIB::QuickDalClean ( "$workdir/working_rawscws_index.fits[GROUPING]" );
 	
 	&ISDCPipeline::PipelineStep(
 		"step"          => "$proc - collect index of SVM2 HK",
@@ -476,7 +456,7 @@ sub ACAire {
 		"filematch" => "prp/$outgroup"."[GROUPING]",
 		);
 	
-	&Error ( "No IC file IREM-GRNP-CFG found." ) unless ($grnp);	#	040820 - Jake - SCREW 1533
+	&Error ( "No IC file IREM-GRNP-CFG found." ) unless ($grnp);
 	
 	&ISDCPipeline::PipelineStep(
 		"step"             => "$proc - IREM irem_data_corr",
@@ -517,14 +497,14 @@ sub ACAire {
 		"filematch" => "prp/$outgroup"."[GROUPING]",
 		);
 	
-	&Error ( "No IC file IREM-ELEC-RSP found." ) unless ($el_ic);	#	040820 - Jake - SCREW 1533
+	&Error ( "No IC file IREM-ELEC-RSP found." ) unless ($el_ic);
 	
 	my $prot_ic = &ISDCPipeline::GetICFile(
 		"structure" => "IREM-PROT-RSP",
 		"filematch" => "prp/$outgroup"."[GROUPING]",
 		);
 	
-	&Error ( "No IC file IREM-PROT-RSP found." ) unless ($prot_ic);	#	040820 - Jake - SCREW 1533
+	&Error ( "No IC file IREM-PROT-RSP found." ) unless ($prot_ic);
 	
 	&ISDCPipeline::PipelineStep( 
 		"step"              => "$proc - IREM irem_spec_calc",
@@ -594,7 +574,7 @@ sub ACAire {
 } # end of ICAire
 #############################################################################
 
-__END__
+1;
 
 =back
 

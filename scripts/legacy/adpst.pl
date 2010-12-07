@@ -29,18 +29,19 @@ the B<OPUS> processing stream.
 
 =cut
 
-
 use strict;
+use warnings;
+
 use ISDCPipeline;
 use ISDCLIB;
 use OPUSLIB;
 use UnixLIB;
 use File::Basename;
 
-my $dirname;			#	this var is set and then the dir is made
-my $rev;					#	most types return this var (needed globablly)
+my $dirname;
+my $rev;
 my $logfilename;
-my $logfiledir;		#	this var is set and then the dir is made
+my $logfiledir;
 my $type;
 
 &ISDCPipeline::EnvStretch("OUTPATH","WORKDIR","AUXDIR","LOG_FILES","ADP_INPUT","ALERTS","ARC_TRIG","PARFILES");
@@ -62,18 +63,15 @@ my ($adpfileSave, $path, $adpextension) = &File::Basename::fileparse($ENV{EVENT_
 $adpextension =~ /(.*)_(.*)/;
 $adpextension = $1;
 
-my $adpfile = $adpfileSave.$adpextension;  # this holds the actual file 
+my $adpfile = $adpfileSave.$adpextension;
 my $dataset = $adpfileSave.$adpextension;
 
 
 print "\n=================================================================\n";
 print "                   RECEIVED: $dataset\n";
 
-# which one did we get?
-
 SWITCH: {
 	
-	# pad, iop, ocs (maybe)		#	060118 - Jake - Why were these separate?  They're almost exactly the same.
 	if ($dataset =~ /(pad|iop|ocs)_([0-9]{2})_?.*/) {
 		$type       = $1;
 		my $ao      = "AO$2";
@@ -87,8 +85,7 @@ SWITCH: {
 		}
 		last SWITCH;
 	}
-	
-	#pod, opp		#	060118 - Jake - Why were these separate?  They're exactly the same.
+
 	if ($dataset =~ /(pod|opp)_([0-9]{4})_.*/) {
 		$type       = $1;
 		$rev        = $2;
@@ -97,7 +94,6 @@ SWITCH: {
 		last SWITCH;
 	}
 
-	#paf, asf, ahf		#	060118 - Jake - Why were these separate?  They're quite similar.
 	if ($dataset =~ /([0-9]{4})_([0-9]{2,4})\.(PAF|ASF|AHF)/) {
 		$rev        = $1;
 		my $vers    = $2;
@@ -105,105 +101,13 @@ SWITCH: {
 		$dirname    = "$adpdir/$rev.000/";
 		$logfiledir = "$adpdir/$rev.000/logs/";
 		$logfiledir .= "$type/" if ( $dataset =~ /ASF/ );
-		if ( $type == "ahf" ) {	#	060210 - Jake - SPR 4392
+		if ( $type == "ahf" ) {
 			die   "*******     ERROR : $adpdir/$rev.000/attitude_historic.fit* already exists!" 
 				if ( glob ( "$adpdir/$rev.000/attitude_historic.fit*" ) );
 		}
 		last SWITCH;
 	}
 
-#	# pad
-#	if ($dataset =~ /pad_([0-9]{2})_.*/) {
-#		$ao = "AO$1";
-#		$dirname = "$adpdir/$ao/";
-#		$logfiledir = "$adpdir/$ao/";
-#		$type = "pad";
-#		last SWITCH;
-#	}
-#	
-#	# iop
-#	if ($dataset =~ /iop_([0-9]{2}).*/) {
-#		$ao = "AO$1";
-#		$dirname = "$adpdir/$ao/";
-#		$logfiledir = "$adpdir/$ao/";
-#		$type = "iop";
-#		last SWITCH;
-#	}
-#	#pod
-#	if ($dataset =~ /pod_([0-9]{4})_.*/) {
-#		$rev = $1;
-#		$dirname = "$adpdir/$rev.000/";
-#		$logfiledir = "$adpdir/$rev.000/logs/";
-#		$type = "pod";
-#		last SWITCH;
-#	}
-#	#opp
-#	if ($dataset =~ /opp_([0-9]{4})_.*/) {
-#		$rev = $1;
-#		$dirname = "$adpdir/$rev.000/";
-#		$logfiledir = "$adpdir/$rev.000/logs/";
-#		$type = "opp";
-#		last SWITCH;
-#	}
-#	#ocs
-#	if ($dataset =~ /ocs_([0-9]{2}).*/) {
-#		$ao = "AO$1";
-#		my $shortDirName = "$adpdir/$ao";
-#		# Now the AO directory might not exist
-#		if (!(-e $shortDirName)) {
-#			# doesn't exist, make it
-#			`$mymkdir -p $shortDirName`;
-#			die "*******     ERROR:  cannot mkdir $shortDirName\n" if ($?);
-#		}
-#		
-#		$dirname = "$shortDirName/ocs/";
-#		$logfiledir = "$adpdir/$ao/ocs/";
-#		# sadly, $adpfile is too long here.  Make it shorter.
-#		#    $adpfile = $adpfileSave."_fi";  # not necessary in OPUS 3.2
-#		$type = "ocs";
-#		last SWITCH;
-#	}
-
-
-#	#paf
-#	if ($dataset =~ /([0-9]{4})_([0-9]{2})\.PAF/) {
-#		$rev        = $1;
-#		$dirname    = "$adpdir/$rev.000/";
-#		$logfiledir = "$adpdir/$rev.000/logs/";
-#		$type       = "paf";
-#		last SWITCH;
-#	}
-#	#asf/ahf
-#	if ($dataset =~ /([0-9]{4})_([0-9]{4})\.(ASF|AHF)/) {
-#		$rev        = $1;
-#		my $vers    = $2;	#	060118 - Jake - SPR 4392
-#		$type       = lc ( $3 );
-#		$dirname    = "$adpdir/$rev.000/";
-#		$logfiledir = "$adpdir/$rev.000/logs/";
-#		if ($dataset =~ /ASF/) {
-#			$logfiledir .= "asf/" ;
-##			$type = "asf";
-#		}
-###		else {
-###			$type = "ahf";
-##			if ( $vers !~ /0001/ ) {
-##				print "*******     ";
-##				print "*******     ";
-##				print "*******     ";
-##				print "*******     WARNING!  This AHF is not version 0001!  I am about to make a mess of things.";
-##				print "*******     ";
-##				print "*******     With regards to SPR 4392, this may get ugly.  If arc_prep has already run,";
-##				print "*******     the directories are write-protected.  attitude_historic.fits.gz may already exist.";
-##				print "*******     ";
-##				print "*******     ";
-##				print "*******     ";
-##				die   "*******     attitude_historic.fits.gz does exist!" if ( "$adpdir/$rev.000/attitude_historic.fits.gz" );
-##			}
-###		}
-#		last SWITCH;
-#	}
-
-	#orb
 	if ($dataset =~ /orbita.*/) {
 		$dirname = "$adpdir/ref";
 		if (!(-e $dirname)) {
@@ -211,8 +115,7 @@ SWITCH: {
 			die "*******     ERROR:  cannot mkdir $dirname" if ($?);
 		}
 		
-		#$dirname = "$adpdir/ref/orbit/";
-		my $date = `$mydate -u "+%Y%m%d"`;		#	050412 - Jake - SCREW 1704
+		my $date = `$mydate -u "+%Y%m%d"`;
 		chomp($date);
 		if ($ENV{ADP_UNIT_TEST_ORB} =~ /TRUE/) {
 			#  Fudge for unit test, where we need two orbit files processed in one day:
@@ -227,7 +130,7 @@ SWITCH: {
 		$type = "orb";
 		last SWITCH;
 	}
-	#rev
+
 	if ($dataset =~ /revno.*/) {
 		$dirname = "$adpdir/ref";
 		if (!(-e $dirname)) {
@@ -236,14 +139,14 @@ SWITCH: {
 		}
 		
 		$dirname = "$adpdir/ref/revno/";
-		my $date = `$mydate -u "+%Y%m%d"`;	#	050412 - Jake - SCREW 1704
+		my $date = `$mydate -u "+%Y%m%d"`;
 		chomp ($date);
 		$adpfile = "revno_$date";
 		$logfiledir = "$adpdir/ref/revno/";
 		$type = "rev";
 		last SWITCH;
 	}
-	#tsf
+
 	if ($dataset =~ /TSF_([0-9]{4})_.*_([0-9]{4}).*INT/) {
 		$rev = $1;
 		my $vers = $2;
@@ -253,11 +156,10 @@ SWITCH: {
 		$type = "tsf";
 		last SWITCH;
 	}
-	#olf
+
 	if ($dataset =~ /.*OLF/) {
 		# this has to be moved later...
 		$dirname = "$adpdir/";
-		#    $logfiledir = "$adpdir/";
 		#  Put these instead in workspace until revolution determined.  Never
 		#   for empty ones.  
 		$logfiledir = $ENV{LOG_FILES};
@@ -299,7 +201,7 @@ $logfilename = "$logfiledir/${adpfile}_log.txt";
 $logfilename =~ s/\.fits//;
 
 # change all dots to underscores in dataset names (OPUS 3.2)
-$adpfile =~ s/\./_/;		#	060119 - Jake - Actually this only changes the first one.  Is this OK?  I think that there is only one.
+$adpfile =~ s/\./_/;
 
 print "=======         log is $logfilename\n";
 
@@ -322,8 +224,8 @@ print "=======         OPUS link is $opuslink\n";
 
 my $alert = 0;
 my $continue = 1;
-my $level = 1;  # most are level 1
-my $status;				#	this var is used just for the osf start status
+my $level = 1;
+my $status;
 my $message;
 my $id;
 if ( &CheckRev($rev) ) {
@@ -425,10 +327,6 @@ sub CheckRev {
 		return 1;
 	}
 }
-
-
-
-
 
 __END__
 

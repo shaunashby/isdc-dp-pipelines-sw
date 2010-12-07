@@ -19,6 +19,8 @@ use I<IBISLIB.pm>;
 =cut
 
 use strict;
+use warnings;
+
 use ISDCPipeline;
 use UnixLIB;
 use ISDCLIB;
@@ -38,7 +40,7 @@ sub ISA {
 	&Carp::croak ( "IBISLIB::ISA: Need even number of args" ) if ( @_ % 2 );
 	
 	my %att = @_;
-	$att{proctype}     = "scw"  unless $att{proctype} =~ /mosaic/;			#	either "scw" or "mosaic"
+	$att{proctype}     = "scw"  unless $att{proctype} =~ /mosaic/;
 	$att{IC_Group}     = "../../idx/ic/ic_master_file.fits[1]" unless ( $att{IC_Group} );
 	$att{instdir}      = "obs" unless ( $att{instdir} );
 
@@ -56,8 +58,8 @@ sub ISA {
 		"par_SCW1_BKG_I_isgrBkgDol"   => "-",
 		"par_SCW1_BKG_I_isgrUnifDol"  => "-",
 		"par_IBIS_II_ChanNum"         => "-1",
-		"par_IBIS_II_E_band_min"      => "20 40",		#	only used when IBIS_II_ChanNum = 2 (nrtqla)
-		"par_IBIS_II_E_band_max"      => "40 80",		#	only used when IBIS_II_ChanNum = 2 (nrtqla)
+		"par_IBIS_II_E_band_min"      => "20 40",
+		"par_IBIS_II_E_band_max"      => "40 80",
 		"par_OBS1_SearchMode"         => "3",
 		"par_OBS1_DoPart2"            => "0",
 		"par_OBS1_ToSearch"           => "10",
@@ -71,7 +73,7 @@ sub ISA {
 		"par_GENERAL_levelList"       => "PRP,COR,GTI,DEAD,BIN_I,BKG_I,CAT_I,IMA,IMA2,BIN_S,SPE,LCR,COMP,CLEAN",
 		"par_SCW1_GTI_attTolerance_X" => "0.05",
 		"par_SCW1_GTI_attTolerance_Z" => "0.2",
-		"par_OBS1_ExtenType"          => "0",
+		"par_OBS1_ExtenType"          => "2",
 		"par_tolerance"               => "0.0001",
 		"par_IBIS_IPS_ChanNum"        => "0",
 		"par_IBIS_IPS_E_band_max_m"   => "600 1000 10000",        
@@ -85,7 +87,7 @@ sub ISA {
 		"par_SCW1_GTI_TimeFormat"     => "OBT",
 		"par_SCW1_GTI_ISGRI"          => "ATTITUDE ISGRI_DATA_GAPS",
 		"par_SCW1_ICOR_probShot"      => "0.01",
-		"par_SCW1_BIN_cleanTrk"       => "0",# "1"
+		"par_SCW1_BIN_cleanTrk"       => "0",
 		"par_SCW1_BKG_I_method_cor"   => "0",
 		"par_brSrcDOL"                => "",
 		"par_SCW1_BKG_P_method"       => "0",
@@ -97,14 +99,14 @@ sub ISA {
 		"par_SCW2_ISPE_MethodFit"     => "1",
 		"par_SCW2_BKG_I_method_cor"   => "0",
 		"par_SCW2_BKG_P_method"       => "0",
-		"par_ILCR_num_e"              => "2",                                        # "4"
-		"par_ILCR_e_min"              => "15 40",                                    # "20 40 60 100"
-		"par_ILCR_e_max"              => "40 300",                                   # "40 60 100 200"
+		"par_ILCR_num_e"              => "2",
+		"par_ILCR_e_min"              => "15 40",
+		"par_ILCR_e_max"              => "40 300",
 		"par_OBS2_projSel"            => "TAN",
-		"par_SWITCH_disableCompton"   => "yes",		#	don't think that we ever use Compton
-		"par_IBIS_II_inEnergyValues"  => "energy_bands.fits[1]",	#	not used unless IBIS_II_ChanNum = -1, so can hard code this
-		"par_IBIS_NoisyDetMethod"     => "1",		#	060116 - SCREW 1783 denied so this stays at 1
-		"par_OBS1_MinNewSouSnr"       => "5",                                        # "7."
+		"par_SWITCH_disableCompton"   => "yes",
+		"par_IBIS_II_inEnergyValues"  => "energy_bands.fits[1]",
+		"par_IBIS_NoisyDetMethod"     => "1",
+		"par_OBS1_MinNewSouSnr"       => "5",
 		"par_OBS1_MinCatSouSnr"       => "1",
 		"par_OBS2_imgSel"             => "EVT_TYPE==SINGLE && E_MIN==252 && E_MAX==336",
 		"par_ModPixShad"              => "400",
@@ -152,7 +154,7 @@ sub ISA {
 		"par_OBS1_covrMod"            => "",
 		"par_OBS1_deco"               => "",
 		"par_OBS1_FastOpen"           => "1",
-		"par_OBS1_NegModels"          => "0",
+		"par_OBS1_NegModels"          => "1",
 		"par_OBS2_detThr"             => "3.0",                                                     
 		"par_PICSIT_detThr"           => "3.0",                           
 		"par_PICSIT_outVarian"        => "0",
@@ -225,9 +227,8 @@ sub ISA {
 		"par_SCW1_ICOR_supGDOL"   => "",
 		"par_SCW1_ICOR_supODOL"   => "",
 		"par_protonDOL"           => "",
-		"stoponerror"             => 0,		#	071204 - Jake - SCREW 997
+		"stoponerror"             => 0,
 	);
-	#	set defaults to consssa/scw, cause its easier programmatically
 
 	#####################################################################################
 
@@ -249,11 +250,10 @@ sub ISA {
 		$parameters{'par_OBS1_DoPart2'}      = "2";
 		$parameters{'par_IBIS_II_ChanNum'}   = "2";
 		$parameters{'par_OBS1_SearchMode'}   = "2";
+		$parameters{'par_OBS1_MinNewSouSnr'} = "5.5";
 		$parameters{'par_OBS1_MinCatSouSnr'} = "4"; 
 		$parameters{'par_SCW1_BKG_I_isgrBkgDol'}  = "";
 		$parameters{'par_SCW1_BKG_I_isgrUnifDol'} = "";
-
-#	071127 - testing new qla parameters
 		$parameters{'par_tolerance'} = 0.1;
 		$parameters{'par_IBIS_min_rise'} = 16;
 		$parameters{'par_IBIS_max_rise'} = 116;
@@ -261,45 +261,24 @@ sub ISA {
 		$parameters{'par_SCW1_ICOR_probShot'} = 0.0001;
 		$parameters{'par_SCW1_BIN_cleanTrk'} = 1;
 		$parameters{'par_SCW1_BKG_I_method_cor'} = 1;
-
 		$parameters{'par_SCW1_GTI_PICsIT'}="VETO ATTITUDE P_SGLE_DATA_GAPS P_MULE_DATA_GAPS";
 		$parameters{'par_SCW1_GTI_ISGRI'}="VETO ATTITUDE ISGRI_DATA_GAPS";
-#BEO - 20071213 SCREW 2059
-		#$parameters{'par_brSrcDOL'}= "$ENV{ISDC_REF_CAT}"."[ISGRI_FLAG==1 && ISGR_FLUX_1>100]",
 		$parameters{'par_brSrcDOL'}= "",
 		$parameters{'par_SCW1_BKG_P_method'}=1;
 		$parameters{'par_SCW2_ISPE_MethodFit'}=6;
 		$parameters{'par_SCW2_BKG_I_method_cor'}=1;
 		$parameters{'par_SCW2_BKG_P_method'}=1 ;
-				
-        # Testing parameters for QLA with OSA9:
-        $parameters{"par_startLevel"}       = "COR";
-        $parameters{"par_endLevel"}         = "SPE";
-        $parameters{"par_tolerance"}        = 0.1;
-        $parameters{"par_IBIS_II_ChanNum"}      = 2;
-        $parameters{"par_SCW1_ICOR_InterpLUT2"} = "no";
-        $parameters{"par_SCW2_ISPE_idx_isgrResp"}   = "isgri_srcl_res_xte19_clean.fits";
-        $parameters{"par_IBIS_SI_inEnergyValues"}   = "isgri_srcl_res_xte19_clean.fits[3]";
-        $parameters{"par_OBS1_ToSearch"}        = 5;
-        $parameters{"par_OBS1_MinCatSouSnr"}    = 5;
-        $parameters{"par_OBS1_MinNewSouSnr"}    = 6;
-        $parameters{"par_OBS1_NegModels"}       = 1;
-        $parameters{"par_OBS1_ExtenType"}       = 2;
-        $parameters{"par_ILCR_delta_t"}         = 500;
-        $parameters{"par_ILCR_e_max"}           = "40 100";
-        $parameters{"par_ILCR_e_min"}           = "20 40";
-
 	}
 	elsif ( $ENV{PROCESS_NAME} =~ /nqlscw/ ) {
 		$parameters{'par_startLevel'}   = "COR";
 		$parameters{'par_endLevel'}     = "IMA";
-		$parameters{'par_OBS1_ToSearch'}     = "25";
+		$parameters{'par_OBS1_ToSearch'}     = "3";
 		$parameters{'par_OBS1_DoPart2'}      = "1";
+		$parameters{'par_OBS1_MinNewSouSnr'} = "6";
+		$parameters{'par_OBS1_MinCatSouSnr'} = "4";
 		$parameters{'par_IBIS_II_ChanNum'}   = "2";
 		$parameters{'par_SCW1_BKG_I_isgrBkgDol'}  = "";
 		$parameters{'par_SCW1_BKG_I_isgrUnifDol'} = "";
-
-#	071127 - testing new qla parameters
 		$parameters{'par_tolerance'} = 0.1;
 		$parameters{'par_IBIS_min_rise'} = 16;
 		$parameters{'par_IBIS_max_rise'} = 116;
@@ -307,37 +286,15 @@ sub ISA {
 		$parameters{'par_SCW1_ICOR_probShot'} = 0.0001;
 		$parameters{'par_SCW1_BIN_cleanTrk'} = 1;
 		$parameters{'par_SCW1_BKG_I_method_cor'} = 1;
-
 		$parameters{'par_SCW1_GTI_PICsIT'}="VETO ATTITUDE P_SGLE_DATA_GAPS P_MULE_DATA_GAPS";
 		$parameters{'par_SCW1_GTI_ISGRI'}="VETO ATTITUDE ISGRI_DATA_GAPS";
-#BEO 20071213 SCREW 2059
-		#$parameters{'par_brSrcDOL'}= "$ENV{ISDC_REF_CAT}"."[ISGRI_FLAG==1 && ISGR_FLUX_1>100]",
 		$parameters{'par_brSrcDOL'}= "",
 		$parameters{'par_SCW1_BKG_P_method'}=1;
 		$parameters{'par_SCW2_ISPE_MethodFit'}=6;
 		$parameters{'par_SCW2_BKG_I_method_cor'}=1;
 		$parameters{'par_SCW2_BKG_P_method'}=1 ;
-
-        # Testing parameters for QLA with OSA9:
-        $parameters{"par_startLevel"}       = "COR";
-        $parameters{"par_endLevel"}         = "SPE";
-        $parameters{"par_tolerance"}        = 0.1;
-        $parameters{"par_IBIS_II_ChanNum"}      = 2;
-        $parameters{"par_SCW1_ICOR_InterpLUT2"} = "no";
-        $parameters{"par_SCW2_ISPE_idx_isgrResp"}   = "isgri_srcl_res_xte19_clean.fits";
-        $parameters{"par_IBIS_SI_inEnergyValues"}   = "isgri_srcl_res_xte19_clean.fits[3]";
-        $parameters{"par_OBS1_ToSearch"}        = 5;
-        $parameters{"par_OBS1_MinCatSouSnr"}    = 5;
-        $parameters{"par_OBS1_MinNewSouSnr"}    = 6;
-        $parameters{"par_OBS1_NegModels"}       = 1;
-        $parameters{"par_OBS1_ExtenType"}       = 2;
-        $parameters{"par_ILCR_delta_t"}         = 500;
-        $parameters{"par_ILCR_e_max"}           = "40 100";
-        $parameters{"par_ILCR_e_min"}           = "20 40";
-        
 	}
 	elsif ( $ENV{PROCESS_NAME} =~ /csasw1/ ) {
-		#	Is it ever going to be anything other than .001???
 		$parameters{'par_ogDOL'} = &ISDCLIB::FindDirVers ( "scw/$att{scwid}" )."/swg_ibis.fits[GROUPING]";
 		$parameters{'par_endLevel'}     = "BKG_I";
 	}
@@ -345,27 +302,25 @@ sub ISA {
 		$parameters{'par_startLevel'}   = "CAT_I";
 		$parameters{'par_endLevel'}     = "IMA";
 		$parameters{'par_OBS1_DoPart2'}      = "1";
-		$parameters{'par_PICSIT_inCorVar'} = "0";			#	do I really need this as a variable?  Once this all works, fc!, ask NP.
+		$parameters{'par_PICSIT_inCorVar'} = "0";
 	}
 	elsif ( $ENV{PROCESS_NAME} =~ /csasw2/ ) {
-		#	Is it ever going to be anything other than .001???
 		$parameters{'par_ogDOL'}        = &ISDCLIB::FindDirVers ( "scw/$att{scwid}" )."/swg_ibis.fits[GROUPING]";
 		$parameters{'par_startLevel'}   = "IMA2";
-		$parameters{'par_PICSIT_inCorVar'} = "0";			#	do I really need this as a variable?  Once this all works, fc!, ask NP.
+		$parameters{'par_PICSIT_inCorVar'} = "0";
 	}
-#	elsif ( $ENV{PROCESS_NAME} =~ /csaob2/ ) { #		Not yet.  #	}
 	else {
 		&Error ( "No match found for PROCESS_NAME: $ENV{PROCESS_NAME}; proctype: $att{proctype}\n" );
 	}
 
-	if ( $ENV{PROCESS_NAME} =~ /csa/ ) {		#	ALL conssa processes
+	if ( $ENV{PROCESS_NAME} =~ /csa/ ) {
 		$parameters{'par_SCW1_GTI_PICsIT'}   = "VETO ATTITUDE P_SGLE_DATA_GAPS P_MULE_DATA_GAPS";
 		$parameters{'par_GENERAL_levelList'}    = "COR,GTI,DEAD,BIN_I,BKG_I,CAT_I,IMA,IMA2,BIN_S,SPE,LCR,COMP,CLEAN";
 	}
 	
 	#####################################################################################
 
-	if ( ( $ENV{PROCESS_NAME} =~ /cssscw/ ) && ( $ENV{REDO_CORRECTION} ) ) {	#	this is only available in consssa
+	if ( ( $ENV{PROCESS_NAME} =~ /cssscw/ ) && ( $ENV{REDO_CORRECTION} ) ) {
 		&Message ( "Redoing Correction step.  Changing startLevel and endLevel." );
 		$parameters{'par_startLevel'}   = "COR";
 		$parameters{'par_endLevel'}     = "DEAD";
@@ -377,7 +332,7 @@ sub ISA {
 	#####################################################################################
 
 	if ( $att{INST} =~ /ISGRI|IBIS/ ) {
-		$parameters{'par_CAT_refCat'} .= "[ISGRI_FLAG == 1]";	#	only unused for consssa of picsit
+		$parameters{'par_CAT_refCat'} .= "[ISGRI_FLAG >= 1]";
 		if ( $ENV{PROCESS_NAME} =~ /cssscw/ ) {	
 			$parameters{'par_rebinned_corrDol_ima'}     = "$ENV{REP_BASE_PROD}/$att{instdir}/rebinned_corr_ima.fits[1]";
 			&ISDCPipeline::RunProgram ( "$mycp $ENV{ISDC_OPUS}/consssa/rebinned_corr_ima.fits.gz $ENV{REP_BASE_PROD}/$att{instdir}/" )
@@ -393,14 +348,6 @@ sub ISA {
 			$parameters{'par_rebinned_corrDol_ima'}     = "$ENV{REP_BASE_PROD}/$att{instdir}/rebinned_corr_ima.fits[1]";
 			&ISDCPipeline::RunProgram ( "$mycp $ENV{ISDC_OPUS}/nrtqla/rebinned_corr_ima.fits.gz $ENV{REP_BASE_PROD}/$att{instdir}/" )
 				unless ( -e "$ENV{REP_BASE_PROD}/$att{instdir}/rebinned_corr_ima.fits.gz" );
-			
-			# Also copy files for OSA9 QLA tests:
-			&ISDCPipeline::RunProgram ( "$mycp $ENV{ISDC_OPUS}/nrtqla/isgri_srcl_res_xte19_clean.fits $ENV{REP_BASE_PROD}/$att{instdir}/" )
-                unless ( -e "$ENV{REP_BASE_PROD}/$att{instdir}/isgri_srcl_res_xte19_clean.fits" );
-		} elsif ( $ENV{PROCESS_NAME} =~ /nqlscw/ ) {  
-            # Also copy files for OSA9 QLA tests:
-            &ISDCPipeline::RunProgram ( "$mycp $ENV{ISDC_OPUS}/nrtqla/isgri_srcl_res_xte19_clean.fits $ENV{REP_BASE_PROD}/$att{instdir}/" )
-                unless ( -e "$ENV{REP_BASE_PROD}/$att{instdir}/isgri_srcl_res_xte19_clean.fits" );
 		}
 	}
 	elsif ( $att{INST} =~ /PICSIT/ ) {
@@ -413,7 +360,7 @@ sub ISA {
 
 	#####################################################################################
 
-	if ( ( $ENV{PROCESS_NAME} =~ /cssscw/ ) && ( $ENV{MULTISTAGE} ) ) {	#	this is only available in consssa
+	if ( ( $ENV{PROCESS_NAME} =~ /cssscw/ ) && ( $ENV{MULTISTAGE} ) ) {
 		&Message ( "multi-stage testing.  Stage: $ENV{MULTISTAGE}.  Changing some parameters." );
 
 		$parameters{'par_SCW1_GTI_attTolerance_X'} = "0.03"; 
@@ -444,7 +391,7 @@ sub ISA {
 		$parameters{'par_SCW1_BKG_picsMUnifDOL'}   = "-";  
 		$parameters{'par_OBS1_MapAlpha'}           = "";   
 		$parameters{'par_OBS1_MapDelta'}           = "";   
-		$parameters{'par_OBS1_SouFit'}             = "1";  
+		$parameters{'par_OBS1_SouFit'}             = "0";  
 		$parameters{'par_SCW2_ISPE_MethodFit'}     = "6";  
 		$parameters{'par_SCW2_BKG_I_method_cor'}   = "1";  
 		$parameters{'par_SCW2_BKG_P_method'}       = "1";  
@@ -453,10 +400,6 @@ sub ISA {
 		$parameters{'par_ILCR_e_max'}              = "40 60 100 200";
 		$parameters{'par_OBS2_projSel'}            = "STG";
 		$parameters{'par_chatter'}                 = "4";  
-        $parameters{'par_OBS1_ToSearch'}           = "0";
-        $parameters{'par_OBS1_NegModels'}          = "1";
-        $parameters{'par_OBS1_MinCatSouSnr'}       = "5";
-        $parameters{'par_OBS1_MinNewSouSnr'}       = "0";
 
 		$parameters{'par_startLevel'} = $ENV{ISGRI_STARTLEVEL} if ( $ENV{ISGRI_STARTLEVEL} );
 		$parameters{'par_endLevel'}   = $ENV{ISGRI_ENDLEVEL}   if ( $ENV{ISGRI_ENDLEVEL} );
@@ -474,26 +417,24 @@ sub ISA {
 	print "#######     DEBUG:  ISDC_REF_CAT is $ENV{ISDC_REF_CAT}\n";
 
 	my $dal_retry_open_existed = $ENV{DAL_RETRY_OPEN} if ( exists $ENV{DAL_RETRY_OPEN} );
-	$ENV{DAL_RETRY_OPEN} = 5 unless ( exists $ENV{DAL_RETRY_OPEN} );		#	060208 - Jake - SCREW 1807
-#	my $dal_retry_open_existed = $ENV{DAL_RETRY_OPEN} if ( defined ( $ENV{DAL_RETRY_OPEN} ) );
-#	$ENV{DAL_RETRY_OPEN} = 5 unless ( defined ( $ENV{DAL_RETRY_OPEN} ) );		#	060208 - Jake - SCREW 1807
-
+	$ENV{DAL_RETRY_OPEN} = 5 unless ( exists $ENV{DAL_RETRY_OPEN} );
+	
 	my ($retval,@result) = &ISDCPipeline::PipelineStep (
 		"step"                        => "$proc - IBIS Analysis $att{proctype}",
 		"program_name"                => "ibis_science_analysis",
 		%parameters,
 		);
 
-	if ($retval) {         #       071204 - Jake - SCREW 997
+	if ($retval) {
 		if ($retval =~ /35644/) {
 			&Message ( "$proc - WARNING:  no data;  continuing." );
 		} else {
 			print "*******     ERROR:  return status of $retval from ibis_science_analysis not allowed.\n";
 			exit 1;      
 		}
-	} # if error
+	}
 
-	delete $ENV{DAL_RETRY_OPEN} unless ( defined ( $dal_retry_open_existed ) );		#	060208 - Jake - SCREW 1807
+	delete $ENV{DAL_RETRY_OPEN} unless ( defined ( $dal_retry_open_existed ) );
 	$ENV{DAL_RETRY_OPEN} = $dal_retry_open_existed if ( defined ( $dal_retry_open_existed ) );
 
 	&ISDCPipeline::RunProgram("$myrm GNRL-REFR-CAT.fits")
@@ -515,8 +456,6 @@ Currently only called from the consssa pipeline when running PICSiT mosaics.
 sub IPMosaic {
 
 	&Carp::croak ( "IBISLIB::IPMosaic: Need even number of args" ) if ( @_ % 2 );
-	
-	#	my %att = @_;	#	no pars just yet
 
 	my $proc = "CSS (Mosaic) PICSIT";
 	print "\n========================================================================\n";
@@ -549,8 +488,7 @@ sub IPMosaic {
 		"par_inCat"        => "isgri_catalog.fits[1]",
 		"par_detThr"       => "3.0",
 		"par_imgSel"       => "EVT_TYPE=='SINGLE' && E_MIN==252 && E_MAX==336",
-		"par_projSel"      => "STG",	#	070625 - Jake - SCREW 2003
-#		"par_projSel"      => "-TAN",
+		"par_projSel"      => "STG",
 		"par_inOG"         => "",
 		"par_idxScw"       => "",
 		"par_mode"         => "h",

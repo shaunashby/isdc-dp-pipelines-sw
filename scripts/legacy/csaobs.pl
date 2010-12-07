@@ -15,6 +15,8 @@ Handles the cleanup and group _science_analysis
 =cut
 
 use strict;
+use warnings;
+
 use ISDCPipeline;
 use ISDCLIB;
 use OPUSLIB;
@@ -23,8 +25,6 @@ use SPILIB;
 use OMCLIB;
 use IBISLIB;
 use JMXLIB;
-
-use lib "$ENV{ISDC_OPUS}/conssa/";
 use SATools;
 
 print "\n========================================================================\n";
@@ -38,7 +38,6 @@ my $return = 0;
 my $loop = ( $ENV{PROCESS_NAME} =~ /csaob1/ ) ? 1 : 2;
 my $proc = &ProcStep();
 
-#my $proc = &ISDCLIB::Initialize();
 $proc   .= " $INST";
 $proc   .= " loop $loop" if ($INST =~ /IBIS/);
 
@@ -82,13 +81,6 @@ SWITCH:  {
 
 		$return = 5;
 		&SATools::ScwSetWait();
-	}
-	if (($INST =~ /IBIS/) &&  ($loop == 2)) {
-		#  Not working in image_mosaic, and no other functionality
-		#    &IBISLIB::ISA (
-		#		"proctype" => "mosaic",		#	needed bc of scw count check
-		#		"INST"     => "IBIS",		#	not really used, but keeps a warning from appearing
-		#		 );
 	}
 	
 	if ($INST =~ /SPI/) {
@@ -137,5 +129,3 @@ Tess Jaffe <theresa.jaffe@obs.unige.ch>
 Jake Wendt <Jake.Wendt@obs.unige.ch>
 
 =cut
-
-#	last line

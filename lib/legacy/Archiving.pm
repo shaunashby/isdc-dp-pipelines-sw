@@ -19,24 +19,14 @@ This module contains two functions, one to check the given revolution for comple
 =cut
 
 use strict;
+use warnings;
+
 use File::Basename;
 use ISDCPipeline;
 use ISDCLIB;
 use UnixLIB;
 use OPUSLIB;
 use Datasets;
-
-sub Archiving::CheckRev;
-sub Archiving::RevArchiving;
-sub Archiving::OSMarc;
-sub Archiving::RawRemoval;
-
-# Why is it that without this line, the scripts which use this module
-#  cannot compile?  Without this, I get the error (on the use statement):
-#  "Archiving.pm did not return a true value at nrvfin.pl line 65."
-#  It doesn't matter what this line is, but it must do something at
-#  compile time besides just declare subroutins.  What's the deal?  
-#  It's just a module! 
 
 $| = 1;
 
@@ -61,7 +51,7 @@ sub CheckRev {
 	my $file;
 	#########              set processing type:  NRT or CONS
 	my $path = ( $ENV{PATH_FILE_NAME} =~ /cons/ ) ? "consrev" : "nrtrev";
-	my $inst = ( $ENV{PATH_FILE_NAME} =~ /cons/ ) ? "cons"    : "nrt";					#	why $inst?  This is so misleading.  It has nothing to do with instruments.
+	my $inst = ( $ENV{PATH_FILE_NAME} =~ /cons/ ) ? "cons"    : "nrt";
 	
 	########################################################################
 	## Check that previous revolution is ready for archiving. 
@@ -363,8 +353,6 @@ sub RevArchiving {
 
 #	replace with 
 	&UnixLIB::Gzip ( "$ENV{SCWDIR}/$revno/rev.000/*/*.fits" );
-#	($retval,@result) = &ISDCPipeline::RunProgram("$mygzip $ENV{SCWDIR}/$revno/rev.000/*/*.fits");
-#	&Error ( "problem gzipping rev $revno;  result @result" ) if ($retval);
 	
 	($retval,@result) = &ISDCPipeline::RunProgram("$mychmod -R -w $ENV{SCWDIR}/$revno/rev.000");
 	&Error ( "Problem write protecting rev $revno;  result @result" ) if ($retval);
@@ -373,20 +361,17 @@ sub RevArchiving {
 	##  Next, write the trigger file
 	
 	print "******     Triggering archive ingest for revolution $revno\n";
-	# SFA 20/03/09: If the ARC_TRIG dir doesn't exist, create it. Not sufficient to test
-	# for empty string - need "-d" flag:
+
 	&ISDCLIB::DoOrDie ( "$mymkdir -p $ENV{ARC_TRIG}" ) unless ( -d "$ENV{ARC_TRIG}" );
 	
 	open(AIT,">$ENV{ARC_TRIG}/scw_${revno}rev0000.trigger_temp") or
 	&Error ( "Cannot write trigger file $ENV{ARC_TRIG}/scw_${revno}rev0000.trigger_temp" );
-#	die"******     ERROR:  cannot write trigger file $ENV{ARC_TRIG}/scw_${revno}rev0000.trigger_temp";
 	print AIT "$ENV{ARC_TRIG}/scw_${revno}rev0000.trigger SCW $ENV{OUTPATH}/scw/$revno/rev.000\n";
 	close(AIT);
 	
 	($retval,@result) = &ISDCPipeline::RunProgram(
 		"$mymv $ENV{ARC_TRIG}/scw_${revno}rev0000.trigger_temp $ENV{ARC_TRIG}/scw_${revno}rev0000.trigger");
 	&Error ( "Cannot update $ENV{ARC_TRIG}/scw_${revno}rev0000.trigger" ) if ($retval);
-#	die "******     ERROR:  Cannot update $ENV{ARC_TRIG}/scw_${revno}rev0000.trigger" if ($retval);
 	
 	#########################################################################
 	#   Clean blackboard
@@ -400,7 +385,6 @@ sub RevArchiving {
 			# Want to only match completed OSFs
 			"matchstat" => "^$osf_stati{REV_COMPLETE}\$",
 			# And if you use matchstat, you have to then specify fullstat
-#			"fullstat"  => "$osf_stati{REV_INGEST}",
 			"fullstat"  => "$osf_stati{REV_CLEAN}",
 			);  
 	}
@@ -409,7 +393,6 @@ sub RevArchiving {
 		#   archived, and only then clean
 		($retval,@result) = &ISDCPipeline::RunProgram("$mytouch $ENV{REV_INPUT}/${revno}_arc.done");
 		&Error ( "Cannot \'$mytouch $ENV{REV_INPUT}/${revno}_arc.done\':@result" ) if ($retval);
-#		die ">>>>>>>     ERROR:  cannot \'$mytouch $ENV{REV_INPUT}/${revno}_arc.done\':@result" if ($retval);
 	}
 	
 	######################################################################### 
@@ -441,15 +424,9 @@ sub OSMarc {
 	##  Last steps before archiving   
 	##
 	if (glob("$ENV{SCWDIR}/$revno/$revno*")) {
-		# idx_find on idx/scw/osm/GNRL-SCWG-GRP-IDX.fits to <workdir>/revRRRR_scws.fits
-		#  using REVOL keyword
-#		if (! -d "$workdir/osm") {
-#			`$mymkdir -p $workdir/osm`;
-#			die "*******     ERROR:  cannot create archive trigger directory $workdir/osm\n" if ($?);
-#		}
 		&ISDCLIB::DoOrDie ( "$mymkdir -p $workdir/osm" ) unless ( -d "$workdir/osm" );
 		
-		my $scw_osm_idx = "$ENV{OUTPATH}/idx/scw/GNRL-SCWG-GRP-IDX.fits";		#	040503 - Jake - removed the osm/
+		my $scw_osm_idx = "$ENV{OUTPATH}/idx/scw/GNRL-SCWG-GRP-IDX.fits";
 		if (-e "$scw_osm_idx") {
 			&ISDCPipeline::FindIndex(
 				"index"    => "$scw_osm_idx",
@@ -465,7 +442,7 @@ sub OSMarc {
 				"par_Revolution" => "working_osmscws_index.fits[GROUPING]",
 				"par_OutputFile" => "./osm/exposure_report.fits",
 				"par_ParamName"  => "ACCEPTED__EVENTS",
-				"par_Instrument" => "JMX",			#	040702 - Jake - SPR 3751 - just JMX, no 1 or 2
+				"par_Instrument" => "JMX",
 				"subdir"         => "$workdir",
 				);
 			
@@ -522,7 +499,7 @@ and swg_raw.fits as well
 
 =cut
 
-sub RawRemoval {		#	040421 - Jake - function created for SCREW 1415
+sub RawRemoval {
 
 	my ($proc,$stamp,$workdir,$osfname,$dataset,$type,$revno,$prevrev,$nexrev) = @_;
 	my $grpfile = "swg_raw.fits";
@@ -530,20 +507,19 @@ sub RawRemoval {		#	040421 - Jake - function created for SCREW 1415
 
 	&Message ( "Starting the Raw Removal process." );
 
-	foreach $scwid ( `$myls -d $ENV{SCWDIR}/$revno/$revno*` ) {		#	040527 - Jake - SPR 3640 - changed * to ${revno}*
+	foreach $scwid ( `$myls -d $ENV{SCWDIR}/$revno/$revno*` ) {
 		chomp $scwid;
 
-		next unless ( -r "$scwid/$grpfile" );			#	040528 - Jake - SPR 3640
-		next unless ( -r "$scwid/swg.fits" );			#	040528 - Jake - SPR 3640
+		next unless ( -r "$scwid/$grpfile" );
+		next unless ( -r "$scwid/swg.fits" );
 
 		&ISDCPipeline::RunProgram( "$mychmod +w $scwid/$grpfile" );
-		&ISDCPipeline::RunProgram( "$mychmod +w $scwid" );					#	040527 - Jake - SPR 3636 - make dir writeable
-		&ISDCPipeline::RunProgram( "$mychmod -R +w $scwid/raw" );		#	040604 - MB
-		&ISDCPipeline::RunProgram( "$myrm -rf $scwid/raw" );				#	040604 - MB
-		&ISDCPipeline::RunProgram( "$myrm     $scwid/$grpfile" );		#	040604 - MB
-		&ISDCPipeline::RunProgram( "$mychmod -w $scwid" );					#	040527 - Jake - SPR 3636 - write protect dir
-
-	}		#	end of foreach $scwid ( `$myls -d $ENV{SCWDIR}/$revno/*` ) {
+		&ISDCPipeline::RunProgram( "$mychmod +w $scwid" );
+		&ISDCPipeline::RunProgram( "$mychmod -R +w $scwid/raw" );
+		&ISDCPipeline::RunProgram( "$myrm -rf $scwid/raw" );
+		&ISDCPipeline::RunProgram( "$myrm     $scwid/$grpfile" );
+		&ISDCPipeline::RunProgram( "$mychmod -w $scwid" );
+	}
 
 	&Message ( "Done with the Raw Removal process." );
 
@@ -568,4 +544,3 @@ Tess Jaffe <theresa.jaffe@obs.unige.ch>
 Jake Wendt <Jake.Wendt@obs.unige.ch>
 
 =cut
-

@@ -23,6 +23,8 @@ could be put here.
 =cut
 
 use strict;
+use warnings;
+
 use ISDCPipeline;
 use UnixLIB;
 
@@ -49,8 +51,6 @@ my $reallogfile = readlink ( "$ENV{LOG_FILES}/$opuslink" );
 &ISDCPipeline::RunProgram ( "$mychmod 444 $reallogfile" );
 
 exit 0;
-
-__END__
 
 =back
 

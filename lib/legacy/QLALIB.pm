@@ -19,11 +19,10 @@ use I<QLALIB.pm>;
 =cut
 
 use strict;
+use warnings;
+
 use ISDCPipeline;
 use ISDCLIB;
-
-sub QLALIB::QCheck;
-sub QLALIB::ParseOSF;
 
 $| = 1;
 
@@ -246,5 +245,4 @@ Jake Wendt <Jake.Wendt@obs.unige.ch>
 Tess Jaffe <theresa.jaffe@obs.unige.ch>
 
 =cut
-
-#	last line
+    

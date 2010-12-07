@@ -68,6 +68,8 @@ Please note that there is no explicit conssma pipeline.  Here I treat it as a se
 =cut
 
 use strict;
+use warnings;
+
 use File::Basename;
 use ISDCPipeline;
 use UnixLIB;

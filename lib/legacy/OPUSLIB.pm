@@ -19,39 +19,27 @@ use I<OPUSLIB.pm>;
 =cut
 
 
+use strict;
+use warnings;
+
 use File::Basename;
 use Carp;
-use TimeLIB;		#	needed for one HexTime2Local or something. Could change all OSFTimeStamp calls to HexTime2Local(OSFTimeStamp(   )), except that there's one here!
+use TimeLIB;
 
-
-#	Gonna be a problem
-use ISDCLIB;		#	for all the &Message and $Error calls and $prefix's
+use ISDCLIB;
 use UnixLIB;
 use SSALIB;
 
+use base qw(Exporter);
+use vars qw($VERSION @EXPORT);
 
-#	next 3 statements required for use without using prefix
-#	cannot use with "use strict;"
-use Exporter();
-@ISA = qw ( Exporter );
 @EXPORT = qw ( 
-	%osf_stati 
+	%osf_stati
 	);
-
-
-sub OPUSLIB::CheckOSF;
-sub OPUSLIB::CheckProcs;
-sub OPUSLIB::RemoveDatasetsAfterDate;
-sub OPUSLIB::ParseOSF;
-sub OPUSLIB::ParsePSTAT;
-sub OPUSLIB::OSFTimeStamp;
-sub OPUSLIB::OSFstatus;
-
 
 $| = 1;
 
-
-%osf_stati = (
+my %osf_stati = (
 	ADP_ST_X			=> "xww",
 	ADP_ST_C			=> "cww",
 	ADP_COMPLETE	=> "ccc",
@@ -329,18 +317,6 @@ sub OSFTimeStamp {
 	#  PATH_FILE_NAME has e.g. "nrtrev.path".
 	$att{path} =~ s/\.path//;
 
-	#  print "*******     OSFTimeStamp:  getting time stamp from OSF $att{dataset} hex time\n";
-
-	#  Find full OSF:
-	#  my @result = `$myls $ENV{OPUS_WORK}/$att{path}/obs/*$att{dataset}* 2> /dev/null`;
-	#  die "*******     Cannot find $ENV{OPUS_WORK}/$att{path}/obs/*$att{dataset}*\n" unless (@result);
-	#  chomp $result[$#result];
-	#  die "*******     Confused about $ENV{OPUS_WORK}/$att{path}/obs/*$att{dataset}*\n" 
-	#     if ( ($#result >0 ) || (!-e "$result[0]"));
-	#  ($hex) = &OPUSLIB::ParseOSF ( basename $result[$#result]);
-
-	#  051129 - Jake - changed to use osf_test instead of ls
-	#     this function is only used from cleanup.pl
 	my @result = `osf_test -p $att{path} -f $att{dataset}`;
 	die "*******     Cannot find $att{path} $att{dataset}" unless (@result);
 	chomp $result[$#result];
@@ -349,7 +325,6 @@ sub OSFTimeStamp {
 
 	#  Pass through parser
 	my ($hex) = &ParseOSF ( $result[$#result] );
-	#  print "*******     Hex is $hex\n";
 
 	#  Convert:
 	return &TimeLIB::HexTime2Local($hex);
@@ -425,19 +400,11 @@ sub OSFstatus {
 	
 	print "\n******************************************************************\n";
 	print "       ".&TimeLIB::MyTime()."       CHECKING STATUS OF $att{files} matching \"$att{match}\":\n";
-	#  print "              globbed files are ".join(' ',@files)."\n";
 	
 	foreach $one (@files){
 		next unless ($one =~ /\w+/);  # sometimes glob returns blanks.
 		$one = &File::Basename::fileparse($one,'\..*');
 		next if ( ($ENV{OSF_DATASET}) && ($one =~ /$ENV{OSF_DATASET}/)) ;
-		
-		#  SPR 2109:  osf_test too slow
-		#    $command = "osf_test -p $att{path}.path -f $one -pr $att{column}";
-		#    $command .= " -n $att{dcf}" if (defined($att{dcf}));
-		#    ($retval,@output) = RunProgram("$command",1);
-		#    return $retval if ($retval);
-		#    chomp $output[0];
 		
 		$osf = `$myls $ENV{OPUS_WORK}/$att{path}/obs/*$one*$att{match}*`;
 		if ($?) {
@@ -489,5 +456,3 @@ Tess Jaffe <theresa.jaffe@obs.unige.ch>
 Jake Wendt <Jake.Wendt@obs.unige.ch>
 
 =cut
-
-#	last line

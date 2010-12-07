@@ -15,6 +15,8 @@ Basic cleanup, write-protection and the creation of the ingest trigger
 =cut
 
 use strict;
+use warnings;
+
 use ISDCPipeline;
 use UnixLIB;
 use ISDCLIB;
@@ -35,7 +37,7 @@ my $proc = &ProcStep." $INST";
 &Message ( "$proc - STARTING" );
 
 $ENV{PARFILES} = "$ENV{OPUS_WORK}/consssa/scratch/$ENV{OSF_DATASET}/pfiles";
-#`mkdir -p "$ENV{PARFILES}"` unless ( -e $ENV{PARFILES} );
+
 &ISDCLIB::DoOrDie ( "mkdir -p $ENV{PARFILES}" ) unless ( -e $ENV{PARFILES} );
 
 print "*******     Scw is $scwid;  Instrument is $INST;  group is ${og}.\n";
@@ -48,7 +50,6 @@ print "*******     Scw is $scwid;  Instrument is $INST;  group is ${og}.\n";
 
 if ( ( $ENV{REDO_CORRECTION} ) && ( $INST=~/SPI|OMC|PICSIT/ ) ) {
 	&Message ( "$proc - Not ReRunning Correction for $INST $ENV{OSF_DATASET}.\n" );
-#	exit 0;	#	don't exit so that we can clean up the trigger
 }
 
 ####################################################################################################
@@ -60,7 +61,6 @@ if ( ( $ENV{REDO_CORRECTION} ) && ( $INST=~/SPI|OMC|PICSIT/ ) ) {
 if ( ( $ENV{REDO_CORRECTION} ) && ( $INST=~/ISGRI|JMX/ ) ) {
 
 	$ENV{COMMONLOGFILE} = "$ENV{LOG_FILES}/$ENV{OSF_DATASET}.log";
-#	$ENV{COMMONSCRIPT}  = 1;		#	because without this GetICFile (ie GetAttribute) fails
 
 	&CorLIB::Fin (
 		"revno"     => "$revno",
@@ -89,31 +89,18 @@ unless ( $ENV{REDO_CORRECTION} ) {
 	&Error ( "Nothing found in $OBSDIR!?!" ) unless ( $fitslist );
 	
 	$fitslist =~ s/\n/ /g;
-	#$fitslist =~ s/(\.\/scw\/[\d\.]{16}\/swg_idx_[\w\d]{3,6}.fits)//g;
 	
 	#	These next 3 lines make the gunzip unnecessary.
 	$fitslist =~ s/(\.\/scw\/[\d\.]{16}\/swg_[\w\d]{3,6}.fits)//g;
-	$fitslist =~ s/(\.\/og_[\w\d]{3,6}.fits)//;					#	{3,6}  omc, picsit (don't know if 6 is nec as its usually ibis so {3,4} probably good.
-	$fitslist =~ s/(\.\/swg_idx_[\w\d]{3,6}.fits)//;			#	{3,6}  omc, picsit (don't know if 6 is nec as its usually ibis so {3,4} probably good.
-
+	$fitslist =~ s/(\.\/og_[\w\d]{3,6}.fits)//;
+	$fitslist =~ s/(\.\/swg_idx_[\w\d]{3,6}.fits)//;
+	
 	&ISDCPipeline::PipelineStep (
 		"step"         => "$proc - compress all data",
 		"program_name" => "$mygzip $fitslist",
 		"subdir"       => "$OBSDIR",
-		) if ( $fitslist );	#	this if isn't really necessary
+		) if ( $fitslist );
 
-
-#	FIX	- what if $fitslist is "   "?
-
-	
-
-
-#	This doesn't work because no way to give subdir to Gzip.
-#	&UnixLIB::Gzip ( split "\n", "$fitslist" );	#	will this split work???
-
-
-
-	
 	#  Move alerts into logs subdirectory
 	&ISDCPipeline::PipelineStep(
 		"step"         => "$proc - remove alerts",
@@ -191,8 +178,6 @@ unless ( $ENV{REDO_CORRECTION} ) {
 	($retval,@result) = &ISDCPipeline::RunProgram (
 	        "$mymv ${ingest_trigger}_temp $ingest_trigger");
 	die "******     ERROR:  Cannot make trigger $ingest_trigger:\n@result" if ($retval);
-
-	#	060104 - Jake - added this last test due to some unknown ingest failures
 	die "******     ERROR:  Trigger $ingest_trigger does not exist!" 
 		unless ( -e $ingest_trigger );
 
@@ -227,5 +212,3 @@ Architectural Design Document.
 Jake Wendt <Jake.Wendt@obs.unige.ch>
 
 =cut
-
-#	last line

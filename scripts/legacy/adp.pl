@@ -31,6 +31,8 @@ Additionally, when either an historic attitude or historic orbit file is created
 =cut
 
 use strict;
+use warnings;
+
 use ISDCPipeline;
 use UnixLIB;
 use ISDCLIB;
@@ -68,17 +70,13 @@ if ($dataset =~ /(.*)_(fits|ASF|PAF|OLF|INT|AHF|DAT|tar)/) {
 	$dataset = "$1.$2";
 }
 
-
-#	well, it isn't really done, is it OPUS..
-my $olddataset = "$ENV{ADP_INPUT}/".$dataset."_processing";  
-
+my $olddataset = "$ENV{ADP_INPUT}/".$dataset."_processing";
 my $newworkdir = "$ENV{WORKDIR}/$ENV{OSF_DATASET}/";
 `$mymkdir -p $newworkdir`;
 die "*******     ERROR:  cannot mkdir $newworkdir." if ($?);
 my $newdataset = $newworkdir.$dataset;
 
-# because adpmon has moved these so OPUS would trigger on the suffix
-if ( ($dataset =~ /(revno|orbita).*/) ) {	#	060119 - Jake - merge revno and orbita as its the same
+if ( ($dataset =~ /(revno|orbita).*/) ) {
 	$olddataset = "$ENV{ADP_INPUT}/$1.$1"."_processing";  
 }
 
@@ -159,23 +157,14 @@ my $adpdir = "$ENV{AUXDIR}/adp/";
 foreach my $dir ( "$orgdir/ref", "$adpdir", "$ENV{ARC_TRIG}", "$ENV{ALERTS}" ) {
 	`$mymkdir -p $dir`;
 	die "*******     ERROR:  cannot mkdir $dir." if ($?);
-}	#	060119 - Jake - Cleaner and smaller and a 4 sets of duped code
+}
 
-###
-###   Now we need to figure out what to do for different files.
-###  
-
-
-
-
-
-# which one did we get?
 SWITCH: {
 	
 	########################################################################
 	# pad, ocs, iop
 	
-	if ($dataset =~ /(ocs|pad|iop)_([0-9]{2}).*/) {	#	iop's may have a trailing _
+	if ($dataset =~ /(ocs|pad|iop)_([0-9]{2}).*/) {
 		my $type = $1;
 		my $ao   = "AO".$2;
 
@@ -213,7 +202,7 @@ SWITCH: {
 			or die "*******     ERROR:  cannot open $temptrigger to write!";
 		print AIT "$trigger AUX $adpdir/$ao/$dataset";
 		close(AIT);
-		&ISDCPipeline::PipelineStep ( # then move it
+		&ISDCPipeline::PipelineStep (
 			"step"         => "adp - write trigger for archive ingest",
 			"program_name" => "$mymv $temptrigger $trigger",
 			);
@@ -221,9 +210,6 @@ SWITCH: {
 		last SWITCH;
 	}
 
-	########################################################################
-	#pod
-	
 	if ($dataset =~ /pod_([0-9]{4})_(\d{4}).*/) {
 		my $rev = $1;
 		my $vers = $2;
@@ -251,7 +237,6 @@ SWITCH: {
 			"subdir"       => "$newworkdir",
 			);
 		
-		# copy it to the adp directory as well
 		&ISDCPipeline::PipelineStep (
 			"step"         => "adp - Copy a pod file to adp",
 			"program_name" => "COPY",
@@ -262,8 +247,6 @@ SWITCH: {
 		
 		last SWITCH;
 	}
-	########################################################################
-	# opp
 	
 	if ($dataset =~ /opp_([0-9]{4})_\d{4}_(\d{4}).*/) {
 		my $rev  = $1;
@@ -279,14 +262,12 @@ SWITCH: {
 				);
 		}	  
 		
-		# untar in scratch
 		&ISDCPipeline::PipelineStep (
 			"step"         => "adp - Untar an opp file",
 			"program_name" => "$mytar xvf $dataset",
 			"subdir"       => "$newworkdir",
 			);
 		
-		# now, for all files call convertopp (or so) 
 		foreach my $oneFile ( glob("*.txt") ) {
 			$oneFile =~ /.*opp_([0-9]{8})_([0-9]{4})_([0-9]{4}).*/;
 			my $pointing = $1;
@@ -318,7 +299,6 @@ SWITCH: {
 			"subdir"       => "$newworkdir",
 			);
 		
-		# copy it to the adp directory as well
 		&ISDCPipeline::PipelineStep (
 			"step"         => "adp - Copy the opp files to adp",
 			"program_name" => "COPY",
@@ -329,9 +309,6 @@ SWITCH: {
 		
 		last SWITCH;
 	}
-
-	########################################################################
-	# PAF
 	
 	# either 2 or 4 digits as the version number
 	if ($dataset =~ /([0-9]{4})_([0-9]{2})\.PAF/) {
@@ -367,19 +344,19 @@ SWITCH: {
 			);
 		
 		#  Must make sure a snapshot exists:
-		my @snapshots = `$myls $adpDirname/attitude_snapshot*fits* 2> /dev/null`;		# 050302 - Jake - SPR 3772 - possible gzipped
-		@snapshots = `$myls $newworkdirrev/attitude_snapshot.fits* 2> /dev/null` 		# 050302 - Jake - SPR 3772 - unlikey gzipped
+		my @snapshots = `$myls $adpDirname/attitude_snapshot*fits* 2> /dev/null`;
+		@snapshots = `$myls $newworkdirrev/attitude_snapshot.fits* 2> /dev/null`
 			unless (scalar(@snapshots) >0 );
 		# Remember, now (@snapshots) will return 1!
 		if (scalar(@snapshots) > 0) {
 			print "*******     There are ".scalar(@snapshots)." snapshots already:\n".@snapshots."\n";
 		} else {
 			print "*******     There are no snapshots yet;  copying dummy.\n";
-			my @dummys = sort(glob("$ENV{REP_BASE_PROD}/aux/adp/0000.000/attitude_snapshot*.fits*"));		# 050302 - Jake - SPR 3772 - probably gzipped
+			my @dummys = sort(glob("$ENV{REP_BASE_PROD}/aux/adp/0000.000/attitude_snapshot*.fits*"));
 			if ( ( -e "$dummys[$#dummys]" ) && ( $dummys[$#dummys] =~ /gz$/ ) ) {
 				&ISDCPipeline::PipelineStep (
 					"step"         => "adp - copy gzipped dummy snapshot file",
-					"program_name" => "$mycp $dummys[$#dummys] attitude_snapshot_0000.fits.gz",		#	050303 - Jake - SPR 3772
+					"program_name" => "$mycp $dummys[$#dummys] attitude_snapshot_0000.fits.gz",
 					"subdir"       => "$newworkdirrev",
 					"needfiles"    => 1,
 					); 
@@ -405,7 +382,7 @@ SWITCH: {
 
 		&ISDCPipeline::PipelineStep (
 			"step"         => "adp - write protect files",
-			"program_name" => "$mychmod 444 $newworkdir/$dataset $newworkdir/*/*fits*",		# 050302 - Jake - SPR 3772 - unlikely gzipped
+			"program_name" => "$mychmod 444 $newworkdir/$dataset $newworkdir/*/*fits*",
 			);			       
 		
 		&ISDCPipeline::PipelineStep (
@@ -444,10 +421,7 @@ SWITCH: {
 		
 		last SWITCH;
 	}
-	
-	########################################################################
-	#  AHF
-	
+		
 	if ($dataset =~ /([0-9]{4})_([0-9]{4})\.AHF/) {
 		my $rev           = $1;
 		my $newworkdirrev = "$newworkdir/$rev.000";
@@ -465,7 +439,7 @@ SWITCH: {
 		
 		&ISDCPipeline::PipelineStep (
 			"step"         => "adp - write protect files",
-			"program_name" => "$mychmod 444 $newworkdir/$dataset $newworkdir/*/*fits*",		# 050302 - Jake - SPR 3772 - unlikely gzipped
+			"program_name" => "$mychmod 444 $newworkdir/$dataset $newworkdir/*/*fits*",
 			);			       
 		
 		&ISDCPipeline::PipelineStep (
@@ -490,15 +464,12 @@ SWITCH: {
 		last SWITCH;
 	}
 	
-	########################################################################
-	# ASF
-	
 	if ($dataset =~ /([0-9]{4})_([0-9]{4})\.ASF/) {
 		my $rev           = $1;
 		my $vers          = $2;
 		my $adpDirname    = "$adpdir/$rev.000/";
 		my $newworkdirrev = "$newworkdir/$rev.000";
-		my @atts          = sort(glob("$adpDirname/attitude_predicted_*.fits*"));	# 050302 - Jake - SPR 3772 - possibly gzipped
+		my @atts          = sort(glob("$adpDirname/attitude_predicted_*.fits*"));
 		#  Don't give empty filename parameter, so check:
 		&ISDCPipeline::PipelineStep (
 			"step"         => "adp - Copy predicted attitude file from repository rev $rev",
@@ -519,10 +490,6 @@ SWITCH: {
 			"needfiles"    => 0,
 			) if (-e "$filestocopy");
 
-		#	040722 - Jake - I didn't do this "and" thing.
-		#  	make sure they are writeable
-		# 050302 - Jake - SPR 3772 - unlikely gzipped
-		#	060120 - Jake - Why is this "and"?  Why not use $retval?  Why isn't it "or"?
 		&ISDCPipeline::RunProgram( "$mychmod +w $newworkdir/$rev.000/attitude_snapshot.fits*") and 
 			&ISDCPipeline::PipelineStep (
 				"step"         => "ERROR",
@@ -530,12 +497,9 @@ SWITCH: {
 				"program_name" => "ERROR",
 				);
 		
-		#  Construct name of output snapshot attiude, using both time stamp and
-		#   ASF version.
 		my $timestamp = &TimeLIB::MyTime();
 		$timestamp =~ s/:|-|T//g;
 		
-		#	040722 - Jake - I didn't do this "and" thing either.
 		&ISDCPipeline::RunProgram(
 			"$mymv $newworkdir/$rev.000/attitude_snapshot.fits "
 				."$newworkdir/$rev.000/attitude_snapshot_$timestamp"."_$vers.fits") and 
@@ -559,7 +523,7 @@ SWITCH: {
 		
 		&ISDCPipeline::PipelineStep (
 			"step"         => "adp - write protect files",
-			"program_name" => "$mychmod 444 $newworkdir/$dataset $newworkdir/*/*fits*",	# 050302 - Jake - SPR 3772 - unlikely gzipped
+			"program_name" => "$mychmod 444 $newworkdir/$dataset $newworkdir/*/*fits*",
 			);			       
 		
 		&ISDCPipeline::PipelineStep (
@@ -588,12 +552,7 @@ SWITCH: {
 		last SWITCH;
 	}
 	
-	########################################################################
-	# orbita
-	
 	if ($dataset =~ /orbita.*/) {
-		# SPR-03284: get the current revolution number to provide it as the RevP
-		#            parameter to convertorbit
 		#
 		if ( $ENV{ADP_UNIT_TEST} =~ /TRUE/ ) {
 			&ISDCPipeline::PipelineStep (
@@ -603,14 +562,12 @@ SWITCH: {
 				"par_outfileP" => "orbit_predicted.fits",
 				"par_OutfileH" => "orbit_historic.fits",
 				"par_Outdir"   => "./",
-				# "par_RevP"   => "0",					# Jake - commented out for testing
-				# "par_RevH"   => "0",					# Jake - commented out for testing
 				"par_SCID"     => "$ENV{SCID}",
 				"par_RCD_ID"   => "321",
 				"subdir"       => "$newworkdir",
 				);
 		} else {
-			chomp ( my $date = `$mydate -u "+%Y-%m-%dT%H:%M:%S"` );	#	050412 - Jake - SCREW 1704
+			chomp ( my $date = `$mydate -u "+%Y-%m-%dT%H:%M:%S"` );
 			
 			my $cur_revno = &ISDCPipeline::ConvertTime(
 				"informat"  => "UTC",
@@ -626,28 +583,19 @@ SWITCH: {
 				"par_OutfileH" => "orbit_historic.fits",
 				"par_Outdir"   => "./",
 				"par_RevP"     => "$cur_revno",
-				# "par_RevH" => "0",					# Jake - why was this commented out? - SPR 3411 
-				#
-				#  RevH uses saved values in par file (could be deteremined by looking at aux/adp/*/orbit_historic.fits)
-				#  RevH - "Enter last revolution number processed for Historic data"
-				#
-				"par_SCID"     => "$ENV{SCID}",		#"par_SCID" => "70",
-				"par_RCD_ID"   => "321",				#"par_RCD_ID" => "270",
+				"par_SCID"     => "$ENV{SCID}",
+				"par_RCD_ID"   => "321",
 				"subdir"       => "$newworkdir",
 				);
 		}
 		
 		&ISDCPipeline::PipelineStep (
 			"step"         => "adp - write protect files",
-			"program_name" => "$mychmod 444 $newworkdir/*/orbit*fits* $newworkdir/$dataset",		# 050302 - Jake - SPR 3772 - unlikely gzipped
+			"program_name" => "$mychmod 444 $newworkdir/*/orbit*fits* $newworkdir/$dataset",
 			"stoponerror"  => 0,
 			);			       
 		
-		# copy the contents of RRRR back to RRRR.000.
-		# check first
-		# SPR-03284: check only the orbit_historic files, as orbit_predicted should be
-		#            overwritten 
-		foreach my $oneRev ( glob ( "$newworkdir/[0-9]*" ) ) {			#	040511 - Jake - SPR 3526
+		foreach my $oneRev ( glob ( "$newworkdir/[0-9]*" ) ) {
 			$oneRev = "$oneRev/orbit_historic.fits";
 			
 			print "$oneRev not found\n" && next unless ( -r "$oneRev" ) ;
@@ -661,7 +609,7 @@ SWITCH: {
 			print "Searching dal_dump output for completeness.\n";
 			foreach (@result) {
 				chomp;
-				next unless ( /^\s*[\d\.\+-E]+\s*$/ );						#	1.19990000000000E+01  
+				next unless ( /^\s*[\d\.\+-E]+\s*$/ );
 				$low  = $_ if ( !defined ($low)  || ( $_ < $low  ) );
 				$high = $_ if ( !defined ($high) || ( $_ > $high ) );
 			} 
@@ -670,13 +618,13 @@ SWITCH: {
 			&Error ( "$oneRev : $high - $low = $diff > ( 1 + $ENV{ORB_TOLERANCE} ) \n" ) if ( $diff > ( 1 + $ENV{ORB_TOLERANCE} ) );
 		}
 
-		foreach my $oneRev ( glob ( "$newworkdir/[0-9]*" ) ) {			#	040511 - Jake - SPR 3526
+		foreach my $oneRev ( glob ( "$newworkdir/[0-9]*" ) ) {
 			my $tmprev = $oneRev;
 			$tmprev =~ s/(\d{4}).*/$1/;
 			&CheckRevTrigger($oneRev,$dataset);
 			$oneRev = "$oneRev/orbit_historic.fits";
 			$oneRev =~ /.*([0-9]{4})/;
-			#check if rev already triggered;  if so, alert
+
 			&ISDCPipeline::PipelineStep (
 				"step"         => "adp - Check rev $1 in repository",
 				"program_name" => "CHECK",
@@ -685,13 +633,10 @@ SWITCH: {
 				"needfiles"    => 0,
 				);
 		}
-		# now copy them
+
 		my $lastrev ;
-		#
-		# SPR-03284: do not allow overwriting of orbit_historic (overwrite==0)
-		#                   allow overwriting of orbit_predicted (overwrite==2)
-		#
-		foreach my $oneRev ( sort ( glob ( "$newworkdir/[0-9]*" ) ) ) {			#	040511 - Jake - SPR 3526
+
+		foreach my $oneRev ( sort ( glob ( "$newworkdir/[0-9]*" ) ) ) {
 			$oneRev = "$oneRev/orbit_historic.fits";
 			$oneRev =~ /.*([0-9]{4})/;
 			$lastrev = $1;
@@ -705,7 +650,7 @@ SWITCH: {
 				"needfiles"    => 0,
 				);
 		}
-		foreach my $oneRev ( sort ( glob ( "$newworkdir/[0-9]*" ) ) ) {			#	040511 - Jake - SPR 3526
+		foreach my $oneRev ( sort ( glob ( "$newworkdir/[0-9]*" ) ) ) {
 			$oneRev = "$oneRev/orbit_predicted.fits";
 			$oneRev =~ /.*([0-9]{4})/;
 			$lastrev = $1;
@@ -739,7 +684,7 @@ SWITCH: {
 		
 		# check revolution completeness for archiving for each revolution that
 		#  came out with an orbit_historic
-		my @neworbhists = glob("$newworkdir/*/orbit_historic.fits*");		# 050302 - Jake - SPR 3772 - unlikely gzipped
+		my @neworbhists = glob("$newworkdir/*/orbit_historic.fits*");
 		print "revolutions to check are @neworbhists\n";
 		foreach my $oneRev (@neworbhists) {
 			$oneRev =~ /(\d{4})\.000/;
@@ -750,8 +695,6 @@ SWITCH: {
 		
 		last SWITCH;
 	}
-	########################################################################
-	# revno
 	
 	if ($dataset =~ /revno_(.*)/) {
 		my $date    = $1;
@@ -771,7 +714,7 @@ SWITCH: {
 		
 		&ISDCPipeline::PipelineStep (
 			"step"         => "adp - write protect files",
-			"program_name" => "$mychmod 444 $newworkdir/*.fits* $newworkdir/$dataset ",		# 050302 - Jake - SPR 3772 - unlikely gzipped
+			"program_name" => "$mychmod 444 $newworkdir/*.fits* $newworkdir/$dataset ",
 			);			       
 		
 		&ISDCPipeline::PipelineStep (
@@ -789,8 +732,7 @@ SWITCH: {
 			"subdir"       => "$newworkdir",
 			);
 		
-		## immediately trigger archive ingest
-		
+		## immediately trigger archive ingest		
 		my $trigger = "$ENV{ARC_TRIG}/aux_revolution_$date.trigger";
 		my $temptrigger = "$trigger"."_temp";
 		open(AIT,">$temptrigger") or die "*******     ERROR:  cannot open $temptrigger to write!";
@@ -803,9 +745,7 @@ SWITCH: {
 		
 		last SWITCH;
 	}
-	########################################################################
-	# TSF
-	
+
 	if ($dataset =~ /TSF_([0-9]{4})_.*([0-9]{4})\.INT/) {
 		my $rev = $1;
 		my $version = $2;
@@ -869,7 +809,7 @@ SWITCH: {
 		
 		&ISDCPipeline::PipelineStep (
 			"step"         => "adp - write protect files",
-			"program_name" => "$mychmod 444 $newworkdir/*fits* $newworkdir/*/*fits* $newworkdir/$dataset",		# 050302 - Jake - SPR 3772 - unlikely gzipped
+			"program_name" => "$mychmod 444 $newworkdir/*fits* $newworkdir/*/*fits* $newworkdir/$dataset",
 			);			       
 		
 		my $adpDirname = "$orgdir/$rev/";
@@ -898,8 +838,6 @@ SWITCH: {
 		last SWITCH;
 	}
 	
-	########################################################################
-	#  THF
 	if ($dataset =~ /THF_(\d{6})_\d{4}/) {
 		my $date;
 		my $copy = 0;
@@ -1000,11 +938,7 @@ SWITCH: {
 		
 		last SWITCH;
 		
-	}  # end THF
-	
-	
-	########################################################################
-	# olf
+	}
 	
 	if ($dataset =~ /^(\d{9})\.OLF/) {
 		my $date = $1;
@@ -1012,16 +946,12 @@ SWITCH: {
 		my $vers = $dataset;
 		$vers =~ s/.OLF//;  # (Yes, a dot isn't a dot;  it may be an underscore.)
 
-		#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#
-		#
-		#		Check TIME_CORRELATION records from previous revolution
-		#
-		#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#
 		my $revno = &ISDCPipeline::ConvertTime(
 			"informat"  => "YYYYDDDHH",
 			"intime"    => "$date",
 			"outformat" => "revnum",
 			);
+
 		$revno = sprintf("%04d",$revno);
 		my $prevrev = sprintf("%04d",$revno-1);
 		my $first_olf_in_rev;
@@ -1031,10 +961,8 @@ SWITCH: {
 			#	check that the previous revolution received enough TIME_CORRELATION records
 			$first_olf_in_rev = 1;
 		}
-		#
-		#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#
-
 		##################################
+
 		if (!-s "$dataset") {
 			print "*******     OLF is empty;  skipping processing.\n";
 			
@@ -1075,8 +1003,7 @@ SWITCH: {
 			# Exit special value to turn to ccc
 			exit 3;
 			
-		} # end if OLF emtpy
-		##################################
+		}
 		
 		else {
 			
@@ -1113,7 +1040,7 @@ SWITCH: {
 			
 			# Copy the files from the repository if they exist
 			my $rmlist;
-			foreach (`$myls $rev/*fits* 2> /dev/null`) { chomp;  $rmlist .= "$_ "; }	# 050302 - Jake - SPR 3772 - possibly gzipped
+			foreach (`$myls $rev/*fits* 2> /dev/null`) { chomp;  $rmlist .= "$_ "; }
 			foreach (`$myls *alert* 2> /dev/null`) { chomp;  $rmlist .= "$_ ";}
 			&ISDCPipeline::PipelineStep (
 				"step"         => "adp - rm the old ones",
@@ -1122,7 +1049,7 @@ SWITCH: {
 				);
 			my $adpDirname = "$adpdir/$rev.000/";
 			
-			my @timecors = sort(glob("$adpDirname/time_correlation_*fits*"));	# 050302 - Jake - SPR 3772 - possibly gzipped
+			my @timecors = sort(glob("$adpDirname/time_correlation_*fits*"));
 			if (@timecors) {
 				&ISDCPipeline::PipelineStep (
 					"step"         => "adp - copy time_correlation file from repository",
@@ -1168,9 +1095,7 @@ SWITCH: {
 				"step"         => "ERROR",
 				"error"        => " - Cannot change files $newworkdir/$rev.000/* to writeable:  $!\n",
 				"program_name" => "ERROR",
-				) if (`$myls $newworkdir/$rev/*fits* 2> /dev/null`);		# 050302 - Jake - SPR 3772 - unlikely gzipped
-			
-			# now rerun it
+				) if (`$myls $newworkdir/$rev/*fits* 2> /dev/null`);
 			
 			&ISDCPipeline::PipelineStep (
 				"step"             => "adp - Convert OLF file",
@@ -1185,18 +1110,11 @@ SWITCH: {
 				"par_MOCAlert"     => "Summary",
 				"subdir"           => "$newworkdir",
 				);
-			
-			
-			#  Check if observation_log.fits exists;  if not, no point in running
-			#   createpdef
-			#
-			
+						
 			if (-e "$rev/observation_log.fits") {
 				#  Get time stamp in first line of OLF file:
 				my $first_time = `$myhead -1 $dataset`;
 				chomp $first_time;
-				#  always very first line, no whitespace, then e.g.
-				#  2002-06-24T07:30:12Z TIME_CORRELATION     3f75019c29ac0004 ...
 				#
 				$first_time =~ s/^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})Z\s.*/$1/;
 				&ISDCPipeline::PipelineStep (
@@ -1223,7 +1141,7 @@ SWITCH: {
 			
 			&ISDCPipeline::PipelineStep (
 				"step"         => "adp - write protect files",
-				"program_name" => "$mychmod 444 $newworkdir/*/*fits* $newworkdir/$dataset",		# 050302 - Jake - SPR 3772 - unlikely gzipped
+				"program_name" => "$mychmod 444 $newworkdir/*/*fits* $newworkdir/$dataset",
 				);			       
 			
 			&ISDCPipeline::PipelineStep (
@@ -1260,13 +1178,8 @@ SWITCH: {
 				"ext"     => ".fits",
 				);			       
 			
-		} # end if not empty
+		}
 
-		#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#
-		#
-		#		Check TIME_CORRELATION records from previous revolution (050719 - Jake - SCREW 1749)
-		#
-		#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#
 		if ( $first_olf_in_rev ) {
 			#	ie.  this is the first OLF of the revolution
 			#	check that the previous revolution received enough TIME_CORRELATION records
@@ -1296,13 +1209,9 @@ SWITCH: {
 				"id"      => "510",
 				) if ( $timecorrcount < $timecorrminok );
 		}
-		#
-		#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#
 		
 		last SWITCH;
 	} 
-	########################################################################
-	# arc_prep
 	
 	if ($dataset =~ /(\d{4})_arc_prep/) {
 		
@@ -1334,9 +1243,6 @@ SWITCH: {
 		"subdir"       => "$ENV{WORKDIR}",
 		);
 }
-########  end of SWITCH  
-
-
 
 ########################################################################
 ########                   FINISHING
@@ -1352,7 +1258,7 @@ SWITCH: {
 	"par_OutDir2"    => "",
 	"par_Subsystem"  => "ADP",
 	"par_DataStream" => "realTime",
-	"par_ScWIndex"   => "",					#	Jake added 040108 - SPR 3411
+	"par_ScWIndex"   => "",
 	"subdir"         => "$newworkdir",
 	) if (`$myls $newworkdir/*alert 2> /dev/null`);
 
@@ -1426,7 +1332,7 @@ sub RevArcCheck {
 		"step"         => "adp - archiving check for rev $revnum",
 		"program_name" => "NONE",
 		);
-	my @revfiles = sort(glob("$adpdir/$revnum.000/*.fits*"));		# 050302 - Jake - SPR 3772 - possibly gzipped
+	my @revfiles = sort(glob("$adpdir/$revnum.000/*.fits*"));
 	my $string = join(' ',@revfiles);
 	###
 	###  first pass to check historic orbit and attitude
@@ -1461,7 +1367,6 @@ sub RevArcCheck {
 	$missing .= "pod_${revnum}_"      unless ($string =~ /pod_${revnum}_/);
 	
 	if ($missing) {
-		#	050627 - Jake - SPR 3773
 		&Message ( "Previously found adp fits files in $adpdir/$revnum.000/ : \n@revfiles\n" );
 		@revfiles = sort(glob("$adpdir/$revnum.000/*.fits*"));
 		&Message ( "Just now found adp fits files in $adpdir/$revnum.000/ : \n@revfiles\n" );
@@ -1542,8 +1447,6 @@ sub RevArcCheck {
 	($retval,@osfs) = &ISDCPipeline::RunProgram("osf_test -p adp.path -pr dataset");
 	my $num;
 	if ($retval) {
-		#	051129 - Jake - SPR 4378 - osf_test does not give a return value ($?)
-		#	This will never happen since there are no variables in this command, osf_test will always return 0
 		die "*********      Cannot run \'osf_test -p adp.path -pr dataset\':  @osfs";
 	}
 	else {
@@ -1744,17 +1647,12 @@ sub RevArchiving {
 	print "*********      All contents ready for rev $revnum;  writing archive ingest trigger\n"; 
 
 	&UnixLIB::Gzip ( "$adpdir/$revnum.000/*.fits" );
-#	&UnixLIB::Gzip ( glob ( "$adpdir/$revnum.000/*.fits" ) );
-	
-	#  recursively write protect rev directory:
 	
 	&ISDCPipeline::PipelineStep (  
 		"step"         => "adp - write protect rev directory recursively", 
 		"program_name" => "NONE",  
 		); 
-	
-	#  cannot log anything after this point in observation log file;  
-	
+		
 	($retval,@result) = &ISDCPipeline::RunProgram("$mychmod -R -w $adpdir/$revnum.000");
 	# but if there's an error, you can try:
 	&ISDCPipeline::PipelineStep (
@@ -1778,7 +1676,6 @@ sub RevArchiving {
 	#  First, look in logs subdir and compile a list of OSFs.  There
 	#   is no other way to find out everything associated with this 
 	#   revolution.  
-#	my $log;
 	my $osflist;
 	foreach my $log (`$myls $adpdir/$revnum.000/logs/*`) {
 		#  ls will return blanks and e.g. "olf:" lines indicating the subdirs
@@ -1910,11 +1807,6 @@ sub RevContentsCheck {
 	return;
 	
 } # end sub RevContentsCheck
-
-
-
-
-__END__ 
 
 =back
 

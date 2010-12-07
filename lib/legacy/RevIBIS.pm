@@ -62,25 +62,15 @@ The next revolution number.
 =cut
 
 use strict;
+use warnings;
+
 use ISDCPipeline;
 use ISDCLIB;
 use UnixLIB;
 use OPUSLIB;
 use TimeLIB;
 
-sub RevIBIS::DPirv;
-sub RevIBIS::ACAirv;
-sub RevIBIS::DPirn;
-sub RevIBIS::ICAirn;
-sub RevIBIS::DPirc;
-sub RevIBIS::ACAirc;
-sub RevIBIS::DPidp;
-sub RevIBIS::ICAidp;
-sub RevIBIS::ICAidpHK;
-sub RevIBIS::DPprc;
-
 $| = 1;
-
 
 ##########################################################################
 
@@ -1648,8 +1638,6 @@ sub DPprc {
 ##########################################################################
 
 1;
-
-__END__
 
 =back
 

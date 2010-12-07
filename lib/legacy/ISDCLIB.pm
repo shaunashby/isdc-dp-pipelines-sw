@@ -18,15 +18,11 @@ use I<ISDCLIB.pm>;
 
 =cut
 
-#	This function does not and should not ever need any other ISDC perl package or module.
-#	This way, it will remain simple and easily maintainable without any crossover.
+use UnixLIB;
 
-use UnixLIB;	#	everybody is gonna need UnixLIB
+use base qw(Exporter);
+use vars qw($VERSION @EXPORT);
 
-#	next 3 statements required for use without using ISDCLIB:: to prefix
-#	cannot use with "use strict;"
-use Exporter();
-@ISA = qw ( Exporter );
 @EXPORT = qw ( 
 	$prefix1 
 	$prefix2 
@@ -38,27 +34,6 @@ use Exporter();
 	&RemoveDirsIfEmpty 
 	&ProcStep
 	);
-
-sub ISDCLIB::Initialize;
-sub ISDCLIB::dprint;
-sub ISDCLIB::Message;
-sub ISDCLIB::Error;
-sub ISDCLIB::RemoveDirsIfEmpty;
-sub ISDCLIB::RowsIn;
-sub ISDCLIB::ChildrenIn;
-sub ISDCLIB::ProcStep;
-sub ISDCLIB::FindDirVers;
-sub ISDCLIB::GetColumn;
-sub ISDCLIB::QuickClean;
-sub ISDCLIB::QuickDalAttach;
-sub ISDCLIB::QuickDalDetach;
-sub ISDCLIB::QuickDalDelete;
-sub ISDCLIB::QuickDalCopy;
-sub ISDCLIB::QuickDalClean;
-sub ISDCLIB::ParseConfigFile;
-sub ISDCLIB::DoOrDie;
-sub ISDCLIB::inst2in;
-sub ISDCLIB::in2inst;
 
 $| = 1;
 
@@ -99,13 +74,10 @@ Prints to STDOUT and whatever is currently "selected".
 =cut
 
 sub dprint {
-#	#	try to not print twice bc usually in the ST step there may not be a logfile selected yet
 	my $CURRENT = select STDOUT;
-	print          "@_"; #	STDOUT
-	print $CURRENT "@_" if ( $CURRENT !~ /STDOUT/ );	#	main::STDOUT
+	print          "@_";
+	print $CURRENT "@_" if ( $CURRENT !~ /STDOUT/ );
 	select $CURRENT;
-#	print        "@_";
-#	print STDOUT "@_";
 }  
 
 ###########################################################################
@@ -128,27 +100,16 @@ sub Error {
 		open LOG, ">> $logfile";
 		$oldlog = select LOG;
 	}
-#	print "$prefix1\n";
-#	#	the array usually adds a trailing \n so may not need it
-#	print "$prefix1 $proc - ERROR : @message\n";
-#	print "$prefix1\n";
-#	if ( -e $logfile ) {
-#		close LOG;
-#		select $oldlog;
-#	}
+
 	&dprint ( "\n\n$prefix1 ERROR : @message\n\n" );
 
 	my $level=0;
 	&dprint ( "\nDumping death stack\n" );
-	&dprint ( "Death on line ".__LINE__." of ".__FILE__." ( ".__PACKAGE__." )\n" );		#	should be this line right here
+	&dprint ( "Death on line ".__LINE__." of ".__FILE__." ( ".__PACKAGE__." )\n" );
 	while ( my ($pkg,$file,$line,$sub) = caller($level++)) {
 		if( $file =~ /^\(eval/ ) {
-#			$oline = (caller($level))[2];
-#			$oscope .= "the eval at line $oline of ";
-#			$eval++;
 		} else {
 			&dprint ( "Death on line $line of $file ( $pkg )( $sub )\n" );
-#			print "$eval,$line,$file,$oscope\n";
 		}
 	}
 
@@ -179,7 +140,6 @@ sub Message {
 		$oldlog = select LOG;
 	}
 	print "$prefix1\n";
-	#	the array usually adds a trailing \n so may not need it
 	print "$prefix1 $proc : @message\n";
 	print "$prefix1\n";
 	if ( -e $logfile ) {
@@ -242,24 +202,15 @@ sub ChildrenIn {
 	$ENV{COMMONLOGFILE} = "+".$ENV{COMMONLOGFILE} unless ( $ENV{COMMONLOGFILE} =~ /^\+/ );
 	my @results = `dal_list dol=$grpdol extname=$extension exact=n longlisting=yes fulldols=no mode=h`;
 
-
-
-
-	&Error ( "dal_list appears to have failed with $?" ) if ( $? );		#	070125 - Jake - added due to noted continuing after failure in OSA6 qla tests
-
-
-
+	&Error ( "dal_list appears to have failed with $?" ) if ( $? );
 
 	$ENV{COMMONLOGFILE} = $initialcommonlogfile;
 	
-	my $rows;                                               #       undefined variable
+	my $rows;
 	my $cur_rows;
 	my $cur_struct;
-	foreach ( @results ) {           #       loop through all lines of output
+	foreach ( @results ) {
 		next unless /\s+GROUP\s+(\d+)\s+child\w*\s*/; 
-		#next unless /\s+GROUP\s+(\d+)\s+children\s*/; 
-		# next unless /Rows=\s+(\d+)\s*/; 
-
 		$cur_rows = $1;
 	
 		#dal_list output format
@@ -305,13 +256,6 @@ sub RowsIn {         #  040623 - Jake - SPR 3725
 
 	&Message ( "Running RowsIn ( $grpdol, $extension, $donotcountlist )" );
 
-	#  ISDCPipeline::GetICFile will cause the "+" to be removed from $ENV{COMMONLOGFILE}
-	#  ( or any call to PipelineStep with getstdout=0 )
-	#  When the prior ISDCPipeline::PipelineStep runs, it would be put back.
-	#  If the prior ISDCPipeline::PipelineStep fails, it will still be "missing".
-	#     wrote SCREW 1437 to address this as the following step shouldn't be needed
-	#$ENV{COMMONLOGFILE} = "+".$ENV{COMMONLOGFILE} unless ( $ENV{COMMONLOGFILE} =~ /^\+/ );
-	
 	my ( $root, $path, $ext );
 
 	if ( $grpdol =~ /\[/ ) {
@@ -326,29 +270,18 @@ sub RowsIn {         #  040623 - Jake - SPR 3725
 
 	my $rows;                  #       undefined variable
 
-# /isdc/arc/rev_2/scw/0044/004400120010.001/ibis_gti.fits[IBIS-GNRL-GTI,18,BINTABLE]
-
 	if ( ( -e "$path/$root" ) || ( -e "$path/$root.gz" ) ) {
-#		&Message ( "$path/$root(.gz) exists." );
-#		&Message ( "COMMONLOGFILE is : $ENV{COMMONLOGFILE}" );
 		my $initialcommonlogfile = $ENV{COMMONLOGFILE};
 		$ENV{COMMONLOGFILE} = "+".$ENV{COMMONLOGFILE} unless ( $ENV{COMMONLOGFILE} =~ /^\+/ );
 		my @results = `dal_list dol=$grpdol extname=$extension exact=n longlisting=yes fulldols=no mode=h`;
 
-
-
-
-	&Error ( "dal_list appears to have failed with $?" ) if ( $? );		#	070125 - Jake - added due to noted continuing after failure in OSA6 qla tests
-
-
-
+		&Error ( "dal_list appears to have failed with $?" ) if ( $? );
 
 		$ENV{COMMONLOGFILE} = $initialcommonlogfile;
 		
 		my $cur_rows;
 		my $cur_struct;
 		foreach ( @results ) {      #       loop through all lines of output
-#			&Message ( "RowsIn Line: $_" );
 			next unless /Rows=\s+(\d+)\s*/;
 			$cur_rows = $1;
 			#dal_list output format
@@ -370,7 +303,6 @@ sub RowsIn {         #  040623 - Jake - SPR 3725
 		#  return -1 if no match or if grpdol does not exist
 		$rows = -1 if !defined($rows);
 	} else {
-#		&Message ( "$path/$root(.gz) does not exist." );
 		$rows = -1;
 	}
 	
@@ -391,22 +323,15 @@ returns $proc.
 sub ProcStep {
 	# In internal functions which don't have the step info, pars the
 	#  Process Name and use defaults, i.e. turn nswdp to "SD (NRT)".  
-
-	#	060109 - Jake
-	#	I just noticed that none of the input resource files have a PROCESS_NAME.
-	#	Why?
-	#	Is there something different about the input pipelines here?
-	#	I added them, but I don't know that it'll make any difference.
-
 	my $proc;
 
 	if ($ENV{PROCESS_NAME} =~ /^csa/)       { $proc = "SA" ; }
 	if ($ENV{PROCESS_NAME} =~ /^css/)       { $proc = "SSA" ; }
 	if ($ENV{PROCESS_NAME} =~ /^nql/)       { $proc = "QLA"; }
 	if ($ENV{PROCESS_NAME} =~ /^adp/)       { $proc = "ADP";}
-	if ($ENV{PROCESS_NAME} =~ /^\winp/)     { $proc = "INPUT"; }	#	ninput.resource ???
-	if ($ENV{PROCESS_NAME} =~ /^\wsw/)      { $proc = "ScW"; }		#	cswosm, ...
-	if ($ENV{PROCESS_NAME} =~ /^\wrv/)      { $proc = "Rev"; }		#	nrvfin, ...
+	if ($ENV{PROCESS_NAME} =~ /^\winp/)     { $proc = "INPUT"; }
+	if ($ENV{PROCESS_NAME} =~ /^\wsw/)      { $proc = "ScW"; }
+	if ($ENV{PROCESS_NAME} =~ /^\wrv/)      { $proc = "Rev"; }
 
 	#	SA Possibilities:
 	if ($ENV{PROCESS_NAME} =~ /^\w{3}sw\d$/) { $proc .= " (Scw)"; }
@@ -428,10 +353,10 @@ sub ProcStep {
 	if ($ENV{PROCESS_NAME} =~ /^\w{3}irc/)  { $proc .= " IRC"; }
 	if ($ENV{PROCESS_NAME} =~ /^\w{3}idp/)  { $proc .= " IDP"; }
 	if ($ENV{PROCESS_NAME} =~ /^\w{3}prc/)  { $proc .= " PRC"; }
-	if ($ENV{PROCESS_NAME} =~ /^\w{3}jmf/)  { $proc .= " JMF"; }# JMX? FRSS
-	if ($ENV{PROCESS_NAME} =~ /^\w{3}gen/)  { $proc .= " GEN"; }# Generic
-	if ($ENV{PROCESS_NAME} =~ /^\w{3}jme/)  { $proc .= " JME"; }# JMX? ECAL
-	if ($ENV{PROCESS_NAME} =~ /^\w{3}ssp/)  { $proc .= " SPI"; }# SPI spectra
+	if ($ENV{PROCESS_NAME} =~ /^\w{3}jmf/)  { $proc .= " JMF"; }
+	if ($ENV{PROCESS_NAME} =~ /^\w{3}gen/)  { $proc .= " GEN"; }
+	if ($ENV{PROCESS_NAME} =~ /^\w{3}jme/)  { $proc .= " JME"; }
+	if ($ENV{PROCESS_NAME} =~ /^\w{3}ssp/)  { $proc .= " SPI"; }
 
 	#	additions
 	if ($ENV{PROCESS_NAME} =~ /^n/)         { $proc .= " (NRT)"; }
@@ -441,8 +366,7 @@ sub ProcStep {
 
 	if ($ENV{PROCESS_NAME} =~ /clean/)      { $proc  = "cleanup";}
 
-	&ISDCLIB::Error (  "cannot parse PROCESS_NAME $ENV{PROCESS_NAME}" ) unless ($proc);	#	060524
-#	die "*******     ERROR:  cannot parse PROCESS_NAME $ENV{PROCESS_NAME}" unless ($proc);
+	&ISDCLIB::Error (  "cannot parse PROCESS_NAME $ENV{PROCESS_NAME}" ) unless ($proc);
 
 	return $proc;
 } # end of ProcStep. 
@@ -474,17 +398,6 @@ sub FindDirVers {
 
 	(scalar(@files) > 1)
 		and print "*******      Found ".scalar(@files)." different versions;  choosing last, $files[$#files]\n";
-#	die ">>>>>>>     ERROR:  not expecting both $files[0] and $files[$#files]!"
-
-
-
-#	SPECIAL FOR CONSSSA MOSAICS
-
-#	&ISDCLIB::Error ( "not expecting both $files[0] and $files[$#files]!" )	#	060524
-#		if (($files[0] =~ /\.000$/) && ($#files > 0));
-
-
-
 
 	return $files[$#files];
 }
@@ -505,8 +418,7 @@ sub GetColumn {
 
 	my $initialcommonlogfile = $ENV{COMMONLOGFILE};
 
-	#	This'll bite me in the ass sometime when I really want the output after a crash
-	$ENV{COMMONLOGFILE} = "/dev/null";	#	don't want the output
+	$ENV{COMMONLOGFILE} = "/dev/null";
 
 	my @result = `dal_dump inDol=\"$DOL\" column=$column outFormat=0`;
 	my $retval = $?;
@@ -534,16 +446,8 @@ sub QuickDalAttach {
 
 	&Message ( "About to QuickDalAttach @Children to $Parent" );
 
-#       @Children returns the count, 
-#       $#Children returns the greatest subscript (@Children - 1)
-#       while ( $#Children >= 0 ) {                             OR
-#       while ( @Children > 0) {                                        OR
-
 	while ( @Children ) {
 		my $command = "dal_attach";
-
-		#	do all this chomping just in case one of the kids has a \n
-		#	doesn't affect anything negatively so ...
 		chomp ( $command .= " Parent=$Parent" );
 		chomp ( $command .= " Child1=".pop(@Children) );
 		chomp ( $command .= " Child2=".pop(@Children) );
@@ -573,7 +477,7 @@ sub QuickClean {
 		foreach my $ext ( "", ".gz" ) {
 			if  ( -e "${fn}${ext}" ) {
 				system ( "$mychmod +w ${fn}${ext}" ) 
-					if ( ( -e "${fn}${ext}" ) && ( ! -l "${fn}${ext}" ) );	#	only if its not a link
+					if ( ( -e "${fn}${ext}" ) && ( ! -l "${fn}${ext}" ) );
 				&Message ( "Running $myrm ${fn}${ext}" );
 				system ( "$myrm ${fn}${ext}" );
 			}
@@ -597,55 +501,26 @@ sub QuickDalClean {
 	&Message ( "About to QuickDalClean @_" );
 
 	my @list = @_;
-#	again, I cannot do a chomp???
-#	chomp ( @_ );
-#	I get a "Modification of a read-only value attempted at /isdc/integration/isdc_int/SunOS/all_sw/prod/opus/pipeline_lib/ISDCLIB.pm line 476."
+
 	foreach my $grpdol ( @list ) {
-		#	I don't know why, but I'm not allowed to chomp here either.
-		#chomp ( $file );	#	just in case.
-
-		#	SPR 4423 - Jake - may need to add this as many URLs are relative to where you are running and not where the file is?
-		#	Also, for -e test, can't have the [1] or +1 stuff
-		# /isdc/integration/isdc_int/sw/dev/prod/opus/nrtrev/unit_test/opus_work/nrtrev/scratch//0025_20021227060629_00_ire/working_rawscws_index.fits[GROUPING]
-
 		my ($root,$path,$ext);
+
 		if ( $grpdol =~ /\[/ ) {
 			($root,$path,$ext) = &File::Basename::fileparse( $grpdol, '\[.*');
 		} elsif ( $grpdol =~ /\+/ ) {
 			($root,$path,$ext) = &File::Basename::fileparse( $grpdol, '\+.*');
 		} else {
-			#	These are only used to see if the file exists
 			$path = &File::Basename::dirname  ( $grpdol );
 			$root = &File::Basename::basename ( $grpdol );
-			$ext  = "";	#	to avoid "Use of uninitialized value ... "
+			$ext  = "";
 		}
 
-
 		if ( ( -e "$path/$root" ) || ( -e "$path/$root.gz" ) ) {
-#		if ( -e "$file" ) {
-
-
-
-
-
-#			my $dirname  = &File::Basename::dirname  ( $file );
-#			my $filename = &File::Basename::basename ( $file );
 			my $command = "cd $path; " if ( $path );
 
-
-
-#	FIX 060306 - Do I REALLY want checkExt=1 here?!?!?!
-
-#	FIX - this leaves a common_log.txt in $path.
-
-
 			$command .= "dal_clean inDOL=$root$ext checkExt=0 backPtrs=1 checkSum=1 chatty=2";
-#			$command .= "dal_clean inDOL=$root$ext checkExt=1 backPtrs=1 checkSum=1 chatty=2";
 			&Message ( "Running $command" );
-#			my $initialcommonlogfile = $ENV{COMMONLOGFILE};
-#			$ENV{COMMONLOGFILE} = "/dev/null";	#	don't want the output
 			`$command`;
-#			$ENV{COMMONLOGFILE} = $initialcommonlogfile;
 		}
 	}
 	&Message ( "Done with QuickDalClean." );
@@ -668,10 +543,8 @@ sub QuickDalCopy {
 		chomp ( $extension ); #	just in case
 		&Message ( "Running QuickDalCopy on extension=$extension" );
 
-#	FIX - this is a toughy.  Do I copy empty extensions????
-
-		if ( &ISDCLIB::RowsIn ( "$source", "$extension" ) > -1 ) {		#	copy if the extension exists (even if empty)
-			if ( &ISDCLIB::RowsIn ( "$source", "$extension" ) > 0 ) {	#	copy only if there are rows
+		if ( &ISDCLIB::RowsIn ( "$source", "$extension" ) > -1 ) {
+			if ( &ISDCLIB::RowsIn ( "$source", "$extension" ) > 0 ) {
 				my $command = "dal_copy inDol=$source outFile=$target extension=$extension";
 				&Message ( "Running $command" );
 				`$command`;
@@ -699,7 +572,7 @@ sub QuickDalDelete {
 	&Message ( "Running QuickDalDelete on filename=$filename, extensions=@extensions" );
 
 	foreach my $extension ( @extensions ) {
-		chomp ( $extension ); #	just in case
+		chomp ( $extension );
 		&Message ( "Running QuickDalDelete on extension=$extension" );
 		my $command = "dal_delete filename=$filename extension=$extension deleteAll=0 verbosity=3";
 		&Message ( "Running $command" );
@@ -741,12 +614,11 @@ sub ParseConfigFile {
 
 	my @list;
 	open TEMPLATEFILE, "$ENV{CFITSIO_INCLUDE_FILES}/$config_file"
-		or &ISDLIB::Error ( "Could not open $config_file" ); #	060524
-#		or die "*******     ERROR:  Could not open $config_file";
+		or &ISDLIB::Error ( "Could not open $config_file" );
+
 	while (<TEMPLATEFILE>) {
 		chomp;
 		next if ( !/^\s*file\s+/ );
-		#  file spi_raw_oper_tmp GNRL-FILE-GRP 
 		s/^\s*file\s+//;
 		s/\s+[\w-]+\s*$//;
 		push @list, "$_";
@@ -767,12 +639,8 @@ As it sounds, DoOrDie executes the given command in `'s and returns the result, 
 sub DoOrDie {
 	my ( $command ) = @_;
 	&ISDCLIB::dprint ( "$command\n" );
-#	&ISDCLIB::Message ( "$command" );
-#	`$command`;
-#	die "*******    ERROR:  $command failed with $?" if ( $? );
 	my @result = `$command`;
 	&ISDCLIB::Error ( "$command failed with $?" ) if ( $? );
-#	die "*******    ERROR:  $command failed with $?" if ( $? );
 	return @result;
 }
 
@@ -795,8 +663,7 @@ sub inst2in {
 	elsif ( $inst =~ /sp/i )   { $in = "sp"; }	#	spi
 	elsif ( $inst =~ /j.*1/i ) { $in = "j1"; }	#	could be jx, jmx, jemx
 	elsif ( $inst =~ /j.*2/i ) { $in = "j2"; }	#	could be jx, jmx, jemx
-	else  { &ISDCLIB::Error ( "$inst does not match any expected instrument" ); }	#	060524
-#	else  { die "$inst does not match any expected instrument"; }
+	else  { &ISDCLIB::Error ( "$inst does not match any expected instrument" ); }
 	return $in;
 }
 
@@ -818,8 +685,7 @@ sub in2inst {
 	elsif ( $in =~ /s/i )  { $inst = "spi"; }
 	elsif ( $in =~ /j1/i ) { $inst = "jmx1"; }
 	elsif ( $in =~ /j2/i ) { $inst = "jmx2"; }
-	else  { &ISDCLIB::Error ( "$in does not match any expected instrument abbreviation" ); }	#	060524
-#	else  { die "$in does not match any expected instrument abbreviation"; }
+	else  { &ISDCLIB::Error ( "$in does not match any expected instrument abbreviation" ); }
 	return $inst;
 }
 

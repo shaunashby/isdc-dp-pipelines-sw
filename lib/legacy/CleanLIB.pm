@@ -19,34 +19,17 @@ use I<CleanLIB.pm>;
 =cut
 
 use strict;
+use warnings;
+
 use Cwd;
 use File::Basename;
-#use lib "/home/wendt/";
 use ISDCPipeline;
 use UnixLIB;
-use OPUSLIB;		#	generic OPUS functions and wrappers
-use ISDCLIB;		#	very generic functions ( don't need &ISDCLIB:: prefix )
+use OPUSLIB;
+use ISDCLIB;
 use TimeLIB;
 use SSALIB;
 use Datasets;
-
-
-sub CleanLIB::GetPars;					#	reads the parameters from the command line ( or sets them from environment variables )
-sub CleanLIB::CleanOPUS;				#	removes the trigger, log, scratch and osf for a single dataset
-sub CleanLIB::CleanRAW;		
-sub CleanLIB::SetEnvVariable;			#	set $env to nrt or cons based on what's installed
-sub CleanLIB::ValidateRequest;		#	check that the pars given make sense
-sub CleanLIB::BuildPathsHashTable;	#	make a list of paths and datasets based on the given input
-sub CleanLIB::StartCleanup;
-sub CleanLIB::CleanData;				#	wrapper for the Clean*Data functions
-sub CleanLIB::CleanIndices;
-sub CleanLIB::CleanConsssaData;
-sub CleanLIB::CleanConssaData;
-sub CleanLIB::MoveData;					#	generic data move
-sub CleanLIB::GetOPUSLog;
-sub CleanLIB::GetOPUSLogLink;
-sub CleanLIB::GetOPUSTrigger;
-sub CleanLIB::GetOPUSScratch;
 
 my $hashline  = "#####################################################################################";
 my $dashline  = "-------------------------------------------------------------------------------------";
@@ -108,18 +91,7 @@ sub CleanData {
 		} elsif ( $pars{path} =~ /scw/ ) {
 		} elsif ( $pars{path} =~ /input/ ) {
 		} elsif ( $pars{path} =~ /adp/ ) {
-
-
-#	FIX - 051205 - any rev, scw or input data is already clean
-#			&dprint ( "$prefix1 WARNING 066: Very difficult to clean individual rev files so not trying yet\n" );
-
-
-
-#		} else {
-#			die "$prefix1 ERROR 066:  CleanData ( path: $pars{path}, level: $pars{level}, dataset: $pars{dataset} ).  Bad path.\n";
 		}
-#	} else {
-#		die "$prefix1 ERROR 065:  CleanData ( path: $pars{path}, level: $pars{level}, dataset: $pars{dataset} ).  Level not 'raw'.\n";
 	}
 	return;
 }
@@ -183,7 +155,7 @@ sub GetOPUSLog {
 	#	No trailing * cause there should be only 1
 	&dprint ( "$prefix1 Looking for $ENV{OPUS_WORK}/$path/logs/$logfile\n" ) if ( $DEBUG );
 	my @files = "$ENV{OPUS_WORK}/$path/logs/$logfile" 
-		if ( -e "$ENV{OPUS_WORK}/$path/logs/$logfile" );	#	because no wildcard, glob will return this even if it doesn't exist
+		if ( -e "$ENV{OPUS_WORK}/$path/logs/$logfile" );
 	&dprint ( "$prefix1 Found: @files\n" ) if ( $DEBUG );
 	return @files;
 }

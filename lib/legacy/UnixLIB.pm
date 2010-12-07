@@ -18,9 +18,6 @@ use I<UnixLIB.pm>;
 
 =cut
 
-sub UnixLIB::Gunzip;
-sub UnixLIB::Gzip;
-
 use base qw(Exporter);
 use vars qw($VERSION @EXPORT);
 
@@ -75,24 +72,24 @@ $mycat    = $root."cat";
 $myawk    = $root."awk";
 $mysed    = $root."sed";
 $mygrep   = $root."grep";
-$mydate   = $root."date";		#	050412 - Jake - SCREW 1704
-$myrsh    = $root."rsh";		#	050412 - Jake - SCREW 1704
-$myuname  = $root."uname";		#	050414 - Jake
+$mydate   = $root."date";
+$myrsh    = $root."rsh";
+$myuname  = $root."uname";
 
-$root    = "/usr/bin/";			#	050301 - Jake - SCREW 1667
-$myw      = $root."w";			#	050412 - Jake - SCREW 1704
+$root    = "/usr/bin/";
+$myw      = $root."w";
 $mywc     = $root."wc";
 $mybc     = $root."bc";
 $myfind   = $root."find";
 $myhead   = $root."head";
 $mytail   = $root."tail";
-$myptree  = $root."ptree";		#	050414 - Jake - Solaris only
-$mypstree = $root."pstree";	#	050414 - Jake - Linux only
+$myptree  = $root."ptree";
+$mypstree = $root."pstree";
 
-$root    = "/usr/ucb/";			#	050916 - Jake
-$myps     = $root."ps";			#	050916 - Jake
+$root    = "/usr/ucb/";
+$myps     = $root."ps";
 
-$myssh    = "ssh";				#	050802 - Jake - NO SCREW - NO CONSISTANT LOCATION
+$myssh    = "ssh";
 
 
 ########################################################################### 

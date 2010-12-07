@@ -62,12 +62,11 @@ The next revolution number.
 =cut
 
 use strict;
+use warnings;
+
 use ISDCPipeline;
 
-sub RevOMC::DPomc;
-
 $| = 1;
-
 
 ##########################################################################
 
@@ -103,11 +102,8 @@ sub DPomc {
 	
 	return;
 } # end of DPomc
-##########################################################################
 
-
-__END__
-
+1;
 
 =back
 

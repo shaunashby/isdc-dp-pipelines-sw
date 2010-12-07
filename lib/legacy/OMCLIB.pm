@@ -19,10 +19,10 @@ use I<OMCLIB.pm>;
 =cut
 
 use strict;
+use warnings;
+
 use ISDCPipeline;
 use ISDCLIB;
-
-sub OMCLIB::OSA;
 
 $| = 1;
 

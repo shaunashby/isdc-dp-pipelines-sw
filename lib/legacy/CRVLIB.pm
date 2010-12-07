@@ -13,6 +13,8 @@ use I<CRVLIB.pm>;
 =cut
 
 use strict;
+use warnings;
+
 use File::Basename;
 use ISDCPipeline;
 use UnixLIB;
@@ -24,13 +26,7 @@ my $retval;
 my @result;
 my @list;
 
-sub CheckPipeline;		#	Generic single pipeline check
-sub CheckIngested;		#	Generic archive completion check
-sub CheckClean;
-sub StartSSA;
-
 $| = 1;
-
 
 ##########################################################################
 
@@ -492,14 +488,11 @@ sub StartSSA {
 
 1;
 
-__END__ 
-
 =back
 
 =head1 RESOURCE FILE ENVIRONMENT ENTRIES 
 
 =item B<>
-
 
 =head1 REFERENCES
 

@@ -21,8 +21,10 @@ This module is part of all ISDC pipeline scripts, and its functions and subrouti
 
 =cut 
 
-use Carp qw(croak);
+use strict;
+use warnings;
 
+use Carp qw(croak);
 use File::Basename;
 use Cwd;
 use File::Copy;
@@ -31,38 +33,6 @@ use UnixLIB;
 use TimeLIB;
 use ISDCLIB;
 use OPUSLIB;
-
-sub ISDCPipeline::PipelineStart ;
-sub ISDCPipeline::PipelineFinish ;
-sub ISDCPipeline::PipelineStep ;
-sub ISDCPipeline::PipelineEnvVars ;
-sub ISDCPipeline::FindScw;
-sub ISDCPipeline::FindPrev;
-sub ISDCPipeline::RunProgram;
-sub ISDCPipeline::RevNo;
-sub ISDCPipeline::SeqNo;
-sub ISDCPipeline::GetAttribute;
-sub ISDCPipeline::PutAttribute;
-sub ISDCPipeline::RootPutAttribute;
-sub ISDCPipeline::MoveLog;
-sub ISDCPipeline::CheckStructs;
-sub ISDCPipeline::EnvStretch;
-sub ISDCPipeline::MakeIndex;
-sub ISDCPipeline::IndexDetach;
-sub ISDCPipeline::CleanGroup;
-sub ISDCPipeline::LinkReplace;
-sub ISDCPipeline::LinkUpdate;
-sub ISDCPipeline::GetICFile;
-sub ISDCPipeline::GetICIndex;
-sub ISDCPipeline::CollectIndex;
-sub ISDCPipeline::FindIndex;
-sub ISDCPipeline::DiffOBTs;
-sub ISDCPipeline::WriteAlert;
-sub ISDCPipeline::BBUpdate;
-sub ISDCPipeline::VerbalNext;
-sub ISDCPipeline::Interactive;
-sub ISDCPipeline::ConvertTime;
-sub ISDCPipeline::FindDOL;
 
 #  This is the return value which RunProgram will pass up if a timeout
 #   occured on the command run.  It will be interpreted as a system signal,
@@ -3660,9 +3630,6 @@ sub FindDOL {
 ##############################################################################
 
 1;
-
-__END__ 
-
 
 =head1 REFERENCES
 

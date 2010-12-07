@@ -21,7 +21,8 @@ This library produced in response to SCREW 1983.
 =cut
 
 use strict;
-use lib "$ENV{ISDC_OPUS}/pipeline_lib/";
+use warnings;
+
 use ISDCPipeline;
 use OPUSLIB;
 use UnixLIB;

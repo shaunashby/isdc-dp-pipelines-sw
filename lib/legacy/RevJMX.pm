@@ -62,17 +62,13 @@ The next revolution number.
 =cut
 
 use strict;
+use warnings;
+
 use ISDCPipeline;
 use ISDCLIB;
 use UnixLIB;
 
-sub RevJMX::DPjm;
-sub RevJMX::ACAjm;
-sub RevJMX::DPjme;
-sub RevJMX::ACAjme;
-
 $| = 1;
-
 
 ##########################################################################
 
@@ -90,14 +86,9 @@ in the output file (which will be filled in the B<nrvaca> process.
 sub DPjm {
 	
 	my ($proc,$stamp,$workdir,$osfname,$dataset,$type,$revno,$prevrev,$nexrev) = @_;
-	
-#	my $jmxno = $dataset;
-#	$jmxno =~ s/.*mx(\d)_raw_frss.*/$1/;
+       
 	( my $jmxno = $dataset ) =~ s/.*mx(\d)_raw_frss.*/$1/;
-#	my $newdataset = $dataset;
-#	$newdataset =~ s/raw/aca/g;
 	( my $newdataset = $dataset ) =~ s/raw/aca/g;
-	# Remove version:
 	$newdataset =~ s/(\d{14})_\d{2}\.fits/$1\.fits/;
 	my $ext = "[GROUPING]";
 	my $tpl = "JMX".$jmxno."-GAIN-CAL-IDX";
@@ -140,13 +131,9 @@ sub ACAjm {
 	
 	my ($proc,$stamp,$workdir,$osfname,$dataset,$type,$revno,$prevrev,$nexrev) = @_;
 	
-#	my $jmxnum = $dataset;
-#	$jmxnum =~ s/.*mx(\d)_raw_frss.*$/$1/;
 	( my $jmxnum = $dataset ) =~ s/.*mx(\d)_raw_frss.*$/$1/;
-#	my $newdataset = $dataset;
-#	$newdataset =~ s/raw/aca/;
 	( my $newdataset = $dataset ) =~ s/raw/aca/;
-	# Remove version:
+
 	$newdataset =~ s/(\d{14})_\d{2}\.fits/$1\.fits/;
 	
 	my $imodgrp = &ISDCPipeline::GetICFile(
@@ -180,13 +167,7 @@ DP step for JEMX ECAL data
 sub DPjme {
 	
 	my ($proc,$stamp,$workdir,$osfname,$dataset,$type,$revno,$prevrev,$nexrev) = @_;
-	
-#	my $jmxnum = $dataset;
-#	$jmxnum =~ s/^.*mx(\d)_raw_ecal.*$/$1/;
 	( my $jmxnum = $dataset ) =~ s/^.*mx(\d)_raw_ecal.*$/$1/;
-	
-#	my $newdataset = $dataset;
-#	$newdataset =~ s/raw/prp/;
 	( my $newdataset = $dataset ) =~ s/raw/prp/;
 	$newdataset =~ s/(\d{14})_\d{2}\.fits/$1\.fits/;
 	
@@ -264,12 +245,7 @@ sub ACAjme {
 	
 	my ($proc,$stamp,$workdir,$osfname,$dataset,$type,$revno,$prevrev,$nexrev) = @_;
 	
-#	my $jmxnum = $dataset;
-#	$jmxnum =~ s/^.*mx(\d)_raw_ecal.*$/$1/;
 	( my $jmxnum = $dataset ) =~ s/^.*mx(\d)_raw_ecal.*$/$1/;
-	
-#	my $newdataset = $dataset;
-#	$newdataset =~ s/raw/prp/;
 	( my $newdataset = $dataset ) =~ s/raw/prp/;
 	$newdataset =~ s/(\d{14})_\d{2}\.fits/$1\.fits/;
 	
@@ -296,9 +272,6 @@ sub ACAjme {
 #############################################################################
 
 1;
-
-__END__
-
 
 =back
 

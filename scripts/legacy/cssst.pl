@@ -15,6 +15,8 @@ I<cssst.pl> - Run from within B<OPUS>.
 =cut
 
 use strict;
+use warnings;
+
 use ISDCPipeline;
 use UnixLIB;
 use OPUSLIB;
@@ -51,12 +53,7 @@ my $proc = &ProcStep()." $INST";
 if ( ( $ENV{REDO_CORRECTION} ) && ( $INST=~/SPI|OMC|PICSIT/ ) ) {
 	&Message ( "$proc - Not ReRunning Correction for $INST $ENV{OSF_DATASET}.\n" );
 } else {
-
-#	my ( $scwid, $revno, $og, $inst, $INST, $instdir, $OG_DATAID, $OBSDIR ) = &SSALIB::ParseOSF;
-#	&ISDCLIB::DoOrDie ( "$mymkdir -p $OBSDIR" ) unless ( -d "$OBSDIR" );
-#	&Error ( "Did not mkdir $OBSDIR" ) unless ( -d "$OBSDIR" );
-
-	# Startup OSF for observation, with status cww 
+ 	# Startup OSF for observation, with status cww 
 	$retval = &ISDCPipeline::PipelineStart (
 		"dataset"     => "$ENV{OSF_DATASET}", 
 		"state"       => "$osf_stati{SSA_ST_C}",  
@@ -92,6 +89,3 @@ Architectural Design Document.
 Jake Wendt <Jake.Wendt@obs.unige.ch>
 
 =cut
-
-
-#	last line

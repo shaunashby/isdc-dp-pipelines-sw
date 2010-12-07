@@ -15,6 +15,8 @@ Handles the write-protection, gzipping, indexing, trigger modification, etc.
 =cut
 
 use strict;
+use warnings;
+
 use ISDCPipeline;
 use ISDCLIB;
 use OPUSLIB;
@@ -31,7 +33,6 @@ $ENV{OSF_DATASET} =~ /(\S+)_(IBIS|JMX\d|OMC|SPI)/;
 my $ogid = $1;
 my $inst = $2;
 my $ins  = $ENV{OSF_DCF_NUM};
-#my $proc = &ISDCLIB::Initialize()." $inst";
 my $proc = &ProcStep()." $inst";
 my $return = 0;
 

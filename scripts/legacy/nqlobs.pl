@@ -15,12 +15,13 @@ This script does a cleanup of any potential residue from previous runs, creates 
 =cut
 
 use strict;
+use warnings;
+
 use ISDCPipeline;
 use UnixLIB;
 use ISDCLIB;
 use IBISLIB;
 use JMXLIB;
-use lib "$ENV{ISDC_OPUS}/nrtqla";
 use QLALIB;
 
 print "\n========================================================================\n";
@@ -45,7 +46,7 @@ print "*******     ObsID is $ENV{OSF_DATASET};  Instrument is $INST;  group is $
 
 if ( -d "$ENV{OBSDIR}/$ENV{OSF_DATASET}.000" ) {
 	#  Clean up previous run:
-	`$mychmod -R 755 $ENV{OBSDIR}/$ENV{OSF_DATASET}.000`;	#	SPR 4431
+	`$mychmod -R 755 $ENV{OBSDIR}/$ENV{OSF_DATASET}.000`;
 	
 	#  Move log back to central dir (assuming it exists and the previous
 	#   run had gotten that far.
@@ -70,11 +71,8 @@ open IDX2OG, "> $ENV{OBSDIR}/$ENV{OSF_DATASET}.000/logs/$ENV{OSF_DATASET}.idx2og
 	or &Error ( "Couldn't open $ENV{OBSDIR}/$ENV{OSF_DATASET}.000/logs/$ENV{OSF_DATASET}.idx2og" );
 while ( <OBSIDX> ) {
 	chomp;
-#	print IDX2OG "$_\n" if ( -e "$ENV{REP_BASE_PROD}/$_" );
-#	$REP_BASE_PROD/obs/qsib_055800610010.000/scw/055800610010.000/swg_ibis.fits
-#	print IDX2OG "obs/qs${in}_${_}.000/scw/${_}.000/swg_${inst}.fits\n" if ( -e "$ENV{REP_BASE_PROD}/$_" );
 	my $swg = "obs/qs${in}_${_}.000/scw/${_}.000/swg_${inst}.fits";
-	print IDX2OG "$swg\n";	#	 if ( -e "$swg" );
+	print IDX2OG "$swg\n";
 }
 close IDX2OG;
 close OBSIDX;
@@ -90,7 +88,7 @@ close OBSIDX;
 	"par_purpose"    => "Mosaic QLA",
 	"par_versioning" => "1",
 	"par_obsDir"     => "obs",
-	"par_scwVer"     => "001",				#	070503 - why is this 001 and not 000?
+	"par_scwVer"     => "001",
 	"par_swgName"    => "swg",
 	"par_keep"       => "",
 	"par_verbosity"  => "3",
@@ -108,6 +106,8 @@ chdir ( "$ENV{OBSDIR}/$ENV{OSF_DATASET}.000" )
 print "*******     Current directory is $ENV{OBSDIR}/$ENV{OSF_DATASET}.000\n";
 
 #  Just call the appropriate script:
+my $osa9qlaNum=3; # We will add the JEMX number to get appropriate input
+                  # value of 4 for JEMX1 and 5 for JEMX2 needed in post-JSA step below:
 if    ( $INST =~ /IBI/ ) {
 	&IBISLIB::ISA (
 		"INST"    => "$INST",
@@ -117,17 +117,52 @@ if    ( $INST =~ /IBI/ ) {
 	`cat2ds9 catDOL="isgri_mosa_res.fits[3]" fileName="isgri_40-80keV.reg" symbol=circle color=white`;
 }
 elsif ( $INST =~ /JMX(\d)/ ) {
-	my $jxid = $1;
-	&JMXLIB::JSA (
-		"jemxnum"  => "$jxid",
+    &JMXLIB::JSA (
+		"jemxnum"  => "$1",
 		"proctype" => "mosaic",
 		);
-	`cat2ds9 catDOL="jmx${jxid}_obs_res.fits[1]" fileName="jmx.reg" symbol=circle color=white`;
+    $osa9qlaNum+=$1;
+    
+    print "=== post-Mosaic processing for JEMX$1 ===\n";
+
+    &ISDCPipeline::PipelineStep(
+	"step"                => "Source location step for JEMX$1 - Soft",
+	"program_name"        => "j_ima_src_locator",
+	"par_inDOL"           => "J_MOSAIC.fits[2]",
+	"par_sigDOL"          => "J_MOSAIC.fits[4]",
+	"par_outFile"         => "sloc_res_soft",
+	);
+    
+    &ISDCPipeline::PipelineStep(
+	"step"                => "Source identification step for JEMX$1 - Soft",
+	"program_name"        => "q_identify_srcs",
+	"par_srcl_cat_dol"    => $ENV{'ISDC_REF_CAT'},
+	"par_srcl_res_dol"    => "sloc_res_soft.fits",
+	"par_instrument"      => $osa9qlaNum,
+	);
+    
+    `cat2ds9 catDOL=sloc_res_soft.fits fileName=jmx_soft.reg symbol=circle color=white`;
+
+    &ISDCPipeline::PipelineStep(
+	"step"                => "Source location step for JEMX$1 - Hard",
+	"program_name"        => "j_ima_src_locator",
+	"par_inDOL"           => "J_MOSAIC.fits[6]",
+	"par_sigDOL"          => "J_MOSAIC.fits[8]",
+	"par_outFile"         => "sloc_res_hard",
+	);
+    
+    &ISDCPipeline::PipelineStep(
+	"step"                => "Source identification step for JEMX$1 - Hard",
+	"program_name"        => "q_identify_srcs",
+	"par_srcl_cat_dol"    => $ENV{'ISDC_REF_CAT'},
+	"par_srcl_res_dol"    => "sloc_res_hard.fits",
+	"par_instrument"      => $osa9qlaNum,
+	);
+    
+    `cat2ds9 catDOL=sloc_res_hard.fits fileName=jmx_hard.reg symbol=circle color=green`;   
 }
 
-#	SPR 4445
 `$myrm -rf $ENV{PARFILES}` if ( -e "$ENV{PARFILES}" );
-#	&ISDCLIB::DoOrDie ???
 
 exit 0;
 
@@ -147,5 +182,3 @@ Tess Jaffe <theresa.jaffe@obs.unige.ch>
 Jake Wendt <Jake.Wendt@obs.unige.ch>
 
 =cut
-
-#	last line

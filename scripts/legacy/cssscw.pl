@@ -15,6 +15,8 @@ I<cssscw.pl> - Run from within B<OPUS>.  This is the second, and primary process
 =cut
 
 use strict;
+use warnings;
+
 use ISDCPipeline;
 use UnixLIB;
 use ISDCLIB;
@@ -95,7 +97,7 @@ if (( -e "$OBSDIR") ||		#	using -e bc may be link or directory
 			if (( -e "$OBSDIR" ) || ( -l "$OBSDIR" ));
 
 
-	} else {   # $ENV{OG_TOOL} eq 'og_clean' ) {
+	} else {
 
 		&ISDCPipeline::PipelineStep(
 			"step"         => "$proc - dummy step to set COMMONLOGFILE variable",
@@ -104,21 +106,16 @@ if (( -e "$OBSDIR") ||		#	using -e bc may be link or directory
 		&Message ( "Checking the results of STAGE 1 and prepping for STAGE 2" );
 		&Error ( "og $OBSDIR/$og does not exist" )   unless ( -e "$OBSDIR/$og" );
 		&ISDCLIB::DoOrDie ( "$mychmod -R +w $OBSDIR" );
-		&ISDCPipeline::MoveLog(										#	move log from OBSDIR to OPUS_WORK
-			"$OBSDIR/logs/${OG_DATAID}_css.txt",				#	current location
-			"$ENV{LOG_FILES}/$ENV{OSF_DATASET}_css.txt",		#	new location
-			"$ENV{LOG_FILES}/$ENV{OSF_DATASET}.log"			#	link location
+		&ISDCPipeline::MoveLog(
+			"$OBSDIR/logs/${OG_DATAID}_css.txt",
+			"$ENV{LOG_FILES}/$ENV{OSF_DATASET}_css.txt",
+			"$ENV{LOG_FILES}/$ENV{OSF_DATASET}.log"
 			) if ( -e "$OBSDIR/logs/${OG_DATAID}_css.txt" );
-#		&ISDCLIB::DoOrDie ( "$mygunzip $OBSDIR/*gz" )       if ( glob ( "$OBSDIR/*gz" ) );
-#		&ISDCLIB::DoOrDie ( "$mygzip $OBSDIR/energy_bands.fits" ) if ( -e "$OBSDIR/energy_bands.fits" );
-#		&ISDCLIB::DoOrDie ( "$mygunzip $OBSDIR/scw/*/*gz" ) if ( glob ( "$OBSDIR/scw/*/*gz" ) );
 		&UnixLIB::Gunzip ( "$OBSDIR/*gz" );
 		&UnixLIB::Gzip   ( "$OBSDIR/energy_bands.fits" );
 		&UnixLIB::Gunzip ( "$OBSDIR/scw/*/*gz" );
 
-
 #		the endLevel should actually be 1 less that the given $ENV{ISGRI_STARTLEVEL}
-
 		my $level = new ISDC::Level('isgri',$ENV{ISGRI_STARTLEVEL});
 		
 		&ISDCPipeline::PipelineStep(
@@ -130,7 +127,7 @@ if (( -e "$OBSDIR") ||		#	using -e bc may be link or directory
 			"subdir"       => $OBSDIR,
 		);
 
-	} # if ( $ENV{OG_TOOL} ne 'og_clean' ) {
+	}
 }
 	
 #	
@@ -143,7 +140,7 @@ if (( -e "$OBSDIR") ||		#	using -e bc may be link or directory
 if ( ( $ENV{USELOCALDISKS} ) && ( $ENV{OG_TOOL} ne 'og_clean' ) ) {
 	chomp ( my $hostname = `hostname` );
 	my $localdir        = "/reproc/$hostname/cons/ops_sa/$instdir/$OG_DATAID";
-	my $allpossibledirs = "/reproc/anaB?/cons/ops_sa/$instdir/$OG_DATAID";		#	this NEEDS to have a wildcard in it!
+	my $allpossibledirs = "/reproc/anaB?/cons/ops_sa/$instdir/$OG_DATAID";
 
 	my @dirs = glob ( "$allpossibledirs" );
 	if ( @dirs ) {
@@ -344,5 +341,3 @@ For further information about the NRT pipelines, please see the Top Level Archit
 Jake Wendt <Jake.Wendt@obs.unige.ch>
 
 =cut
-
-#	last line

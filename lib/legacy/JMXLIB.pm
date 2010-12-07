@@ -19,6 +19,8 @@ use I<JMXLIB.pm>;
 =cut
 
 use strict;
+use warnings;
+
 use ISDCPipeline;
 use ISDCLIB;
 use UnixLIB;
@@ -32,16 +34,16 @@ $| = 1;
 =cut
 
 sub JSA {
-	my %att = @_;
-	$att{proctype}      = "scw" unless $att{proctype} =~ /mosaic/;	#	either "scw" or "mosaic"
-	$att{IC_Group}      = "../../idx/ic/ic_master_file.fits[1]" unless ( $att{IC_Group} );
-
-	my $proc            = &ProcStep();
-
-	&Error ( "*******     ERROR:   JMXLIB::JSA doesn't recognize given JEMX number $att{jemxnum}!\n" )
-		unless ( $att{jemxnum} =~ /^(1|2)$/ );
-
-	my %parameters = (
+    my %att = @_;
+    $att{proctype}      = "scw" unless $att{proctype} =~ /mosaic/;
+    $att{IC_Group}      = "../../idx/ic/ic_master_file.fits[1]" unless ( $att{IC_Group} );
+    
+    my $proc            = &ProcStep();
+    
+    &Error ( "*******     ERROR:   JMXLIB::JSA doesn't recognize given JEMX number $att{jemxnum}!\n" )
+	unless ( $att{jemxnum} =~ /^(1|2)$/ );
+    
+    my %parameters = (
 		"par_ogDOL"                 => "og_jmx$att{jemxnum}.fits[GROUPING]",
 		"par_jemxNum"               => "$att{jemxnum}",
 		"par_startLevel"            => "COR",
@@ -118,7 +120,7 @@ sub JSA {
 		"par_nPhaseBins"            => "0",
 		"par_osimData"              => "n",
 		"par_phaseBins"             => "",
-		"par_radiusLimit"           => "105.0",
+		"par_radiusLimit"           => "122",
 		"par_response"              => "",
 		"par_timeStart"             => "-1.0",
 		"par_timeStop"              => "-1.0",
@@ -160,33 +162,30 @@ sub JSA {
 		"stoponerror" => "0"
 	);
 
-
 	if ( $ENV{PATH_FILE_NAME} =~ /consssa/ ) {
-        $parameters{'par_endLevel'} = "IMA";
-		$parameters{'par_nChanBins'}       = "10";
-		$parameters{'par_chanLow'}         = "46 59 77 102 130 153 175 199 46 130";
-		$parameters{'par_chanHigh'}        = "58 76 101 129 152 174 198 223 129 223";
-		$parameters{'par_IMA_skyImagesOut'} = "RECONSTRUCTED,VARIANCE,EXPOSURE";
+	    $parameters{'par_endLevel'} = "IMA";
+	    $parameters{'par_nChanBins'}       = "10";
+	    $parameters{'par_chanLow'}         = "46 59 77 102 130 153 175 199 46 130";
+	    $parameters{'par_chanHigh'}        = "58 76 101 129 152 174 198 223 129 223";
+	    $parameters{'par_IMA_skyImagesOut'} = "RECONSTRUCTED,VARIANCE,EXPOSURE";
 	    $parameters{'par_IMA_detImagesOut'} = "no";
-        $parameters{'par_IMA_userImagesOut'} = "yes";
+	    $parameters{'par_IMA_userImagesOut'} = "yes";
 	} elsif ( $ENV{PATH_FILE_NAME} =~ /conssa/ ) {
-		$parameters{'par_IMA2_cdelt'}           = "0.02";
-		$parameters{'par_IMA2_radiusSelect'}    = "4.8";
+	    $parameters{'par_IMA2_cdelt'}           = "0.02";
+	    $parameters{'par_IMA2_radiusSelect'}    = "4.8";
 	} elsif ( $ENV{PATH_FILE_NAME} =~ /nrtqla/ ) {
-		$parameters{'par_GTI_TimeFormat'}  = "OBT";
-		$parameters{'par_LCR_vignCorr'}    = "no";
-		$parameters{'par_nChanBins'}       = "2";
-		$parameters{'par_chanLow'}         =  "46 129";
-		$parameters{'par_chanHigh'}        = "128 211";
-		$parameters{'par_BIN_I_rowSelect'} = "&& STATUS < 16";
-
+	    $parameters{'par_GTI_TimeFormat'}  = "OBT";
+	    $parameters{'par_LCR_vignCorr'}    = "no";
+	    $parameters{'par_nChanBins'}       = "2";
+	    $parameters{'par_chanLow'}         =  "46 129";
+	    $parameters{'par_chanHigh'}        = "128 211";
+	    $parameters{'par_BIN_I_rowSelect'} = "&& STATUS < 16";
 	} else {
-		&Error ( "No match found for PATH_FILE_NAME: $ENV{PATH_FILE_NAME}; PROCESS_NAME: $ENV{PROCESS_NAME}; proctype: $att{proctype}\n" );
+	    &Error ( "No match found for PATH_FILE_NAME: $ENV{PATH_FILE_NAME}; PROCESS_NAME: $ENV{PROCESS_NAME}; proctype: $att{proctype}\n" );
 	}
-
-
+	
+	
 	if ( ( $ENV{PROCESS_NAME} =~ /cssscw/ ) && ( $att{proctype} =~ /scw/ ) ) {
-
 		$parameters{'par_CAT_I_radiusMax'} = "2.4 5.5";
 		$parameters{'par_CAT_I_usrCat'}    = "jmx$att{jemxnum}_catalog.fits";
 		
@@ -202,17 +201,13 @@ sub JSA {
 			"par_date"       => "-1.",
 			"par_radiusMin"  => $parameters{'par_CAT_I_radiusMin'},
 			"par_radiusMax"  => $parameters{'par_CAT_I_radiusMax'},
-			"par_fluxDef"    => "0",				#	060110
+			"par_fluxDef"    => "0",
 			"par_fluxMin"    => "",
 			"par_fluxMax"    => "",
 			"par_class"      => "",
 			"par_clobber"    => "yes",
 			);
-
-		#	&ISDCPipeline::PipelineStep uses PARFILES to create PFILES, but does not reset it.
-		#	If anything is run after this before another &ISDCPipeline::PipelineStep is run,
-		#	it will use this new temp PFILES, which won't exist.
-		#	Perhaps it would be better to not use &ISDCPipeline::PipelineStep here?
+		
 		my $original_pfiles   = $ENV{PFILES};
 		my $original_parfiles = $ENV{PARFILES};
 		$ENV{PARFILES} = "/tmp/$$-fcalcpfile/";
@@ -234,53 +229,77 @@ sub JSA {
 		$parameters{'par_CAT_I_usrCat'}       .= "[1]";
 	}
 	elsif ( ( $ENV{PROCESS_NAME} =~ /cssscw/ ) && ( $att{proctype} =~ /mosaic/ ) ) {
-		$parameters{'par_startLevel'}      = "IMA2";
-		$parameters{'par_endLevel'}        = "IMA2";
-		$parameters{'par_IMA2_mapSelect'}    = "RECON";
-		$parameters{'par_IMA2_radiusSelect'} = "4.8";
-		$parameters{'par_IMA2_diameter'}     = "-1";
-		$parameters{'par_IMA_skyImagesOut'}  = "RAWIN,RECTI,VARIA,RESID,RECON";
+	    $parameters{'par_startLevel'}      = "IMA2";
+	    $parameters{'par_endLevel'}        = "IMA2";
+	    $parameters{'par_IMA2_mapSelect'}    = "RECON";
+	    $parameters{'par_IMA2_radiusSelect'} = "4.8";
+	    $parameters{'par_IMA2_diameter'}     = "-1";
+	    $parameters{'par_IMA_skyImagesOut'}  = "RAWIN,RECTI,VARIA,RESID,RECON";
 	}
 	elsif ( $ENV{PROCESS_NAME} =~ /nqlobs/ ) {
-		$parameters{'par_startLevel'}      = "IMA2";
-		$parameters{'par_endLevel'}        = "IMA2";
-		
-		# Testing OSA9 QLA params:
-        $parameters{'par_startLevel'}      = "COR";
-		$parameters{'par_endLevel'}        = "IMA";
-        $parameters{'par_skipLevels'}      = "LCR";
-        $parameters{'par_nChanBins'}       = 2;
-        $parameters{'par_chanLow'}         = "46 129";
-        $parameters{'par_chanHigh'}        = "128 178";
-        $parameters{'par_IMA_detImagesOut'}  = "no";
-        $parameters{'par_IMA_userImagesOut'} = "yes";
-		
-		
+	    $parameters{'par_startLevel'}      = "IMA2";
+	    $parameters{'par_endLevel'}        = "IMA2";
+	    $parameters{'par_GTI_TimeFormat'}  = "OBT";
+	    $parameters{'par_LCR_vignCorr'}    = "no";
+	    $parameters{'par_nChanBins'}       = "2";
+	    $parameters{'par_chanLow'}         =  "46 129";
+	    $parameters{'par_chanHigh'}        = "128 178";
+	    $parameters{'par_skipLevels'}      = "";
+	    $parameters{'par_CAT_I_radiusMax'} = "2.4 5.8";
+	    $parameters{'par_BIN_I_rowSelect'} = "&& STATUS < 256";
+	    $parameters{'par_IMA_skyImagesOut'}= "RECONSTRUCTED,VARIANCE,SIGNIFICANCE";
+	    $parameters{'par_IMA_relDist'}     = "1.5";
+	    $parameters{'par_IMA_searchRad'}   = "5.00";
+	    $parameters{'par_IMA_gridNum'}     = 10;
+	    $parameters{'par_IMA_distFuzz'}    = 0.15;
+	    $parameters{'par_IMA_detImagesOut'} = 'no ';
+	    $parameters{'par_IMA2_mapSelect'} = "RECON";
+	    $parameters{'par_IMA2_radiusSelect'} = "4.8";
+	    $parameters{'par_IMA2_diameter'} = "0.0";
+	    $parameters{'par_IMA2_cdelt'} = "0.026" ;
+	    $parameters{'par_IMA2_viewTime'} = "Y";
+	    $parameters{'par_IMA2_viewVar'} = "Y";
 	}
 	elsif ( $ENV{PROCESS_NAME} =~ /nqlscw/ ) {
-		$parameters{'par_skipLevels'}      = "BKG";
-		$parameters{'par_endLevel'}        = "IMA";
-	    
-	    # Testing OSA9 QLA params:
-	    $parameters{'par_startLevel'}      = "COR";
-        $parameters{'par_endLevel'}        = "IMA";
-        $parameters{'par_skipLevels'}      = "LCR";
-        $parameters{'par_nChanBins'}       = 2;
-        $parameters{'par_chanLow'}         = "46 129";
-        $parameters{'par_chanHigh'}        = "128 178";
-        $parameters{'par_IMA_detImagesOut'}  = "no";
-        $parameters{'par_IMA_userImagesOut'} = "yes";
-		        		
+	    $parameters{'par_skipLevels'}      = "BKG";
+	    $parameters{'par_endLevel'}        = "IMA";
+	    $parameters{'par_GTI_TimeFormat'}  = "OBT";
+	    $parameters{'par_LCR_vignCorr'}    = "no";
+	    $parameters{'par_nChanBins'}       = "2";
+	    $parameters{'par_chanLow'}         =  "46 129";
+	    $parameters{'par_chanHigh'}        = "128 178";
+	    $parameters{'par_IMA2_viewTime'}   = "Y";
+	    $parameters{'par_IMA2_viewVar'}    = "Y";
+	    $parameters{'par_skipLevels'}  = "";
+	    $parameters{'par_CAT_I_radiusMax'} = "2.4 5.8";
+	    $parameters{'par_BIN_I_rowSelect'} = "&& STATUS < 256";
+	    $parameters{'par_BIN_S_timeStep'} = 0;
+	    $parameters{'par_IMA_skyImagesOut'} = "RECONSTRUCTED,VARIANCE,SIGNIFICANCE";
+	    $parameters{'par_IMA_relDist'} = "1.5";
+	    $parameters{'par_IMA_searchRad'} = "5.00";
+	    $parameters{'par_IMA_gridNum'} = 10;
+	    $parameters{'par_IMA_distFuzz'} = 0.15;
+	    $parameters{'par_IMA_detImagesOut'} = 'no';
+	    $parameters{'par_IMA_pixelFold'} = 1;
+	    $parameters{'par_IMA_userImagesOut'} = 'yes';
+	    $parameters{'par_IMA_useTrace'} = 'no';
+	    $parameters{'par_IMA_tracestring'} = '0123456789ABCDEF';
+	    $parameters{'par_IMA2_mapSelect'} = "RECON";
+	    $parameters{'par_IMA2_radiusSelect'} = "4.8";
+	    $parameters{'par_IMA2_diameter'} = "0.0";
+	    $parameters{'par_IMA2_cdelt'} = "0.026" ;
+	    $parameters{'par_COR_osmCnv'} = "";
+	    $parameters{'par_COR_osmRaw'} = "";
 	}
 	elsif ( $ENV{PROCESS_NAME} =~ /csaob1/ ) {
-		$parameters{'par_startLevel'}      = "IMA2";
-		$parameters{'par_endLevel'}        = "IMA2";
-		$parameters{'par_skipLevels'}      = "";
-		$parameters{'par_IMA2_viewTime'}     = "Y";
-		$parameters{'par_IMA2_viewVar'}      = "Y";
+	    $parameters{'par_startLevel'}      = "IMA2";
+	    $parameters{'par_endLevel'}        = "IMA2";
+	    $parameters{'par_skipLevels'}      = "";
+	    $parameters{'par_IMA2_viewTime'}     = "Y";
+	    $parameters{'par_IMA2_viewVar'}      = "Y";
 	}
 	elsif ( $ENV{PROCESS_NAME} =~ /csasw1/ ) {
-		$parameters{'par_ogDOL'} = &ISDCLIB::FindDirVers ( "scw/$att{scwid}" )."/swg_jmx$att{jemxnum}.fits[GROUPING]";
+	    $parameters{'par_ogDOL'} = &ISDCLIB::FindDirVers ( "scw/$att{scwid}" )."/swg_jmx$att{jemxnum}.fits[GROUPING]";
 	}
 	else {
 		&Error ( "No match found for PROCESS_NAME: $ENV{PROCESS_NAME}; proctype: $att{proctype}\n" );
@@ -289,15 +308,15 @@ sub JSA {
 	#####################################################################################
 
 	if ( $ENV{REDO_CORRECTION} ) {
-		&Message ( "Redoing Correction step." );
-		$parameters{'par_startLevel'}     = "COR";
-		$parameters{'par_endLevel'}       = "DEAD";
+	    &Message ( "Redoing Correction step." );
+	    $parameters{'par_startLevel'}     = "COR";
+	    $parameters{'par_endLevel'}       = "DEAD";
 	}
-
+	
 	if ( $att{proctype} =~ /scw/ ) {
-		#	Check to ensure that only 1 child in OG
-		my $numScwInOG = &ISDCLIB::ChildrenIn ( $parameters{'par_ogDOL'}, "GNRL-SCWG-GRP-IDX" );
-		&Error ( "Not 1 child in $parameters{'par_ogDOL'}: $numScwInOG" ) unless ( $numScwInOG == 1 );
+	    #	Check to ensure that only 1 child in OG
+	    my $numScwInOG = &ISDCLIB::ChildrenIn ( $parameters{'par_ogDOL'}, "GNRL-SCWG-GRP-IDX" );
+	    &Error ( "Not 1 child in $parameters{'par_ogDOL'}: $numScwInOG" ) unless ( $numScwInOG == 1 );
 	}
 
 	print "\n========================================================================\n";
@@ -323,6 +342,7 @@ sub JSA {
 
 } # end of JSA
 
+1;
 
 =back
 
@@ -341,5 +361,3 @@ Tess Jaffe <theresa.jaffe@obs.unige.ch>
 Jake Wendt <Jake.Wendt@obs.unige.ch>
 
 =cut
-
-#	last line

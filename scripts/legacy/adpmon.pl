@@ -18,6 +18,8 @@ The second purpose of this task is to monitor the contents of the input director
 
 
 use strict;
+use warnings;
+
 use ISDCPipeline;
 use OPUSLIB;
 use ISDCLIB;
@@ -26,10 +28,8 @@ use TimeLIB;
 
 &ISDCPipeline::EnvStretch("OUTPATH","ADP_INPUT","LOG_FILES","ALERTS","WORKDIR","PARFILES");
 
-print "checking ADP input contents...\n";
-# find the input files
-
 my @allfiles = sort(glob("$ENV{ADP_INPUT}/*"));
+
 foreach my $file (@allfiles) {
 
 	print "Processing $file\n";
@@ -38,7 +38,6 @@ foreach my $file (@allfiles) {
 		my $revnofile  = "$ENV{ADP_INPUT}/revno";
 		my $orbitafile = "$ENV{ADP_INPUT}/orbita";
 		
-		#print "Looking for $revnofile or $orbitafile\n";
 		if (-e $orbitafile) {
 			my $newfile = "$orbitafile.orbita";
 			`$mymv -f $orbitafile $newfile`;
@@ -69,7 +68,7 @@ foreach my $file (@allfiles) {
 	elsif ($file =~ /lock/) {}
 	elsif ($file =~ /arc_prep/) {}
 	else {
-		$ENV{OSF_DATASET} = "odd_files";	#	060522 - Jake - SPR 4485
+		$ENV{OSF_DATASET} = "odd_files";
 		# move odd file out of trigger directory
 		print "Got an odd file $file;  moving to $ENV{ADP_INPUT}/odd and sending alert\n";
 		&ISDCLIB::DoOrDie ( "$mymkdir -p $ENV{ADP_INPUT}/odd" ) unless ( -d "$ENV{ADP_INPUT}/odd");
@@ -87,7 +86,7 @@ foreach my $file (@allfiles) {
 				"level"   => 1,
 				"subdir"  => "$ENV{WORKDIR}/adpmon",
 				"id"      => "511",
-				);	#	060522 - Jake - SCREW 1874
+				);
 		} else {
 			&ISDCPipeline::WriteAlert(
 				"message" => "Unknown file $file appeared in ADP input directory",
@@ -99,11 +98,11 @@ foreach my $file (@allfiles) {
 
 		my ($retval,@output) = &ISDCPipeline::RunProgram("am_cp OutDir=$ENV{ALERTS} OutDir2= Subsystem=ADP DataStream=realTime");
 		die "Cannot copy alert: @output" if ( $retval );
-		die "Cannot move $file: @mvoutput" if ( $mvresult );	#	060522 - Jake - SCREW 1874
+		die "Cannot move $file: @mvoutput" if ( $mvresult );
 
 		my $time = &TimeLIB::MyTime();
 		print "File $file moved to $ENV{ADP_INPUT}/odd and alert sent at $time\n";
-		delete $ENV{COMMONLOGFILE};	#	060522 - jake - moved from before am_cp call
+		delete $ENV{COMMONLOGFILE};
 	} # else no known type
 } # foreach $file ...
 
@@ -134,12 +133,6 @@ print "Checking BB for old OSFs to clean.\n";
 	);
 
 exit 0;
-
-
-
-
-__END__
-
 
 =head1 ACTIONS
 

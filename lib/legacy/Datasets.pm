@@ -1,6 +1,8 @@
 package Datasets;
 
 use strict;
+use warnings;
+
 use ISDCPipeline;
 use ISDCLIB;
 use UnixLIB;
@@ -22,9 +24,6 @@ use I<Datasets.pm>;
 =over
 
 =cut
-
-sub Datasets::RevDataset; 
-sub Datasets::RevContentsCheck;
 
 $| = 1;
 
@@ -575,13 +574,6 @@ sub RevContentsCheck {
 } # end RevContentsCheck
 
 1;
-
-######################################################################
-#
-#    END
-#
-######################################################################
-
 
 =back
 

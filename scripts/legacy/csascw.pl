@@ -1,6 +1,5 @@
 #!perl -w
 
-
 =head1 NAME
 
 I<csascw.pl> - conssa SCW (1 and 2) step script
@@ -16,6 +15,8 @@ Simple cleanup and calls to the appropriate _science_analysis
 =cut
 
 use strict;
+use warnings;
+
 use ISDCPipeline;
 use ISDCLIB;
 use OPUSLIB;
@@ -35,7 +36,7 @@ my $INST  = $2;
 my $scwid = $3;
 my $loop  = ( $ENV{PROCESS_NAME} =~ /csasw1/ ) ? 1 : 2;
 my $proc  = &ProcStep();
-#my $proc  = &ISDCLIB::Initialize();
+
 $proc    .= " $INST";
 $proc    .= " loop $loop" if ( $INST =~ /IBIS/ );
 

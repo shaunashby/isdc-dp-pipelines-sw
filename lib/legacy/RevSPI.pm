@@ -62,14 +62,11 @@ The next revolution number.
 =cut
 
 use strict;
+use warnings;
+
 use ISDCPipeline;
 use ISDCLIB;
 use UnixLIB;
-
-sub RevSPI::SPICal;
-sub RevSPI::DPspec;
-sub RevSPI::PSD;
-
 
 $| = 1;
 
@@ -90,7 +87,6 @@ sub SPICal {
 	my $revstart = "";
 	my $revstop  = "";
         
-	#       cannot use ISDCPipeline::ConvertTime bc REVNUM returns 2 needed numbers
 	($retval,@result) = &ISDCPipeline::PipelineStep(              
 		"step"          => "$proc - convert REVNUM $revno to IJD",
 		"program_name"  => "converttime",
@@ -106,13 +102,10 @@ sub SPICal {
 		next unless /^.*.IJD.:\s+Boundary\s+(\S+)\s+(\S+)\s*$/i;
 		$revstart = $1;
 		$revstop  = $2;
-		last;					#	grab the first match (there can be only one)
+		last;
 	}
 
-	#	040608 - Jake - A single time for the entire revolution may be a problem.
-	#	I choose to use $revstart to begin with.  Will try the other if there are problems.
-	my $revtime  = $revstart;
-        
+	my $revtime  = $revstart;        
 	my $spigaincfgDOL = &ISDCPipeline::GetICFile (
 		"structure" => "SPI.-GAIN-CFG",
 		"select"    => "( VSTART <= $revtime ) && (VSTOP >= $revtime)",
@@ -123,7 +116,7 @@ sub SPICal {
 	#	Log_1   : Task dal_dump running in SINGLE mode
 	#	Log_1   : Beginning parameters
 	#	Log_1   : Parameter inDol = 
-	#		/isdc/integration/isdc_int/sw/dev/prod/opus/nrtrev/unit_test/test_data/ic/spi/cfg/spi_gain_cfg_0005.fits[SPI.-GAIN-CFG,1,BINTABLE]
+	#		/isdc/integration/isdc_int/sw/dev/prod/test_data/ic/spi/cfg/spi_gain_cfg_0005.fits[SPI.-GAIN-CFG,1,BINTABLE]
 	#	Log_1   : Parameter column = USE_SE
 	#	Log_1   : Parameter outFormat = 1
 	#	Log_1   : Ending parameters
@@ -134,43 +127,22 @@ sub SPICal {
 	my %se_pars;
 	foreach ( "SE", "PE", "ME", "AON", "AOFF", "CRVE" ) {
 		chomp ( my $tempval = &ISDCLIB::GetColumn ( "$spigaincfgDOL", "USE_$_" ) );
-		$se_pars{$_} = ( $tempval == 0 ) ? "no" : "yes";		#	Sweet!
-
-#		my $initialcommonlogfile = $ENV{COMMONLOGFILE};
-#		$ENV{COMMONLOGFILE} = "+".$ENV{COMMONLOGFILE} 
-#			unless ( $ENV{COMMONLOGFILE} =~ /^\+/ );    #  040608 - Jake - ( caused by SCREW 1437 )
-#		($retval, @result) = &ISDCPipeline::RunProgram ( 
-#			#	040608 - Jake - MUST quote the DOL
-#			"dal_dump inDol=\"$spigaincfgDOL\" column=USE_$_ outFormat=1"
-#			);
-#		$ENV{COMMONLOGFILE} = $initialcommonlogfile;
-#		foreach my $line ( @result ) {
-#			chomp $line;
-#			next unless ( $line =~ /^\s*Log_1\s*:\s*(\d+)\s*$/ );				#	040608 - Jake - this could be better but ...
-#			&Error ( "ERROR examining output; cannot determine value (should be 0 or 1):  \n@result" ) 
-#				unless (( $1 == 0 ) || ( $1 == 1 ));
-#			$se_pars{$_} = ( $1 == 0 ) ? "no" : "yes";		#	Sweet!
-#			last;
-#		}
-#		&Error ( "ERROR examining output; No value found for $_:  \n@result" ) 
-#			unless ( $se_pars{$_} );
+		$se_pars{$_} = ( $tempval == 0 ) ? "no" : "yes";
 	}
 
-	chdir "$workdir";		#	040610 - Jake - must manually create a temp index as it does not exist
+	chdir "$workdir";
 	chomp ( $workdir = `pwd` );
 	open SCW_LIST, "> tmp_working_scws_list" 
 		or &Error ( "Could not open tmp_working_scws_list." );
-#		or die "*******     ERROR:  Could not open tmp_working_scws_list";
 	foreach my $scwid ( `$myls $ENV{SCWDIR}/$revno/$revno*/swg.fits` ) {
 		chomp $scwid;
 		print SCW_LIST "$scwid"."[1]\n";
 	}
 	close SCW_LIST;
 
-	`$mychmod -w $ENV{SCWDIR}/$revno/$revno*/swg.fits`; 		#	040729 - Jake - SPR 3793
-	&ISDCPipeline::RunProgram (									#	040624 - Jake - SPR 3732
+	`$mychmod -w $ENV{SCWDIR}/$revno/$revno*/swg.fits`;
+	&ISDCPipeline::RunProgram (
 		"txt2idx index=$workdir/tmp_working_scws_index.fits template=GNRL-SCWG-GRP-IDX.tpl element=tmp_working_scws_list"
-		#	"txt2idx index=tmp_working_scws_index.fits template=GNRL-SCWG-GRP-IDX.tpl element=tmp_working_scws_list"
 		);
 	`$mychmod +w $ENV{SCWDIR}/$revno/$revno*/swg.fits`;
 	
@@ -193,7 +165,7 @@ sub SPICal {
 		"par_useAON"   =>  "$se_pars{AON}",
 		"par_useAOFF"  => "$se_pars{AOFF}",
 		"par_clobber"  => "yes",
-		"par_verbose"  => "3",			#	070222 - Jake - temp change from 3 to 4 for Bruce's testing
+		"par_verbose"  => "3",
 		);
 
 	if ( !-e "aca/spi_cal_se_spectra.fits" ) { 
@@ -220,20 +192,16 @@ sub SPICal {
 		"par_useAON"   => "no",
 		"par_useAOFF"  => "no",
 		"par_clobber"  => "yes",
-		"par_verbose"  => "3",			#	070222 - Jake - temp change from 3 to 4
+		"par_verbose"  => "3",
 		);
 
 	my $se_linesDOL =  &ISDCPipeline::GetICFile(
 		"structure" => "SPI.-LINE-SCT",
-#		"select" => "EVT_TYPE == 'SINGLE'",
-		"select" => "EVT_TYPE == 'SE'",			#	change me back to ....
+		"select" => "EVT_TYPE == 'SE'",
 		);
-#	&Error ( "No IC file SPI.-LINE-SCT with EVT_TYPE == 'SINGLE' found." ) unless ($se_linesDOL);	
+
 	&Error ( "No IC file SPI.-LINE-SCT with EVT_TYPE == 'SE' found." ) unless ($se_linesDOL);	
 
-#	my $se_lines = $se_linesDOL;
-#	$se_lines =~ s/^(.*)fits\[.*$/$1fits/;
-#	my ( $se_lines ) = ( $se_linesDOL =~ /^(.*)fits\[.*$/ )."fits";
 	( my $se_lines = $se_linesDOL ) =~ s/^(.*)fits\[.*$/$1fits/;
 
 	&ISDCPipeline::PipelineStep(
@@ -250,15 +218,10 @@ sub SPICal {
 
 	my $me_linesDOL =  &ISDCPipeline::GetICFile(
 		"structure" => "SPI.-LINE-SCT",
-#		"select"    => "EVT_TYPE == 'DOUBLE'",
 		"select"    => "EVT_TYPE == 'ME'",
 		);
-#	&Error ( "No IC file SPI.-LINE-SCT with EVT_TYPE == 'DOUBLE' found." ) unless ($me_linesDOL);
 	&Error ( "No IC file SPI.-LINE-SCT with EVT_TYPE == 'ME' found." ) unless ($me_linesDOL);
 
-#	my $me_lines = $me_linesDOL;
-#	$me_lines =~ s/^(.*)fits\[.*$/$1fits/;
-#	my ( $me_lines ) = ( $me_linesDOL =~ /^(.*)fits\[.*$/ )."fits";
 	( my $me_lines = $me_linesDOL ) =~ s/^(.*)fits\[.*$/$1fits/;
 
 	&ISDCPipeline::PipelineStep(
@@ -273,18 +236,6 @@ sub SPICal {
 		"par_verbose"   => "3",
 		);
 
-#	SCREW 1775
-#
-#	from
-#
-#	- pha0eng,s,q,"23.438 198.392 309.88 584.54 882.51 1764.4",,,"Energies of the lines selected for the low-energy range"  
-#	- pha1eng,s,q,"2223.27 2754.03",,,"Energies of the lines selected for the high-energy range"  
-#	
-#	to	( these are apparently bad, so not using )
-#	
-#	- pha0eng,s,q,"23.438 198.392 309.88 438.619 882.51 1764.4",,,"Energies of the lines selected for the low-energy range"  
-#	- pha1eng,s,q,"2754.03 6128.63",,,"Energies of the lines selected for the high-energy range" 
-
 	&ISDCPipeline::PipelineStep(
 		"step"          => "$proc - spi_gain_result",
 		"program_name"  => "spi_gain_result",
@@ -295,12 +246,7 @@ sub SPICal {
 		"par_gainAscii" => "spi_gain_result.tmp",
 		"par_tstdmp"    => "0",
 		"par_etol"      => "1.0",
-#	Old
 		"par_pha0eng"   => "23.438 198.392 309.88 584.54 882.51 1764.4",
-# BEO 25/2/2009 SCREW 1775, uncomment below		"par_pha1eng"   => "2223.27 2754.03",
-
-#	New (apparently bad)
-#		"par_pha0eng"   => "23.438 198.392 309.88 438.619 882.51 1764.4",
 		"par_pha1eng"   => "2754.03 6128.63",
 		);
 
@@ -336,17 +282,12 @@ sub DPspec {
 	
 	my ($proc,$stamp,$workdir,$osfname,$dataset,$type,$revno,$prevrev,$nexrev) = @_;
 
-
-#	my $onoff = $dataset;
-#	$onoff =~ s/.*(off|on).*/$1/;
 	( my $onoff = $dataset ) =~ s/.*(off|on).*/$1/;
-
-
+	
 	my $ONOF = $onoff;
 	$ONOF =~ s/off/of/;
 	$ONOF =~ tr/a-z/A-Z/;
-#	my $tpl = "SPI.-AC".$ONOF;
-#	$tpl .= "-GRP.tpl";
+
 	my $tpl = "SPI.-AC$ONOF-GRP.tpl";
 	
 	&ISDCPipeline::PipelineStep(
@@ -455,11 +396,7 @@ sub PSD {
 	#  arc_prep, do a last run with nopart=no to make sure to use all data 
 	#  available.  
 	#  
-#	if ( ($ENV{PATH_FILE_NAME} =~ /nrt/) && ($type !~ /arc/) ) {
-#		$nopart = "yes";
-#	} else {
-#		$nopart = "no";
-#	}
+
 	$nopart = ( ($ENV{PATH_FILE_NAME} =~ /nrt/) && ($type !~ /arc/) ) ? "yes" : "no";
 	
 	#
@@ -623,20 +560,20 @@ sub PSD {
 		$coeff =  &ISDCPipeline::GetICIndex(
 			"structure" => "SPI.-COEF-CAL",
 			);
-		&Error ( "No IC file SPI.-COEF-CAL found." ) unless ($coeff);	#	040820 - Jake - SCREW 1533
+		&Error ( "No IC file SPI.-COEF-CAL found." ) unless ($coeff);
 		
 		&ISDCPipeline::PipelineStep(
 			"step"           => "$proc - spi_psd_efficiency",
 			"program_name"   => "spi_psd_efficiency",
-			"par_inDOL"      => "working_prpscws_index.fits[GROUPING]",#
+			"par_inDOL"      => "working_prpscws_index.fits[GROUPING]",
 			"par_coeffDOL"   => "$coeff",
-			"par_alertDOL"   => "$limits",#
-			"par_outDOL"     => "osm/spi_psd_efficiency.fits",#
+			"par_alertDOL"   => "$limits",
+			"par_outDOL"     => "osm/spi_psd_efficiency.fits",
 			"par_minOBT"     => "",
 			"par_maxOBT"     => "",
 			"par_append"     => "yes",
 			"par_slice"      => "yes",
-			"par_nopart"     => "$nopart",#
+			"par_nopart"     => "$nopart",
 			"par_ontime"     => "$ENV{SPI_PSD_EFFI_DELTA}",
 			"par_onground"   => "no",
 			"par_thresnoerr" => "yes",
@@ -690,30 +627,30 @@ sub PSD {
 				"structure" => "SPI.-COEF-CAL",
 				) unless (-e "SPI.-COEF-CAL-IDX.fits");
 			$coeff = "SPI.-COEF-CAL-IDX.fits[GROUPING]" if (-e "SPI.-COEF-CAL-IDX.fits");
-			&Error ( "No IC file SPI.-COEF-CAL found." ) unless ($coeff);	#	040820 - Jake - SCREW 1533
+			&Error ( "No IC file SPI.-COEF-CAL found." ) unless ($coeff);
 		}
 		
 		#  Note:  for this one, just get the DOL, no need for different
 		#    validity times.  
 		my $lines =  &ISDCPipeline::GetICFile(
 			"structure" => "SPI.-LINE-SCT",
-			"select"    => "EVT_TYPE == 'PSD_SI'",				#	040705 - Jake - SPR 3748
+			"select"    => "EVT_TYPE == 'PSD_SI'",
 			);
-		&Error ( "No IC file SPI.-LINE-SCT found." ) unless ($lines);	#	040820 - Jake - SCREW 1533
+		&Error ( "No IC file SPI.-LINE-SCT found." ) unless ($lines);
 		
 		&ISDCPipeline::PipelineStep(
 			"step"          => "$proc - spi_psd_si",
 			"program_name"  => "spi_psd_si",
-			"par_inDOL"     => "working_prpscws_index.fits[GROUPING]",#
+			"par_inDOL"     => "working_prpscws_index.fits[GROUPING]",
 			"par_coeffDOL"  => "$coeff",
 			"par_lineDOL"   => "$lines",
-			"par_alertDOL"  => "$limits",#
-			"par_outDOL"    => "osm/spi_psd_si.fits",#
+			"par_alertDOL"  => "$limits",
+			"par_outDOL"    => "osm/spi_psd_si.fits",
 			"par_minOBT"    => "",
 			"par_maxOBT"    => "",
 			"par_append"    => "yes",
 			"par_slice"     => "yes",
-			"par_nopart"    => "$nopart",#
+			"par_nopart"    => "$nopart",
 			"par_ontime"    => "$ENV{SPI_PSD_SI_DELTA}",
 			"par_onground"  => "no",
 			"par_siThres"   => "4.0",
@@ -753,9 +690,6 @@ sub PSD {
 #############################################################
 
 1;
-
-__END__
-
 
 =back
 

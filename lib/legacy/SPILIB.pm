@@ -19,11 +19,11 @@ use I<SPILIB.pm>;
 =cut
 
 use strict;
+use warnings;
+
 use ISDCPipeline;
 use UnixLIB;
 use ISDCLIB;
-
-sub SPILIB::SSA;
 
 $| = 1;
 

@@ -1,6 +1,8 @@
 package CorLIB;
 
 use strict;
+use warnings;
+
 use File::Basename;
 use ISDCPipeline;
 use ISDCLIB;
@@ -23,17 +25,6 @@ use I<CorLIB.pm>;
 =over
 
 =cut
-
-sub CorLIB::IBEP;			#	IBIS Events Pick
-sub CorLIB::IIEP;			#	IBIS ISGRI Events Pick
-sub CorLIB::IPEP;			#	IBIS PICSIT Events Pick
-sub CorLIB::JXEP;			#	JEMX Events Pick
-sub CorLIB::Fin;			#	Generic cor/fin step
-sub CorLIB::IBISFIN;
-sub CorLIB::JMXFIN;
-sub CorLIB::AddOldIBISGTIs;
-sub CorLIB::CopyGTIExtension;	#	dal_list, idx2dol, dal_copy
-sub CorLIB::GTI_Merge;	#	gti_merge (060222-Created this to minimize and simplify code.  This is called from here and nswcor.pl.)
 
 $| = 1;
 

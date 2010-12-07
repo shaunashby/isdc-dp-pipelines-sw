@@ -20,6 +20,8 @@ Handles the creation of the appropriate OSFs
 =cut
 
 use strict;
+use warnings;
+
 use ISDCPipeline;
 use OPUSLIB;
 use UnixLIB;
@@ -47,8 +49,6 @@ my $dcf;
 print "*******     Triggering SA processing for $dataset;  looking for what OSFs to create.\n";
 
 $ENV{OSF_DATASET} = $dataset;  # helps with FindObsScws below
-
-#my $proc = &ISDCLIB::Initialize();
 
 chdir ( "$ENV{OBSDIR}/$dataset.000/" )
 	or die "******* ERROR:  Cannot chdir to $ENV{OBSDIR}/$dataset.000/";

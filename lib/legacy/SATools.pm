@@ -19,15 +19,12 @@ use I<SATools.pm>;
 =cut
 
 use strict;
+use warnings;
+
 use File::Basename;
 use ISDCPipeline;
 use ISDCLIB;
 use OPUSLIB;
-
-sub SATools::ScwCheck;
-sub SATools::ObsCheck;
-sub SATools::ScwSetWait;
-sub SATools::RefCatTest;	#	I don't think this is used anywhere
 
 $| = 1;
 

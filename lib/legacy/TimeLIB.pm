@@ -19,19 +19,12 @@ used by many B<ISDC> scripts due to it's generic, er, osity?
 
 =cut
 
-
-#	This function does not and should not ever need an other ISDC perl package or module.
-#	This way, it will remain simple and easily maintainable without any crossover.
+use strict;
+use warnings;
 
 use Time::Local;
 
-sub TimeLIB::MyTime;
-sub TimeLIB::MyTimeSec;
-sub TimeLIB::UTCops;
-sub TimeLIB::HexTime2Local;
-
 $| = 1;
-
 
 ##############################################################################
 

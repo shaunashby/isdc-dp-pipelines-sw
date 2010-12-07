@@ -19,14 +19,10 @@ use I<SSALIB.pm>;
 =cut
 
 use strict;
+use warnings;
+
 use ISDCPipeline;
 use ISDCLIB;
-
-sub SSALIB::ParseOSF;
-sub SSALIB::ParseTrigger;
-sub SSALIB::Trigger2OSF;		#	convert trigger format name to OSF format name
-sub SSALIB::OSF2Trigger;		#	convert OSF format name to Trigger format name	- NOT YET
-sub SSALIB::inst2instdir;
 
 $| = 1;
 
