@@ -1,5 +1,4 @@
-#!perl -w
-
+#!perl
 
 =head1 NAME
 

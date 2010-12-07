@@ -1,6 +1,8 @@
-#!/isdc/sw/bin/perl -w
+#!perl
 
 use strict;
+use warnings;
+
 use File::Basename;
 
 #	Handy script for quickly removing all the stray IDX files that build up.

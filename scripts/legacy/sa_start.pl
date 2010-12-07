@@ -1,4 +1,4 @@
-#!perl -w
+#!perl
 
 =head1 NAME
 
@@ -17,6 +17,9 @@ This scripts reads the matching file from $OPUS_WORK/conssa/scratch and creates 
 =over
 
 =cut
+
+use strict;
+use warnings;
 
 use UnixLIB;
 use ISDCLIB;

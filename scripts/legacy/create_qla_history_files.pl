@@ -9,19 +9,15 @@
 
 
 use strict;
+use warnings;
+
 use File::Basename;
-#	$ENV{COMMONLOGFILE} = "+";
 $ENV{COMMONLOGFILE} =~ s/^\+//;
 
-#	die "No file given as first argument" unless $ARGV[0];
-
-#my $source_data = "/isdc/integration/isdc_int/sw/dev/prod/opus/pipeline_lib/misc/qla_history/SOURCES";
-#my $source_data = "/home/scientist/IQLA/SOURCES";
 my $source_data = "/isdc/pvphase/IQLA/SOURCES";
+
 die "$source_data unavailable." unless ( -r $source_data ); 
 
-#my $refcat = "/isdc/arc/rev_1/cat/hec/gnrl_refr_cat_0025.fits";
-#my $refcat = "/nrt/ops_1/cat/hec/nrt_refr_cat.fits";
 my $refcat = "/isdc/pvphase/IQLA/nrt_refr_cat.fits";
 die "$refcat unavailable." unless ( -r $refcat );
 

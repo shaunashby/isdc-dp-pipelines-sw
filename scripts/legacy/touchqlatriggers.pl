@@ -1,10 +1,9 @@
-#!perl -w
+#!perl
    
 use strict;
 
 my @revs;
 for ( my $i=0; $i<=$#ARGV; $i++ ) {
-	#if     last one      or    next one is not ".."
 	if ( ( $i == $#ARGV ) || ( $ARGV[$i+1] !~ /\.\./ ) ) {
 		push @revs, $ARGV[$i];
 	} else {
@@ -15,14 +14,12 @@ for ( my $i=0; $i<=$#ARGV; $i++ ) {
 
 foreach ( @revs ) {
 	my $rev = sprintf ( "%04d", $_ );
-#	foreach my $scw ( `ls -1d "$ENV{REP_BASE_PROD}/scw/$rev/0*0.*" | awk -F/ '{print \$NF}' | awk -F. '{print \$1}'` ) {
 	foreach my $scw ( glob "$ENV{REP_BASE_PROD}/scw/$rev/0*0.*" ) {
 		$scw =~ s/^.+(\d{12}).+$/$1/;
 		print "$scw\n";
 		`touch $scw.trigger`;
 	}
 }
-
 
 =head1 NAME
 

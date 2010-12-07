@@ -1,4 +1,4 @@
-#!perl -w
+#!perl
 
 =head1 NAME
 
@@ -22,7 +22,6 @@ use ISDCLIB;
 use OPUSLIB;
 use UnixLIB;
 
-use lib "$ENV{ISDC_OPUS}/conssa/";
 use SATools;
 
 print "\n========================================================================\n";
@@ -207,9 +206,6 @@ else {
 
 
 exit $return;
-
-
-
 
 =head1 REFERENCES
 

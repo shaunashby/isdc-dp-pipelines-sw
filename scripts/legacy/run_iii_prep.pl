@@ -1,6 +1,5 @@
 #!perl -s
 
-
 =head1 NAME
 
 I<run_iii_prep.pl> - process iii_prep rev data
@@ -15,12 +14,11 @@ I<run_iii_prep.pl>
 
 =cut
 
-#use strict;	#	can't use strict with the -s option
+use warnings;
+
 use File::Basename;
-use lib "/home/wendt";
 use ISDCLIB;
 use UnixLIB;
-
 
 #	Use this script as ops_cons on a machine that can write to $REP_BASE_PROD/scw like ...
 #	ops_cons@anaB6:~>echo $REP_BASE_PROD/
