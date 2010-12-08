@@ -44,6 +44,7 @@ use UnixLIB;
 
 my $FUNCNAME    = "run_frss_files.pl";
 my $FUNCVERSION = "1.0";
+my ($v,$version,$h,$help,$dry);
 
 if ( $v || $version ) {
 	print "Log_1  : Version : $FUNCNAME $FUNCVERSION\n";
@@ -53,6 +54,7 @@ if ( ( $h || $help ) || ( ! $r ) ) {
 	&Usage();
 	exit 0;
 }
+
 my $revno = $r;
 
 RunCom ( "touch $ENV{OPUS_WORK}/consrev/input/${revno}_pp.done" );

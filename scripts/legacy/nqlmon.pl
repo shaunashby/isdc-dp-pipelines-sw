@@ -28,7 +28,7 @@ use strict;
 use warnings;
 
 use ISDCPipeline;
-use OPUSLIB;
+use OPUSLIB qw(:osf_stati);
 use QLAMOS;
 
 &ISDCPipeline::EnvStretch ( "OUTPATH", "WORKDIR", "LOG_FILES", "MOSAICS", "OBSDIR" );

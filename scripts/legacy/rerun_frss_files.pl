@@ -43,6 +43,7 @@ use UnixLIB;
 
 my $FUNCNAME    = "rerun_frss_files.pl";
 my $FUNCVERSION = "1.4";
+my ($v,$version,$h,$help);
 
 if ( $v || $version ) {
 	print "Log_1  : Version : $FUNCNAME $FUNCVERSION\n";
@@ -52,6 +53,7 @@ if ( ( $h || $help ) || ( ! $r ) ) {
 	&Usage();
 	exit 0;
 }
+
 my $revno = $r;
 
 #die "No -r REVNO given" unless ( $revno );

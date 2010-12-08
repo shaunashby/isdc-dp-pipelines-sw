@@ -25,9 +25,6 @@ use ISDCPipeline;
 use UnixLIB;
 use ISDCLIB;
 
-sub IBISLIB::ISA;
-sub IBISLIB::IPMosaic;
-
 $| = 1;
 
 =item B<ISA> ( %att )

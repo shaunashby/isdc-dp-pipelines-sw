@@ -28,7 +28,7 @@ use warnings;
 use ISDCPipeline;
 use ISDCLIB;
 use UnixLIB;
-use OPUSLIB;
+use OPUSLIB qw(:osf_stati);
 use TimeLIB;
 use Archiving;
 use File::Basename;

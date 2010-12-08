@@ -90,7 +90,7 @@ use File::Basename;
 use ISDCPipeline;
 use ISDCLIB;
 use UnixLIB;
-use OPUSLIB;
+use OPUSLIB qw(:osf_stati);
 use TimeLIB;
 use Datasets;
 

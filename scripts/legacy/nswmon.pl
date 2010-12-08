@@ -28,7 +28,7 @@ use strict;
 use warnings;
 
 use ISDCPipeline;
-use OPUSLIB;
+use OPUSLIB qw(:osf_stati);
 
 ##########################################################################
 # machinations to get correct environment variables through path file

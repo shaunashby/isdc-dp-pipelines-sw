@@ -24,7 +24,7 @@ use warnings;
 use File::Basename;
 use ISDCPipeline;
 use ISDCLIB;
-use OPUSLIB;
+use OPUSLIB qw(:osf_stati);
 
 $| = 1;
 

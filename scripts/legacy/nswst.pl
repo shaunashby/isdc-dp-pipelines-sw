@@ -56,7 +56,7 @@ use File::Basename;
 use ISDCPipeline;
 use UnixLIB;
 use ISDCLIB;
-use OPUSLIB;
+use OPUSLIB qw(:osf_stati);
 
 my $retval;
 

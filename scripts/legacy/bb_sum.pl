@@ -17,7 +17,7 @@ Utility for summarizing a blackboard in a readable form.
 use strict;
 use warnings;
 
-use OPUSLIB;
+use OPUSLIB qw(:osf_stati);
 use UnixLIB;
 use TimeLIB;
 use File::Basename;

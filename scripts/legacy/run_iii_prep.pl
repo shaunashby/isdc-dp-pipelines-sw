@@ -36,6 +36,7 @@ use UnixLIB;
 
 my $FUNCNAME    = "run_iii_prep.pl";
 my $FUNCVERSION = "1.0";
+my ($v,$version,$h,$help,$dry);
 
 if ( $v || $version ) {
 	print "Log_1  : Version : $FUNCNAME $FUNCVERSION\n";

@@ -31,13 +31,15 @@ use UnixLIB;
 use SSALIB;
 
 use base qw(Exporter);
-use vars qw($VERSION @EXPORT);
+use vars qw( $VERSION @EXPORT_OK %EXPORT_TAGS );
 
-@EXPORT = qw ( 
-	%osf_stati
-	);
+%EXPORT_TAGS = (
+    'osf_stati'   => [ qw( %osf_stati ) ],
+    );
 
-$| = 1;
+@EXPORT_OK = ( @{ $EXPORT_TAGS{'osf_stati'} } );
+
+$VERSION = '0.1';
 
 my %osf_stati = (
 	ADP_ST_X			=> "xww",

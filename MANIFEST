@@ -98,6 +98,7 @@ t/03-configuration.t
 t/04-load-legacy.t
 t/pipelines-test-config.yml
 test.pl
+test-legacy-scripts.pl
 config/paths/adp.path
 config/paths/consinput.path
 config/paths/consrev.path

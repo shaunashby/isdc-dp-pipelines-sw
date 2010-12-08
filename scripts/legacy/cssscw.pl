@@ -20,7 +20,7 @@ use warnings;
 use ISDCPipeline;
 use UnixLIB;
 use ISDCLIB;
-use OPUSLIB;
+use OPUSLIB qw(:osf_stati);
 use IBISLIB;
 use JMXLIB;
 use SPILIB;

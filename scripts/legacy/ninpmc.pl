@@ -41,7 +41,7 @@ use strict;
 use warnings;
 
 use ISDCPipeline;
-use OPUSLIB;
+use OPUSLIB qw(:osf_stati);
 use ISDCLIB;
 
 &ISDCPipeline::EnvStretch ( "LOG_FILES", "ALERTS", "PARFILES" );

@@ -19,7 +19,7 @@ use warnings;
 
 use File::Basename;
 use ISDCPipeline;
-use OPUSLIB;
+use OPUSLIB qw(:osf_stati);
 use ISDCLIB;
 use UnixLIB;
 
@@ -46,7 +46,7 @@ my %stats;
 my %curcom;
 my %machines;
 my %paths;
-my %foundpids;	#	060501 - Jake - SCREW 1856
+my %foundpids;
 
 my @list;
 my $reply;

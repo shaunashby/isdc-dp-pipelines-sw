@@ -32,7 +32,7 @@ use File::Copy;
 use UnixLIB;
 use TimeLIB;
 use ISDCLIB;
-use OPUSLIB;
+use OPUSLIB qw(:osf_stati);
 
 #  This is the return value which RunProgram will pass up if a timeout
 #   occured on the command run.  It will be interpreted as a system signal,
