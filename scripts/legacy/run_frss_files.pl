@@ -1,4 +1,4 @@
-#!perl -s
+#!/usr/bin/perl -s
 
 =head1 NAME
 

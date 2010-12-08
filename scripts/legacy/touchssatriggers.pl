@@ -1,4 +1,4 @@
-#!perl
+#!/usr/bin/perl
 
 foreach ( `cat scws_Crab_all-sorted.txt` ) {
 	chomp;

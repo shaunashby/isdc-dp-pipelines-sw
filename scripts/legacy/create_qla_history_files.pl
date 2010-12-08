@@ -1,4 +1,4 @@
-#!perl
+#!/usr/bin/perl
 
 #	qdp column names
 #	center dT count_soft error_soft count_hard error_hard detsig radius revolution pointing subpointing pointingtype 

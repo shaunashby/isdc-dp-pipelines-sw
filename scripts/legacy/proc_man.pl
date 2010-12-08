@@ -1,4 +1,4 @@
-#!perl
+#!/usr/bin/perl
 
 =head1 NAME
 
@@ -654,7 +654,7 @@ sub CheckPMG {
 
 =head1 REFERENCES
 
-For further information on the other processes in this pipeline, please run perldoc on each, e.g. C<perldoc nrtdp.pl>.
+For further information on the other processes in this pipeline, please run /usr/bin/perldoc on each, e.g. C<perldoc nrtdp.pl>.
 
 For further information about B<OPUS> please see C<file:///isdc/software/opus/html/opusfaq.html> on the office network or C<file:///isdc/opus/html/opusfaq.html> on the operations network.  Note that understanding this document requires that you understand B<OPUS> first.
 
