@@ -21,7 +21,6 @@ use I<SSALIB.pm>;
 use strict;
 use warnings;
 
-use ISDCPipeline;
 use ISDCLIB;
 
 $| = 1;
@@ -33,10 +32,10 @@ $| = 1;
 =cut
 
 sub OSF2Trigger {
-	my ( $OSF )  = @_;		#	sssp_002400100010 or smsp_0021_cyg_74_partial
+	my ( $OSF )  = @_;
 	print "Converting OSF $OSF to trigger.\n" if ( $ENV{DEBUGIN} );
 
-	my ( $in, $scwid ) = ( $OSF =~ /^s\w(\w{2})_(.+)$/ );	#	050413 - Jake - SPR 4083
+	my ( $in, $scwid ) = ( $OSF =~ /^s\w(\w{2})_(.+)$/ );
 	print ( "in:$in\n" )   if ( $ENV{DEBUGIN} );
 	print ( "scwid:$scwid\n" ) if ( $ENV{DEBUGIN} );
 	my $inst = &ISDCLIB::in2inst ( $in );
