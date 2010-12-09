@@ -15,6 +15,9 @@ use strict;
 
 use ISDC::DataProcessing::Pipeline;
 
-my $pipeline = ISDC::DataProcessing::Pipeline->new({ name => "nrtrev", config => "t/pipelines-test-config.yml" });
-
-print "$pipeline\n";
+for my $pipeline (qw( nrtinput nrtscw nrtrev nrtqla adp ) ) {   
+    print $pipeline.":\n";
+    my $obj = ISDC::DataProcessing::Pipeline->new({ name => "$pipeline", config => "t/pipelines-test-config.yml" });
+    print "\n";
+    print "$obj\n";
+}
