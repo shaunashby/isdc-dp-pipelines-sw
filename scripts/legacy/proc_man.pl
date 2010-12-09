@@ -349,7 +349,7 @@ OPUSWORKDIR : foreach my $opuswork ( @opusworks ) {
 		next OPUSWORKDIR;
 	}
 	
-	&CheckPMG();		#	this doesn't work perfectly.  if pipeline file has multiple restricted entries, it still starts them all.
+	&CheckPMG();
 	
 	###########################################################################
 	#  Now do it:
@@ -583,7 +583,7 @@ sub GetParameters {
 	
 	die "$prefix1 ERROR:  you must give a path" if ( ( $command =~ /start/ ) && ( ! ( $path ) ) );
 	
-	$pipelinefile = "$ENV{ISDC_OPUS}/$path/$path.pipeline" unless ( $pipelinefile );
+	$pipelinefile = "$ENV{ISDC_OPUS}/share/config/$path.pipeline" unless ( $pipelinefile );
 	
 	unless ( @opusworks ) {
 		#  Have to have OPUS_WORK set:
@@ -613,8 +613,8 @@ sub CheckPMG {
 	if ( $command =~ /start/ ) {
 		my @entry;
 		
-		open ( DAT, "$ENV{ISDC_OPUS}/pipeline_lib/pmg_restrictions.dat" ) 
-			or die "$prefix1 ERROR:  cannot open $ENV{ISDC_OPUS}/pipeline_lib/pmg_restrictions.dat";
+		open ( DAT, "$ENV{ISDC_OPUS}/share/config/data/pmg_restrictions.dat" ) 
+			or die "$prefix1 ERROR:  cannot open $ENV{ISDC_OPUS}/share/config/data/pmg_restrictions.dat";
 		
 		#  Create hash of restrictions related to inputs
 		while ( <DAT> ) {
