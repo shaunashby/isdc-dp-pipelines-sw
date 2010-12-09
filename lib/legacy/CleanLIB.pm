@@ -25,7 +25,7 @@ use Cwd;
 use File::Basename;
 use ISDCPipeline;
 use UnixLIB;
-use OPUSLIB;
+use OPUSLIB qw(:osf_stati);
 use ISDCLIB;
 use TimeLIB;
 use SSALIB;
@@ -565,10 +565,6 @@ sub ValidateRequest {
 		while( <STDIN> ) { $answer = $_; chomp $answer; last; }
 		if ( $answer !~ /^yes$/ ) {
 			print STDOUT "$prefix1 You did not answer \`yes\`;  quitting\n";
-
-#	FIX: LOG is opened in cleanup.pl, so I can't close it here.
-#		Do I really need to?
-#			if ($pars{log}){  close(LOG); }
 			exit;
 		}
 	}
