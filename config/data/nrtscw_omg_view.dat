@@ -1,0 +1,9 @@
+SCW.Search1.trl.filespec = <root>.log
+SCW.Search1.trl.name = NAME
+SCW.Search1.trl.dir = log_files
+SCW.Search1.fits.filespec = <root[1:4]>/<root>.000/swg_raw.fits
+SCW.Search1.fits.name = NAME
+SCW.Search1.fits.dir = rii_scw
+SCW.Search2.fits.filespec = <root[1:4]>/<root>.000/swg.fits
+SCW.Search2.fits.name = NAME
+SCW.Search2.fits.dir = rii_scw

@@ -1,0 +1,43 @@
+*fontList : -*-courier-bold-r-*--*-120-*-*-*-*-iso8859-1
+*SuspendButton.sensitive : 1
+*ResumeButton.sensitive : 1
+*ReinitButton.sensitive : 1
+*TerminateButton.sensitive : 1
+*HaltAllButton.sensitive : 1
+*PipelineSetup.height : 600
+*PipelineSetup.width : 1000
+*PipelineSetup*BatchList.itemCount : 6
+*PipelineSetup*BatchList.items : nrtpp,archive1,nrtscw1,alert,nrtdr,isdcops,
+*ReportForm*maxLine : 10
+*ReportText.columns : 92
+*ReportText.rows : 10
+*ReportText.fontList : -*-courier-medium-r-*--*-120-*-*-*-*-iso8859-1
+*ListContent.visibleItemCount : 10
+*ListContent*fontList : -*-courier-medium-r-*--*-120-*-*-*-*-iso8859-1
+*ListForm.TopLabel*fontList : -*-courier-bold-r-*--*-120-*-*-*-*-iso8859-1
+*ListForm.BottomLabel*fontList : -*-courier-bold-r-*--*-120-*-*-*-*-iso8859-1
+*DelayButton1.labelString : 3600 sec
+*DelayButton2.labelString : 10 sec
+*DelayButton3.labelString : 20 sec
+*DelayButton4.labelString : 5 sec
+*ListForm*defaultDelay : DelayButton2
+*ExitButton.accelerator : Ctrl<Key>z
+*ExitButton.acceleratorText : Ctrl/z
+*ConfirmMessage*visibleItemCount : 20
+*noScrollLimit : 20
+*PrintDialog*PrintQueueList.visibleItemCount : 4
+*PrintDialog*PrintQueueList.itemCount : 1
+*PrintDialog*PrintQueueList.items : lp
+*PrintDialog.PrintCommand.labelString : lpr -P
+*TextDialog*TextContent.rows : 20
+*TextDialog*TextContent.columns : 80
+*TextContent.fontList : -*-courier-medium-r-*--*-120-*-*-*-*-iso8859-1
+*TextDialog.x : 50
+*HelpDialog*HelpText.rows : 20
+*HelpDialog*HelpText.columns : 80
+*HelpDialog*HelpText.fontList : -*-courier-medium-r-*--*-120-*-*-*-*-iso8859-1
+*TextDialog*CommandDialog.listVisibleItemCount : 20
+*background : lightgray
+*foreground : black
+*borderColor : gray
+ : 

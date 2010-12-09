@@ -1,0 +1,163 @@
+! $Id: adp_omg_view.dat,v 1.9 2002/08/30 11:26:45 isdc_int Exp $
+!
+! $Log: adp_omg_view.dat,v $
+! Revision 1.9  2002/08/30 11:26:45  isdc_int
+! SPRs: 1844 (THF listed in adp_omg_view.dat);  1785 (PARFILES in adpfin*);
+! 1806 (replan alert description length);  1810 (time stamp tcor and att_sna);
+! 1808 (THF in startup, moved logs, logging).
+!
+! Revision 1.8  2001/12/13 11:14:28  jaffet
+! fix logs again
+!
+! Revision 1.7  2000/09/19 12:42:51  jaffet
+! manually triggered archiving added
+!
+! Revision 1.6  2000/08/23 08:58:06  jaffet
+! fixed ".fits" log file names (internal only)
+! write protections,versioning box/shot plans with OPP version
+! fixed trigger contents, convertattitude parameters, and overwriting
+! versioned attitude predicted with PAF vv
+! separated AHF and ASF processing
+! SCID now parameter in resource file
+! removed check of POD and TSF version correspondence
+! multiple PODs used in createpdef
+! error properly in startup if archive trigger for rev
+!
+! Revision 1.5  2000/07/26 09:00:34  jaffet
+! misc resource file fixes, bug fixes, documentation, oconvertopp->convertopp,
+! no revno link, alert copy to end for every type, Alert_0 to Alert_1, file
+! checking fixes,
+!
+! Revision 1.4  2000/03/23 09:58:06  jaffet
+! fix cvs problem
+!
+! Revision 1.3  2000/03/23 09:06:24  jaffet
+! miscellaneous small changes and logs back into adp
+!
+! Revision 1.2  2000/02/02 16:32:59  jaffet
+! check POD and TSF, check executable versions, perldoc documentation added, separate OPUS classes for all ADP files, added delete and view entries for OPUS OMG, misc small changes
+!
+! Revision 1.1  1999/05/20 12:01:08  oneel
+! First pass at ADP pipeline
+!
+!
+! This is the RES file used for viewing a text file in the OMG. It specifies
+! the type of files and the location of the file to be displayed for 
+! each data class. The .Search1 specifies the resources for the file to be
+! displayed. If the Search1 file is not available, the Search2 file is
+! used.
+!
+! History:
+!
+! 01/23/98  MSwam        34499.5     Meet stricter MPARSE rules
+! 07/10/98  MSwam        34944       New format
+!
+!--------------------------------------------------------------------------
+!
+! ************************ PAF ************************
+!
+! log for PAF
+!
+PAF.Search1.trl.filespec = <root>.log
+PAF.Search1.trl.name = NAME
+PAF.Search1.trl.dir = log_files
+! ************************ AHF ************************
+!
+! log for AHF
+!
+AHF.Search1.trl.filespec = <root>.log
+AHF.Search1.trl.name = NAME
+AHF.Search1.trl.dir = log_files
+! ************************ ASF ************************
+!
+! log for ASF
+!
+ASF.Search1.trl.filespec = <root>.log
+ASF.Search1.trl.name = NAME
+ASF.Search1.trl.dir = log_files
+! ************************ OLF ************************
+!
+! log 
+!
+OLF.Search1.trl.filespec = <root>.log
+OLF.Search1.trl.name = NAME
+OLF.Search1.trl.dir = log_files
+!
+! ************************ TSF ************************
+!
+! log
+!
+TSF.Search1.trl.filespec = <root>.log
+TSF.Search1.trl.name = NAME
+TSF.Search1.trl.dir = log_files
+!
+! ************************ IOP ************************
+!
+! log for IOP
+!
+IOP.Search1.trl.filespec = <root[1-11]>.log
+IOP.Search1.trl.name = NAME
+IOP.Search1.trl.dir = log_files
+!
+! ************************ OPP ************************
+!
+! log for OPP
+!
+OPP.Search1.trl.filespec = <root>.log
+OPP.Search1.trl.name = NAME
+OPP.Search1.trl.dir = log_files
+!
+! ************************ OCS ************************
+!
+! log for OCS
+!
+OCS.Search1.trl.filespec = <root[1-20]>.log
+OCS.Search1.trl.name = NAME
+OCS.Search1.trl.dir = log_files
+!
+!
+! ************************ ORB ************************
+!
+! log for orbit file
+!
+ORB.Search1.trl.filespec = <root>.log
+ORB.Search1.trl.name = NAME
+ORB.Search1.trl.dir = log_files
+!
+! ************************ PAD ************************
+!
+! log for pad
+!
+PAD.Search1.trl.filespec = <root[1-11]>.log
+PAD.Search1.trl.name = NAME
+PAD.Search1.trl.dir = log_files
+!
+! ************************ POD ************************
+!
+! log for pod
+!
+POD.Search1.trl.filespec = <root[1-13]>.log
+POD.Search1.trl.name = NAME
+POD.Search1.trl.dir = log_files
+!
+! ************************ REV ************************
+!
+! log for revno file
+!
+REV.Search1.trl.filespec = <root>.log
+REV.Search1.trl.name = NAME
+REV.Search1.trl.dir = log_files
+! 
+!
+! ************************  ARC ************************ 
+!
+ARC.Search1.trl.filespec = <root>.log
+ARC.Search1.trl.name = NAME
+ARC.Search1.trl.dir = log_files
+!
+!
+! ************************  THF files ************************ 
+!
+THF.Search1.trl.filespec = <root>.log
+THF.Search1.trl.name = NAME
+THF.Search1.trl.dir = log_files

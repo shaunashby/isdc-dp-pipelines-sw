@@ -1,0 +1,6 @@
+INP.Search1.trl.filespec = <root>.log
+INP.Search1.trl.name = NAME
+INP.Search1.trl.dir = log_files
+INP.Search1.fits.filespec = <root[1:4]>/<root>.000/swg_raw.fits
+INP.Search1.fits.name = NAME
+INP.Search1.fits.dir = rii_scw

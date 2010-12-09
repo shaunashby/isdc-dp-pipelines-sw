@@ -1,0 +1,203 @@
+!
+! CONS Rev path view file
+!
+! rev OSF roots have the form RRRR_TTTTTTTTTTTTTT_xxx
+!                            [1:4]_[6:19]_[21:23]
+!
+! isgri_raw_nois
+IRN.Search1.trl.dir = log_files
+IRN.Search1.trl.name = NAME
+IRN.Search1.trl.filespec = <root>.log
+IRN.Search1.fits.dir = rii_scw
+IRN.Search1.fits.name = NAME
+IRN.Search1.fits.filespec = <root[1:4]>/rev.000/raw/isgri_raw_noise_<root[10:23]>.fits
+!  picsit_raw_cal
+PRC.Search1.trl.dir = log_files
+PRC.Search1.trl.name = NAME
+PRC.Search1.trl.filespec = <root>.log
+PRC.Search1.fits.dir = rii_scw
+PRC.Search1.fits.name = NAME
+PRC.Search1.fits.filespec = <root[1:4]>/rev.000/raw/picsit_raw_cal_<root[10:23]>.fits
+!  ibis_raw_veto
+IRV.Search1.trl.dir = log_files
+IRV.Search1.trl.name = NAME
+IRV.Search1.trl.filespec = <root>.log
+IRV.Search1.fits.dir = rii_scw
+IRV.Search1.fits.name = NAME
+IRV.Search1.fits.filespec = <root[1:4]>/rev.000/*/*veto_<root[10:23]>.fits
+! irem_raw
+IRE.Search1.trl.dir = log_files
+IRE.Search1.trl.name = NAME
+IRE.Search1.trl.filespec = <root>.log
+IRE.Search1.fits.dir = rii_scw
+IRE.Search1.fits.name = NAME
+IRE.Search1.fits.filespec = <root[1:4]>/rev.000/*/irem*<root[10:23]>.fits
+! omc bias
+OBC.Search1.trl.dir = log_files
+OBC.Search1.trl.name = NAME
+OBC.Search1.trl.filespec = <root>.log
+OBC.Search1.fits.dir = rii_scw
+OBC.Search1.fits.name = NAME
+OBC.Search1.fits.filespec = <root[1:4]>/rev.000/*/omc_bias*_<root[10:23]>.fits
+! omc dark
+ODC.Search1.trl.dir = log_files
+ODC.Search1.trl.name = NAME
+ODC.Search1.trl.filespec = <root>.log
+ODC.Search1.fits.dir = rii_scw
+ODC.Search1.fits.name = NAME
+ODC.Search1.fits.filespec = <root[1:4]>/rev.000/*/omc_dark*_<root[10:23]>.fits
+! omc flatfield
+OFC.Search1.trl.dir = log_files
+OFC.Search1.trl.name = NAME
+OFC.Search1.trl.filespec = <root>.log
+OFC.Search1.fits.dir = rii_scw
+OFC.Search1.fits.name = NAME
+OFC.Search1.fits.filespec = <root[1:4]>/rev.000/*/omc_flatfield*_<root[10:23]>.fits
+! omc sky
+OSC.Search1.trl.dir = log_files
+OSC.Search1.trl.name = NAME
+OSC.Search1.trl.filespec = <root>.log
+OSC.Search1.fits.dir = rii_scw
+OSC.Search1.fits.name = NAME
+OSC.Search1.fits.filespec = <root[1:4]>/rev.000/*/omc_sky*_<root[10:23]>.fits
+! spi raw curves
+SRC.Search1.trl.dir = log_files
+SRC.Search1.trl.name = NAME
+SRC.Search1.trl.filespec = <root>.log
+SRC.Search1.fits.dir = rii_scw
+SRC.Search1.fits.name = NAME
+SRC.Search1.fits.filespec = <root[1:4]>/rev.000/*/spi*_<root[10:23]>.fits
+! jemx1
+JM1.Search1.trl.dir = log_files
+JM1.Search1.trl.name = NAME
+JM1.Search1.trl.filespec = <root>.log
+JM1.Search1.fits.dir = rii_scw
+JM1.Search1.fits.name = NAME
+JM1.Search1.fits.filespec = <root[1:4]>/rev.000/*/jmx1*_<root[10:23]>.fits
+! jemx2
+JM2.Search1.trl.dir = log_files
+JM2.Search1.trl.name = NAME
+JM2.Search1.trl.filespec = <root>.log
+JM2.Search1.fits.dir = rii_scw
+JM2.Search1.fits.name = NAME
+JM2.Search1.fits.filespec = <root[1:4]>/rev.000/*/jmx2*_<root[10:23]>.fits
+! arc
+ARC.Search1.trl.dir = log_files
+ARC.Search1.trl.name = NAME
+ARC.Search1.trl.filespec = <root>.log
+!  errors
+ERR.Search1.trl.dir = log_files
+ERR.Search1.trl.name = NAME
+ERR.Search1.trl.filespec = <root>.log
+! ibis dump
+IDP.Search1.trl.dir = log_files
+IDP.Search1.trl.name = NAME
+IDP.Search1.trl.filespec = <root>.log
+! ibis tver
+ITV.Search1.trl.dir = log_files
+ITV.Search1.trl.name = NAME
+ITV.Search1.trl.filespec = <root>.log
+! jemx1 dump
+J1D.Search1.trl.dir = log_files
+J1D.Search1.trl.name = NAME
+J1D.Search1.trl.filespec = <root>.log
+! jemx2 dump
+J2D.Search1.trl.dir = log_files
+J2D.Search1.trl.name = NAME
+J2D.Search1.trl.filespec = <root>.log
+! jemx1 dfeedump
+J1F.Search1.trl.dir = log_files
+J1F.Search1.trl.name = NAME
+J1F.Search1.trl.filespec = <root>.log
+! jemx2 dfeedump
+J2F.Search1.trl.dir = log_files
+J2F.Search1.trl.name = NAME
+J2F.Search1.trl.filespec = <root>.log
+! jemx1 tver
+J1T.Search1.trl.dir = log_files
+J1T.Search1.trl.name = NAME
+J1T.Search1.trl.filespec = <root>.log
+! jemx2 tver
+J2T.Search1.trl.dir = log_files
+J2T.Search1.trl.name = NAME
+J2T.Search1.trl.filespec = <root>.log
+! jemx1 ecal
+J1E.Search1.trl.dir = log_files
+J1E.Search1.trl.name = NAME
+J1E.Search1.trl.filespec = <root>.log
+! jemx2 ecal
+J2E.Search1.trl.dir = log_files
+J2E.Search1.trl.name = NAME
+J2E.Search1.trl.filespec = <root>.log
+! omc dump
+OMD.Search1.trl.dir = log_files
+OMD.Search1.trl.name = NAME
+OMD.Search1.trl.filespec = <root>.log
+! omc tver
+OMT.Search1.trl.dir = log_files
+OMT.Search1.trl.name = NAME
+OMT.Search1.trl.filespec = <root>.log
+! SPI ocur
+SOC.Search1.trl.dir = log_files
+SOC.Search1.trl.name = NAME
+SOC.Search1.trl.filespec = <root>.log
+! SPI 3cur
+SEC.Search1.trl.dir = log_files
+SEC.Search1.trl.name = NAME
+SEC.Search1.trl.filespec = <root>.log
+! SPI ccur
+SCC.Search1.trl.dir = log_files
+SCC.Search1.trl.name = NAME
+SCC.Search1.trl.filespec = <root>.log
+! SPI dcur
+SDC.Search1.trl.dir = log_files
+SDC.Search1.trl.name = NAME
+SDC.Search1.trl.filespec = <root>.log
+! SPI tver
+STV.Search1.trl.dir = log_files
+STV.Search1.trl.name = NAME
+STV.Search1.trl.filespec = <root>.log
+! spi dump
+SDP.Search1.trl.dir = log_files
+SDP.Search1.trl.name = NAME
+SDP.Search1.trl.filespec = <root>.log
+! spi specoff
+SSF.Search1.trl.dir = log_files
+SSF.Search1.trl.name = NAME
+SSF.Search1.trl.filespec = <root>.log
+! spi specon
+SSN.Search1.trl.dir = log_files
+SSN.Search1.trl.name = NAME
+SSN.Search1.trl.filespec = <root>.log
+! spi acs
+SAC.Search1.trl.dir = log_files
+SAC.Search1.trl.name = NAME
+SAC.Search1.trl.filespec = <root>.log
+! irc 
+IRC.Search1.trl.dir = log_files
+IRC.Search1.trl.name = NAME
+IRC.Search1.trl.filespec = <root>.log
+! ilt
+ILT.Search1.trl.dir = log_files
+ILT.Search1.trl.name = NAME
+ILT.Search1.trl.filespec = <root>.log
+! spa
+SPA.Search1.trl.dir = log_files
+SPA.Search1.trl.name = NAME
+SPA.Search1.trl.filespec = <root>.log
+! spp
+SPP.Search1.trl.dir = log_files
+SPP.Search1.trl.name = NAME
+SPP.Search1.trl.filespec = <root>.log
+! spe
+SPE.Search1.trl.dir = log_files
+SPE.Search1.trl.name = NAME
+SPE.Search1.trl.filespec = <root>.log
+! spa
+SPS.Search1.trl.dir = log_files
+SPS.Search1.trl.name = NAME
+SPS.Search1.trl.filespec = <root>.log
+! sct
+SCT.Search1.trl.dir = log_files
+SCT.Search1.trl.name = NAME
+SCT.Search1.trl.filespec = <root>.log

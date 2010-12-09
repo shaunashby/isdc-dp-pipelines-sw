@@ -1,0 +1,92 @@
+!
+! pmg_restrictions.dat
+!
+! This file is used to restrict the number of copies of certain processes
+! that the PMG is allowed to start up.  Certain requirements dictate that
+! only one copy of a process be allowed to run, so this file is a flexible
+! method for enforcing that behavior through the PMG.
+!
+! The syntax of entries is:
+!
+! PROCESS.PATH.NODE = NUM_COPIES  (case insensitive)
+!
+!    where PROCESS    = name of pipeline process (same as resource filename)
+!          PATH       = name of the path in which the restriction occurs
+!          NODE       = name of the machine on which the restriction occurs
+!          NUM_COPIES = number of copies of the process allowed
+!
+!    The "*" wildcard entry is allowed for the PATH and NODE components.
+!
+!	NOTE:  "*" wildcard does NOT work for processes!
+!
+!---------------------------------------------------------------------------
+!
+!   NOTE:  these no longer work in the PMG for unknown reasons.  But they
+!		do work in the script proc_man.pl.
+!
+!---------------------------------------------------------------------------
+!
+! Scw:  only finish is unique:
+!
+nswfin.*.* = 1       !Allows only 1 instance of ScW Fin to be running
+nswmon.*.* = 1       !Allows only 1 instance of ScW Mon to be running
+cswfin.*.* = 1       !Allows only 1 instance of ScW Fin to be running
+!
+!  Rev, everything is unique:
+!
+crvfin.*.* = 1       !Allows only 1 instance of Rev pipeline to be running
+crviii.*.* = 1       !Allows only 1 instance of Rev pipeline to be running
+crvarc.*.* = 1       !Allows only 1 instance of Rev pipeline to be running
+crvgen.*.* = 1       !Allows only 1 instance of Rev pipeline to be running
+crvidp.*.* = 1       !Allows only 1 instance of Rev pipeline to be running
+crvirc.*.* = 1       !Allows only 1 instance of Rev pipeline to be running
+crvire.*.* = 1       !Allows only 1 instance of Rev pipeline to be running
+crvirn.*.* = 1       !Allows only 1 instance of Rev pipeline to be running
+crvirv.*.* = 1       !Allows only 1 instance of Rev pipeline to be running
+crvjme.*.* = 1       !Allows only 1 instance of Rev pipeline to be running
+crvjmf.*.* = 1       !Allows only 1 instance of Rev pipeline to be running
+crvmon.*.* = 1       !Allows only 1 instance of Rev pipeline to be running
+crvspi.*.* = 1       !Allows only 1 instance of Rev pipeline to be running
+crvst.*.* = 1        !Allows only 1 instance of Rev pipeline to be running
+nrvfin.*.* = 1       !Allows only 1 instance of Rev pipeline to be running
+nrvarc.*.* = 1       !Allows only 1 instance of Rev pipeline to be running
+nrviii.*.* = 1       !Allows only 1 instance of Rev pipeline to be running
+nrvgen.*.* = 1       !Allows only 1 instance of Rev pipeline to be running
+nrvidp.*.* = 1       !Allows only 1 instance of Rev pipeline to be running
+nrvirc.*.* = 1       !Allows only 1 instance of Rev pipeline to be running
+nrvire.*.* = 1       !Allows only 1 instance of Rev pipeline to be running
+nrvirn.*.* = 1       !Allows only 1 instance of Rev pipeline to be running
+nrvirv.*.* = 1       !Allows only 1 instance of Rev pipeline to be running
+nrvjme.*.* = 1       !Allows only 1 instance of Rev pipeline to be running
+nrvjmf.*.* = 1       !Allows only 1 instance of Rev pipeline to be running
+nrvmon.*.* = 1       !Allows only 1 instance of Rev pipeline to be running
+nrvspi.*.* = 1       !Allows only 1 instance of Rev pipeline to be running
+nrvst.*.* = 1        !Allows only 1 instance of Rev pipeline to be running
+!
+!  Input, everything unique:
+!
+ninpst.*.* = 1       !Allows only 1 instance of Input to be running
+ninput.*.* = 1       !Allows only 1 instance of Input to be running
+ninpfi.*.* = 1       !Allows only 1 instance of Input to be running
+ninpmd.*.* = 1       !Allows only 1 instance of Input to be running
+ninpmp.*.* = 1       !Allows only 1 instance of Input to be running
+ninpmc.*.* = 1       !  One input cleanup monitor.
+cinpst.*.* = 1       !Allows only 1 instance of Input to be running
+cinput.*.* = 1       !Allows only 1 instance of Input to be running
+cinpfi.*.* = 1       !Allows only 1 instance of Input to be running
+!
+!  ADP, everything unique:
+!
+adpst.*.* = 1           !Allows only 1 instance of adp to be running
+adp.*.* = 1             !Allows only 1 instance of adp to be running
+adpfin.*.* = 1          !Allows only 1 instance of adp to be running
+adpmon.*.* = 1          !Allows only 1 instance of adp to be running
+!
+!  QLA and SA, only start and finish unique
+!
+csast.*.* = 1        !Allows only 1 instance of conssa startup running
+csafin.*.* = 1       !  only 1 ConsSa finish
+cssst.*.* = 1        !Allows only 1 instance of conssa startup running
+!cssfin.*.* = 1       !  only 1 ConsSsa finish
+nqlst.*.* = 1        ! Only 1 NRT QLA startup
+nqlfin.*.* = 1        ! Only 1 NRT QLA finish

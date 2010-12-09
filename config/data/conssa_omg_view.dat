@@ -1,0 +1,26 @@
+! $Id: conssa_omg_view.dat,v 1.3 2002/03/01 08:37:33 jaffet Exp $
+! $Log: conssa_omg_view.dat,v $
+! Revision 1.3  2002/03/01 08:37:33  jaffet
+! Many updates.  IBIS integration.
+!
+! Revision 1.2  2001/08/06 10:14:23  jaffet
+! Implement "figure eight" structure for IBIS;  SATools added ScwSetWait
+! function;  visible error handling in startup;  fist integration of
+! JEMX and IBIS;  fixed PARFILES stretching;  misc.
+!
+! Revision 1.1  2001/04/11 12:49:37  jaffet
+! rename to conssa and csa...
+!
+! Revision 1.1.1.1  2001/03/20 13:41:43  jaffet
+! First version
+!
+! Revision 1.0  2001/01/05 00:00:00  jaffet
+! first version
+!
+!-------------------------------------------------------------------------
+OBS.Search1.trl.filespec = <root>.log
+OBS.Search1.trl.name = NAME
+OBS.Search1.trl.dir = log_files
+SCW.Search1.trl.filespec = <root>.log
+SCW.Search1.trl.name = NAME
+SCW.Search1.trl.dir = log_files

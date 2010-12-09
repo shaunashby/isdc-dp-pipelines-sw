@@ -1,0 +1,22 @@
+! $Id: consinput_omg_view.dat,v 1.2 2001/12/11 15:25:16 jaffet Exp $
+!
+!
+! This is the RES file used for viewing a text file in the OMG. It specifies
+! the type of files and the location of the file to be displayed for 
+! each data class. The .Search1 specifies the resources for the file to be
+! displayed. If the Search1 file is not available, the Search2 file is
+! used.
+!
+! History:
+!
+! 01/23/98  MSwam        34499.5     Meet stricter MPARSE rules
+! 07/10/98  MSwam        34944       New format
+!
+!_--------------------------------------------------------------------------
+INP.Search1.trl.filespec = <root>.log
+INP.Search1.trl.name = NAME
+INP.Search1.trl.dir = log_files
+INP.Search1.fits.filespec = <root[1:4]>/<root>.000/swg_raw.fits
+INP.Search1.fits.name = NAME
+INP.Search1.fits.dir = rii_scw
+
