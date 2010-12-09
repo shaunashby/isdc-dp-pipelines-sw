@@ -96,9 +96,9 @@ t/01-api-load.t
 t/02-pipeline.t
 t/03-configuration.t
 t/04-load-legacy.t
+t/05-test-compile-legacy-scripts.t
 t/pipelines-test-config.yml
 test.pl
-test-legacy-scripts.pl
 config/paths/adp.path
 config/paths/consinput.path
 config/paths/consrev.path
