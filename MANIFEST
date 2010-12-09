@@ -210,3 +210,8 @@ config/data/omg.dat
 config/data/pmg.dat
 config/data/pmg_restrictions.dat
 config/README
+config/adp.pipeline
+config/nrtinput.pipeline
+config/nrtqla.pipeline
+config/nrtrev.pipeline
+config/nrtscw.pipeline
