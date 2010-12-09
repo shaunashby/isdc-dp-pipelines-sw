@@ -6,7 +6,7 @@ WriteMakefile(
     NAME                => 'ISDC::DataProcessing::API',
     AUTHOR              => 'Shaun ASHBY <Shaun.Ashby@unige.ch>',
     VERSION_FROM        => 'lib/ISDC/DataProcessing/API.pm',
-    ABSTRACT_FROM       => 'lib/ISDC/DataProcessing/API.pm',
+    ABSTRACT            => 'ISDC pipeline software - Perl scripts and modules for data processing',
     ($ExtUtils::MakeMaker::VERSION >= 6.3002
       ? ('LICENSE'=> 'GPL+/Artistic')
       : ()),

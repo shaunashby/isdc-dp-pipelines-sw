@@ -1,17 +1,17 @@
-package ISDC::DataProcessing::API;
-
-use warnings;
-use strict;
-
 =head1 NAME
 
-ISDC::DataProcessing::API - Entrypoint module to ISDC data processing pipeline software.
-    
+ISDC::DataProcessing::API - Entrypoint module to ISDC data processing pipeline software
+
 =head1 VERSION
 
 Version 0.01
 
 =cut
+
+package ISDC::DataProcessing::API;
+
+use warnings;
+use strict;
 
 use base qw(Exporter);
 
