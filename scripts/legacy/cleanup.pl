@@ -16,9 +16,9 @@ use CleanLIB;
 #
 
 if  (($#ARGV < 2) && !defined($ENV{PATH_FILE_NAME})) {
-	print "\nUSAGE: cleanup.pl --path=<path> --dataset=<dataset> --level=<level> [--log=<log>] [--bydate] [--match] [--DEBUG] [--FORCE]\n\n";
-	print "\tType \'perldoc $0\' to see the full help.\n";
-	exit 0;
+    print "\nUSAGE: cleanup.pl --path=<path> --dataset=<dataset> --level=<level> [--log=<log>] [--bydate] [--match] [--DEBUG] [--FORCE]\n\n";
+    print "\tType \'perldoc $0\' to see the full help.\n";
+    exit 0;
 }
 
 
@@ -55,16 +55,15 @@ my $temp;
 my $oldout;
 
 if ( !(defined($pars{log}))){
-	$pars{log} = "$ENV{OPUS_HOME_DIR}/clean_$pars{dataset}_$pars{level}_$$.log" 
-		unless (defined($ENV{OSF_DATASET}));
+    $pars{log} = "$ENV{OPUS_HOME_DIR}/clean_$pars{dataset}_$pars{level}_$$.log" unless (defined($ENV{OSF_DATASET}));
 }
 
 if (!(defined($ENV{OSF_DATASET}))) {
-	open(LOG,">$pars{log}") or die "$prefix1 ERROR 001:  cannot open log $pars{log}";
-	$oldout = select(LOG);
+    open(LOG,">$pars{log}") or die "$prefix1 ERROR 001:  cannot open log $pars{log}";
+    $oldout = select(LOG);
 }
 
-&CleanLIB::SetDEBUG ( $pars{DEBUG} );		#	this doesn't seem to be working correctly
+&CleanLIB::SetDEBUG ( $pars{DEBUG} );
 
 $pars{env} = &CleanLIB::SetEnvVariable ( %pars );
 
@@ -81,34 +80,33 @@ my %paths = &CleanLIB::BuildPathsHashTable ( %pars );
 #
 &dprint ( "$equalline\n" );
 foreach ( keys ( %paths ) ) {
-	chomp ( $pars{onepath} = $_ );
-	&dprint ( "$dashline\n" );
-	&dprint ( "$prefix1\n$prefix1 Processing path $pars{onepath}\n$prefix1\n" );
-
-	if ( @{ $paths{$pars{onepath}} } ) {
-		&dprint ( "$prefix1 Datasets to StartCleanup for path $pars{onepath}:\n$prefix4".join("$prefix4",@{ $paths{$pars{onepath}} })."\n" );
-
-		foreach ( @{ $paths{$pars{onepath}} } ) { 
-			#	datasets may need chomped because may have been gotten with ls, I think?
-			chomp ( $pars{onedataset} = $_ );	#	for some reason, can't use $pars{onedataset} in the foreach statement
-			&dprint ( "$halfdashline\n" ) if ( $pars{DEBUG} );
-			$pars{onedataset} =~ s/\s+//g;
-			unless ( $pars{onedataset} ) {
-				&dprint ( "$prefix1 Dataset from path $pars{onepath} is NULL after chomping and removing whitespace.\n" );
-				next;
-			}
-			&dprint ( "$prefix1\n$prefix1 Processing dataset $pars{onedataset}\n$prefix1\n" ) if ( $pars{DEBUG} );
-			&CleanLIB::StartCleanup ( %pars ) unless ( $pars{dry_run} || $pars{"dry-run"} || $pars{dryrun} );			#	calls CleanOPUS and CleanRAW
-			delete $pars{onedataset};	#	don't need it, so don't keep it.
-		} # end of foreach dataset in path
+    chomp ( $pars{onepath} = $_ );
+    &dprint ( "$dashline\n" );
+    &dprint ( "$prefix1\n$prefix1 Processing path $pars{onepath}\n$prefix1\n" );
+    
+    if ( @{ $paths{$pars{onepath}} } ) {
+	&dprint ( "$prefix1 Datasets to StartCleanup for path $pars{onepath}:\n$prefix4".join("$prefix4",@{ $paths{$pars{onepath}} })."\n" );
+	
+	foreach ( @{ $paths{$pars{onepath}} } ) { 
+	    chomp ( $pars{onedataset} = $_ );
+	    &dprint ( "$halfdashline\n" ) if ( $pars{DEBUG} );
+	    $pars{onedataset} =~ s/\s+//g;
+	    unless ( $pars{onedataset} ) {
+		&dprint ( "$prefix1 Dataset from path $pars{onepath} is NULL after chomping and removing whitespace.\n" );
+		next;
+	    }
+	    &dprint ( "$prefix1\n$prefix1 Processing dataset $pars{onedataset}\n$prefix1\n" ) if ( $pars{DEBUG} );
+	    &CleanLIB::StartCleanup ( %pars ) unless ( $pars{dry_run} || $pars{"dry-run"} || $pars{dryrun} );
+	    delete $pars{onedataset};
 	}
-	else {
-		&dprint ( "$prefix1 No datasets found in path $pars{onepath}\n" );
-		&dprint ( "$prefix1 \@{ \$paths{\$pars{onepath}} } is @{ $paths{$pars{onepath}} }\n" ) if ( $pars{DEBUG} );
-	}
-	&dprint ( "$prefix1\n" );
-	delete $pars{onepath};	#	don't need it, so don't keep it.
-} # end of foreach paths
+    } else {
+	&dprint ( "$prefix1 No datasets found in path $pars{onepath}\n" );
+	&dprint ( "$prefix1 \@{ \$paths{\$pars{onepath}} } is @{ $paths{$pars{onepath}} }\n" ) if ( $pars{DEBUG} );
+    }
+    &dprint ( "$prefix1\n" );
+    delete $pars{onepath};
+}
+
 #########################################################################
 &dprint ( "$equalline\n" );
 
@@ -125,68 +123,65 @@ exit if ( $pars{dry_run} || $pars{"dry-run"} || $pars{dryrun} );
 #	Clean all revolution related opus stuff.  This is effectively all the time since there are only 2 levels now.  (no more prp)
 #
 if  (  ($pars{level} =~ /raw|opus/) && ($pars{path}  =~ /revol_(aux|scw|ssa)/) ){
-	print "$grtrline\n$grtrline\n";
-	print "$prefix1 OPUS cleanup done for OSFs on blackboard;  looking for anything else under OPUS_WORK.\n";
-	print "$grtrline\n$grtrline\n";
-	
-	#  If we're in Cons and cleaning revol_scw, we've got .done files to remove,
-	#   and we don't need to ask about it.
+    print "$grtrline\n$grtrline\n";
+    print "$prefix1 OPUS cleanup done for OSFs on blackboard;  looking for anything else under OPUS_WORK.\n";
+    print "$grtrline\n$grtrline\n";
+    
+    #  If we're in Cons and cleaning revol_scw, we've got .done files to remove,
+    #   and we don't need to ask about it.
+    
+    if ( ( $pars{env} =~ /cons/ ) && ( $pars{path} =~ /revol_scw/ ) ) {
+	foreach ("pp","inp","rev","scwdp","arc","ingest","sa","sa_ingest","ssa","ssa_ingest","sma","sma_ingest") {		
+	    my $file = "$ENV{OPUS_WORK}/consrev/input/$pars{dataset}_$_.done";
+	    if ( -e "$file" ) {
+		print "$prefix1 Removing $file\n";
+		unlink "$file" or die "$prefix1 ERROR 002:  cannot unlink $file";
+		die "$prefix1 ERROR 003:  did not unlink $file" if ( -e "$file" );
+	    }
+	}
 
-	if ( ( $pars{env} =~ /cons/ ) && ( $pars{path} =~ /revol_scw/ ) ) {
-		foreach ("pp","inp","rev","scwdp","arc","ingest","sa","sa_ingest","ssa","ssa_ingest","sma","sma_ingest") {		
-			my $file = "$ENV{OPUS_WORK}/consrev/input/$pars{dataset}_$_.done";
-			if ( -e "$file" ) {
-				print "$prefix1 Removing $file\n";
-				unlink "$file" or die "$prefix1 ERROR 002:  cannot unlink $file";
-				die "$prefix1 ERROR 003:  did not unlink $file" if ( -e "$file" );
-			} # if .done exists
-		} # foreach .done
-		foreach ( "scwdp", "sa", "ssa", "sma" ) {
-			my $file = "$ENV{OPUS_WORK}/consrev/input/$pars{dataset}_$_.started";
-			if ( -e "$file" ) {
-				print "$prefix1 Removing $file\n";
-				unlink "$file" or die "$prefix1 ERROR 004:  cannot unlink $file";
-				die "$prefix1 ERROR 005:  did not unlink $file" if ( -e "$file" );
-			}
-		} # 050307 - Jake - SCREW 1647
-	}  # if revol_scw
+	foreach ( "scwdp", "sa", "ssa", "sma" ) {
+	    my $file = "$ENV{OPUS_WORK}/consrev/input/$pars{dataset}_$_.started";
+	    if ( -e "$file" ) {
+		print "$prefix1 Removing $file\n";
+		unlink "$file" or die "$prefix1 ERROR 004:  cannot unlink $file";
+		die "$prefix1 ERROR 005:  did not unlink $file" if ( -e "$file" );
+	    }
+	}
+    }
+    
+    foreach my $onepath (keys(%paths)) {
+	my $thisdir = "$ENV{OPUS_WORK}/$onepath";
+	push @remainders, `$myls $thisdir/$pars{dataset}* $thisdir/input/$pars{dataset}* $thisdir/scratch/$pars{dataset}* 2> /dev/null`;
+    }
+    
+    if (@remainders) {
+	&dprint ( "$prefix1 Found remainder under $ENV{OPUS_WORK}:\n\t".join("\t",@remainders) );
 	
-	foreach my $onepath (keys(%paths)) {
-		my $thisdir = "$ENV{OPUS_WORK}/$onepath";
-		push @remainders, `$myls $thisdir/$pars{dataset}* $thisdir/input/$pars{dataset}* $thisdir/scratch/$pars{dataset}* 2> /dev/null`;	#	SPR 4409
+	$answer = "y";
+	unless ( $pars{"do_not_confirm"} ) {
+	    print STDOUT "$prefix1 Do want these remainders deleted? [y]: ";
+	    while(<STDIN>) { $answer = $_; chomp $answer; last; }
 	}
 	
-	#	cleaning revol_scw is never automated, wo we can ask for input here.
-	if (@remainders) {
-		&dprint ( "$prefix1 Found remainder under $ENV{OPUS_WORK}:\n\t".join("\t",@remainders) ); # 051115 - changed '' to "\t"
-
-		$answer = "y";	#	set answer to y
-		unless ( $pars{"do_not_confirm"} ) {
-			print STDOUT "$prefix1 Do want these remainders deleted? [y]: ";
-			while(<STDIN>) { $answer = $_; chomp $answer; last; }
-		}
-
-		if ( ($answer) && ($answer !~ /y/) ) {
-			print STDOUT "$prefix1 Skipping remainder removal.\n";
-		}
-		else {
-			print STDOUT "$prefix1 Removing remainders.\n";
-			foreach $file (@remainders) { 
-				chomp $file;
-				next unless ($file); # somehow a blank gets in here?
-				print "$prefix1 Removing $file\n";
-				my $command = "$myrm  $file";
-				print "$prefix1 Running \'$command\'\n";
-				`$command`;
-				#	051028 - Jake - SPR 4343
-				print "$prefix1 WARNING:  Cannot \'$command\'\n" if ($?);
-				print "$prefix1 WARNING:  $file does not exist anymore anyway.\n" unless ( -e $file );
-				print "$prefix1 WARNING:  $file still exists though.\n" if ( -e $file );
-			} #foreach remainder
-		} # if answered yes or hit return
-	} # end if remainders 
-	
-} # if raw|opus and revol
+	if ( ($answer) && ($answer !~ /y/) ) {
+	    print STDOUT "$prefix1 Skipping remainder removal.\n";
+	} else {
+	    print STDOUT "$prefix1 Removing remainders.\n";
+	    foreach $file (@remainders) { 
+		chomp $file;
+		next unless ($file);
+		print "$prefix1 Removing $file\n";
+		my $command = "$myrm  $file";
+		print "$prefix1 Running \'$command\'\n";
+		`$command`;
+		print "$prefix1 WARNING:  Cannot \'$command\'\n" if ($?);
+		print "$prefix1 WARNING:  $file does not exist anymore anyway.\n" unless ( -e $file );
+		print "$prefix1 WARNING:  $file still exists though.\n" if ( -e $file );
+	    }
+	}
+    }
+}
 
 
 #########################################################################
@@ -197,56 +192,50 @@ if  (  ($pars{level} =~ /raw|opus/) && ($pars{path}  =~ /revol_(aux|scw|ssa)/) )
 #########################################################################
 
 if ( $pars{level} =~ /raw/ ) {
-	if ( ( $pars{path}  =~ /revol_/ ) || ( $pars{path}  =~ /nrtqla/ ) ) {
-		#	The old way
-		&CleanLIB::CleanData ( %pars );
-	}
-	else {
-	
-		#	051125 - Jake - added these 2 foreach loops.  Pretty much needed when using "--match"
-		#	The new way to ensure that --match works, otherwise may not be needed
-		foreach ( keys ( %paths ) ) {
-			chomp ( $pars{onepath} = $_ );
-			&dprint ( "$dashline\n" );
-			&dprint ( "$prefix1 Processing Path: $pars{onepath} and Datasets: \n$prefix4".join("$prefix4",@{$paths{$pars{onepath}}})."\n" );
+    if ( ( $pars{path}  =~ /revol_/ ) || ( $pars{path}  =~ /nrtqla/ ) ) {
+	&CleanLIB::CleanData ( %pars );
+    } else {
+	foreach ( keys ( %paths ) ) {
+	    chomp ( $pars{onepath} = $_ );
+	    &dprint ( "$dashline\n" );
+	    &dprint ( "$prefix1 Processing Path: $pars{onepath} and Datasets: \n$prefix4".join("$prefix4",@{$paths{$pars{onepath}}})."\n" );
+	    
+	    if ( @{ $paths{$pars{onepath}} } ) {
+		&dprint ( "$prefix1 Datasets to CleanData for path $pars{onepath}:\n$prefix4".join("$prefix4",@{ $paths{$pars{onepath}} })."\n" );
 		
-			if ( @{ $paths{$pars{onepath}} } ) {
-				&dprint ( "$prefix1 Datasets to CleanData for path $pars{onepath}:\n$prefix4".join("$prefix4",@{ $paths{$pars{onepath}} })."\n" );
-				
-				foreach ( @{ $paths{$pars{onepath}} } ) { 
-					chomp ( $pars{onedataset} = $_ );
-					&dprint ( "$halfdashline\n" ) if ( $pars{DEBUG} );
-					$pars{onedataset} =~ s/\s+//g;
-					unless ( $pars{onedataset} ) {
-						&dprint ( "$prefix1 Dataset from path $pars{onepath} is NULL after chomping and removing whitespace.\n" );
-						next;
-					}
-					&dprint ( "$prefix1\n$prefix1 Processing dataset $pars{path} $pars{onedataset} to level $pars{level}\n$prefix1\n" ) if ( $pars{DEBUG} );
-		
-					&CleanLIB::CleanData ( %pars );
-					delete $pars{onedataset};
-				}
-			}
-			else {
-				&dprint ( "$prefix1 No datasets found in path $pars{onepath}\n" );
-				#	&dprint ( "$prefix1 \@{ \$paths{\$pars{onepath}} } is @{ $paths{$pars{onepath}} }\n" ) if ( $pars{DEBUG} );
-			}
-			delete $pars{onepath};
+		foreach ( @{ $paths{$pars{onepath}} } ) { 
+		    chomp ( $pars{onedataset} = $_ );
+		    &dprint ( "$halfdashline\n" ) if ( $pars{DEBUG} );
+		    $pars{onedataset} =~ s/\s+//g;
+		    unless ( $pars{onedataset} ) {
+			&dprint ( "$prefix1 Dataset from path $pars{onepath} is NULL after chomping and removing whitespace.\n" );
+			next;
+		    }
+		    &dprint ( "$prefix1\n$prefix1 Processing dataset $pars{path} $pars{onedataset} to level $pars{level}\n$prefix1\n" ) if ( $pars{DEBUG} );
+		    
+		    &CleanLIB::CleanData ( %pars );
+		    delete $pars{onedataset};
 		}
+	    } else {
+		&dprint ( "$prefix1 No datasets found in path $pars{onepath}\n" );		
+	    }
+	    delete $pars{onepath};
 	}
+    }
 }
-
 
 if ($pars{log}){  close(LOG); }
 
 print STDOUT "$prefix1 Done.\n";
+
 if ( ($pars{path} =~ /revol/) && ($pars{level} =~ /raw/) ) {
-	print STDOUT "$prefix1 \n";
-	print STDOUT "$prefix1 Now, if you are sure, you can remove the data under REP_BASE_PROD/cleanup.\n";
-	print STDOUT "$prefix1 \n";
+    print STDOUT "$prefix1 \n";
+    print STDOUT "$prefix1 Now, if you are sure, you can remove the data under REP_BASE_PROD/cleanup.\n";
+    print STDOUT "$prefix1 \n";
 }
 
 if ($pars{log}){  close(LOG); }
+
 exit 0;
 
 #############################################################################
@@ -254,9 +243,6 @@ exit 0;
 ##                        END OF MAIN
 ##
 #############################################################################
-
-
-
 
 __END__ 
 
