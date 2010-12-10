@@ -421,39 +421,37 @@ OPUSWORKDIR : foreach my $opuswork ( @opusworks ) {
 			$runcom = "$0 --path=$paths{$pid} --process=$processes{$pid} --machine=$machines{$pid} --command=start --donotconfirm";
 			print "$prefix1 Running \'$runcom\'\n";
 	
-		} else {		#	command is NOT start or restart
-			#  Reduce the command to the four letter field:
-			$command =~ s/^(\w{4}).*$/$1/;
-			
-			#  Find the PSTAT file again, since it may have changed since you last
-			#   looked;  then this had better be quick, else something else may
-			#   update the PSTAT and the mv will fail.
-				#	000061a5-csasw1___-idle___________.41178a4e-conssa___-anaS4_______________-____
-#			@list = glob ( "$ENV{OPUS_HOME_DIR}/*-$processes{$pid}*-$paths{$pid}*-$machines{$pid}*" );
-			@list = glob ( "$ENV{OPUS_HOME_DIR}/$foundpids{$pid}*-$processes{$pid}*-*.*-$paths{$pid}*-$machines{$pid}_*-*" )	#	060501 - Jake - SCREW 1856
-				unless ( $processes{$pid} =~ /adp/ );	#	060501 - Jake - added this "unless"
-
-#			@list = glob ( "$ENV{OPUS_HOME_DIR}/*-$processes{$pid}_*-$paths{$pid}*-$machines{$pid}*" ) 
-			@list = glob ( "$ENV{OPUS_HOME_DIR}/$foundpids{$pid}*-$processes{$pid}_*-$paths{$pid}*-$machines{$pid}_*" ) 	#	060501 - Jake - SCREW 1856
-				if ( $processes{$pid} =~ /adp/ );
-			
-			die "$prefix1  ERROR:  multiple processes $processes{$pid} on path $paths{$pid};  "
-				."specify machine please.\n(I'm assuming you don't have two identical processes on the same machine.)" if ( $#list > 0 );
-			$pstat = $list[$#list];
-
-			chomp $pstat;
-			$pstat = &File::Basename::basename ( $pstat );
-			
-			$newpstat = $pstat;
-			#  Entries look like:
-			# 00000dda-nswst____-idle___________.3dd4b4ac-nrtscw___-nrtscw2_____________-____
-			$newpstat =~ s/^(.*)-(\S{4})$/$1-$command/;
-
-			$runcom = "$mymv $ENV{OPUS_HOME_DIR}/$pstat $ENV{OPUS_HOME_DIR}/$newpstat";
-			
+		} else {
+		    #  Reduce the command to the four letter field:
+		    $command =~ s/^(\w{4}).*$/$1/;
+		    
+		    #  Find the PSTAT file again, since it may have changed since you last
+		    #   looked;  then this had better be quick, else something else may
+		    #   update the PSTAT and the mv will fail.
+		    #	000061a5-csasw1___-idle___________.41178a4e-conssa___-anaS4_______________-____
+		    @list = glob ( "$ENV{OPUS_HOME_DIR}/$foundpids{$pid}*-$processes{$pid}*-*.*-$paths{$pid}*-$machines{$pid}_*-*" )
+			unless ( $processes{$pid} =~ /adp/ );
+		    
+		    @list = glob ( "$ENV{OPUS_HOME_DIR}/$foundpids{$pid}*-$processes{$pid}_*-$paths{$pid}*-$machines{$pid}_*" )
+			if ( $processes{$pid} =~ /adp/ );
+		    
+		    die "$prefix1  ERROR:  multiple processes $processes{$pid} on path $paths{$pid};  "
+			."specify machine please.\n(I'm assuming you don't have two identical processes on the same machine.)" if ( $#list > 0 );
+		    $pstat = $list[$#list];
+		    
+		    chomp $pstat;
+		    $pstat = &File::Basename::basename ( $pstat );
+		    
+		    $newpstat = $pstat;
+		    #  Entries look like:
+		    # 00000dda-nswst____-idle___________.3dd4b4ac-nrtscw___-nrtscw2_____________-____
+		    $newpstat =~ s/^(.*)-(\S{4})$/$1-$command/;
+		    
+		    $runcom = "$mymv $ENV{OPUS_HOME_DIR}/$pstat $ENV{OPUS_HOME_DIR}/$newpstat";
+		    
 		}
 
-		if (defined($pstat) && defined($newpstat) {
+		if (defined($pstat) && defined($newpstat)) {
 		    if ( ( "$ENV{OPUS_HOME_DIR}/$pstat" eq "$ENV{OPUS_HOME_DIR}/$newpstat" ) ) {
 			print     "Current pstat and new pstat are the same.  Skipping.\n";
 			print LOG "Current pstat and new pstat are the same.  Skipping.\n";
