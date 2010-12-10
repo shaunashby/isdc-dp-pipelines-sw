@@ -452,21 +452,21 @@ OPUSWORKDIR : foreach my $opuswork ( @opusworks ) {
 			$runcom = "$mymv $ENV{OPUS_HOME_DIR}/$pstat $ENV{OPUS_HOME_DIR}/$newpstat";
 			
 		}
-		
-		#	050912 - Jake - SPR 4317
-		if ( ( "$ENV{OPUS_HOME_DIR}/$pstat" eq "$ENV{OPUS_HOME_DIR}/$newpstat" ) 
-			&& ( $newpstat ) ) {
+
+		if (defined($pstat) && defined($newpstat) {
+		    if ( ( "$ENV{OPUS_HOME_DIR}/$pstat" eq "$ENV{OPUS_HOME_DIR}/$newpstat" ) ) {
 			print     "Current pstat and new pstat are the same.  Skipping.\n";
 			print LOG "Current pstat and new pstat are the same.  Skipping.\n";
+		    }
 		} else {
-			print     "$prefix1 Running \'$runcom\'\n";
-			print LOG "$prefix1 Running \'$runcom\'\n";
-			@result = `$runcom`;
-			if ( $? ) {
-				print LOG "$prefix1 ERROR:  could not \'$runcom\': @result\n";
-				close LOG;
-				die "$prefix1 ERROR:  could not \'$runcom\': @result";
-			}
+		    print     "$prefix1 Running \'$runcom\'\n";
+		    print LOG "$prefix1 Running \'$runcom\'\n";
+		    @result = `$runcom`;
+		    if ( $? ) {
+			print LOG "$prefix1 ERROR:  could not \'$runcom\': @result\n";
+			close LOG;
+			die "$prefix1 ERROR:  could not \'$runcom\': @result";
+		    }
 		}
 	}
 }
