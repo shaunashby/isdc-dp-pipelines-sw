@@ -38,6 +38,8 @@ sub new() {
     return bless($self, $class);
 }
 
+sub name { return shift->{name} }
+
 sub configuration() {
     my $self = shift;
     return $self->{configuration};
@@ -47,7 +49,7 @@ sub to_string() {
     my $self = shift;
     my $string = "";
     map {
-	$string.="$_";
+	$string.=sprintf("%-10s %-10s %-10s\n",$_->name,$self->name,$_->host);
     } @{ $self->{configuration}->processes };
     return $string;
 }
