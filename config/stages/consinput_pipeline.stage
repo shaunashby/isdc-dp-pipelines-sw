@@ -1,0 +1,26 @@
+NSTAGE = 4
+STAGE01.TITLE = ST
+ STAGE01.DESCRIPTION = 'Startup'
+ STAGE01.CSTATUS.C = 'Startup complete'
+ STAGE01.TSTATUS.X = 'External process controller error'
+STAGE02.TITLE = IN
+ STAGE02.DESCRIPTION = 'Input Pipeline'
+ STAGE02.NSTATUS.W = 'Waiting for Input Pipeline'
+ STAGE02.PSTATUS.P = 'Input Pipeline in progress'
+ STAGE02.CSTATUS.C = 'Input Pipeline complete'
+ STAGE02.TSTATUS.X = 'Error during Input Pipeline'
+STAGE03.TITLE = FI
+ STAGE03.DESCRIPTION = 'Finish'
+ STAGE03.NSTATUS.W = 'Waiting for Finish'
+ STAGE03.PSTATUS.P = 'Finishing up'
+ STAGE03.CSTATUS.C = 'Finishing Complete'
+ STAGE03.TSTATUS.X = 'External process controller error'
+STAGE04.TITLE = CL
+ STAGE04.DESCRIPTION = 'OSF Deletion'
+ STAGE04.NSTATUS.W = 'Waiting for cleaning'
+ STAGE04.NSTATUS.D = 'Marked for deletion'
+ STAGE04.NSTATUS.- = 'Not to be deleted'
+ STAGE04.PSTATUS.P = 'OSF being cleaned/deleted'
+ STAGE04.TSTATUS.X = 'Cleaning error'
+ STAGE04.TSTATUS.E = 'Deletion error'
+
