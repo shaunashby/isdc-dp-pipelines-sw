@@ -209,6 +209,7 @@ config/data/nrtscw_omg_view.dat
 config/data/omg.dat
 config/data/pmg.dat
 config/data/pmg_restrictions.dat
+config/data/opus.env
 config/README
 config/adp.pipeline
 config/nrtinput.pipeline
