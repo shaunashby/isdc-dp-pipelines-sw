@@ -1,8 +1,8 @@
-nswst      nrt       
-nswdp      nrt       
-nswosm     nrt       
-nswfin     nrt       
-nswmon     nrt       
-nswcor     nrt       
-cleanopus  nrt       
-cleanosf   nrt       
+nswst      nrtscw     nrt
+nswdp      nrtscw     nrt
+nswosm     nrtscw     nrt
+nswfin     nrtscw     nrt
+nswmon     nrtscw     nrt
+nswcor     nrtscw     nrt
+cleanopus  nrtscw     nrt
+cleanosf   nrtscw     nrt

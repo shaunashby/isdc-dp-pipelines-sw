@@ -1,8 +1,8 @@
-ninpst     nrt       
-ninput     nrt       
-ninpmd     nrt       
-ninpmp     nrt       
-ninpmc     nrt       
-ninpfi     nrt       
-cleanopus  nrt       
-cleanosf   nrt       
+ninpst     nrtinput   nrt       
+ninput     nrtinput   nrt       
+ninpmd     nrtinput   nrt       
+ninpmp     nrtinput   nrt       
+ninpmc     nrtinput   nrt       
+ninpfi     nrtinput   nrt       
+cleanopus  nrtinput   nrt       
+cleanosf   nrtinput   nrt       
