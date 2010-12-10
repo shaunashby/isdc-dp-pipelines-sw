@@ -119,14 +119,14 @@ OPUSWORKDIR : foreach my $opuswork ( @opusworks ) {
 				chomp;
 				$_ = &File::Basename::basename ( $_ );
 				( $pid, $proc, $stat, $hex, $pth, $node, $com ) = &OPUSLIB::ParsePSTAT ( $_ );
-				next if ( ( $machine ) && ( $node !~ /^$machine$/ ) );		#	071113 - Jake - SPR 4762 - added ^ and $
+				next if ( ( $machine ) && ( $node !~ /^$machine$/ ) );
 				next if ( ( $path ) && ( $pth !~ /$path/ ) );
 				
 				########################
 				#  In fact, different machines may have the same PID, and this
 				#   happened once.  So instead of using just the PID as the key, 
 				#   use the string "node.pid"
-				$foundpids{"$node.$pid"} = $pid;	#	060501 - Jake - SCREW 1856
+				$foundpids{"$node.$pid"} = $pid;
 				$pid = "$node.$pid";
 				########################
 				push @pids, $pid;
@@ -155,7 +155,7 @@ OPUSWORKDIR : foreach my $opuswork ( @opusworks ) {
 				#  Find the appropriate machines
 				foreach ( @list ) {
 					chomp;
-					next if ( /^\s*!/ );	#	I don't think this is really needed as the next line should take care of it.
+					next if ( /^\s*!/ );
 					next unless ( /^$process\s+$path\s+(\S+)/ );
 					push @machines2start, $1;
 				}
@@ -189,16 +189,9 @@ OPUSWORKDIR : foreach my $opuswork ( @opusworks ) {
 				( $pid, $proc, $stat, $hex, $pth, $node, $com ) = &OPUSLIB::ParsePSTAT ( $_ );
 				
 				next if ( ( $path ) && ( $pth !~ /$path/ ) );      
+				if ( ( $machine ) && ( $node !~ /^$machine$/ ) ) { next; }
 				
-				#  Might want to suspend both nswdp processes on different machines, for 
-				#   example.
-				#      die "${prefix}  ERROR:  multiple processes $process on path $path;  specify machine please.\n
-				#			(I'm assuming you don't have two identical processes on the same machine.)\n" 
-				#			if ( (defined $processes{$proc}) && (!(defined $machine)) && ($command !~ /stat/) );
-				
-				if ( ( $machine ) && ( $node !~ /^$machine$/ ) ) { next; }		#	071113 - Jake - SPR 4762 - added ^ and $
-				
-				$foundpids{$pid} = $pid;	#	060501 - Jake - SCREW 1856
+				$foundpids{$pid} = $pid;
 				$processes{$pid} = $proc;
 				$machines{$pid} = $node;
 				$stats{$pid} = $stat;
@@ -219,7 +212,6 @@ OPUSWORKDIR : foreach my $opuswork ( @opusworks ) {
 	if ( @pids ) {
 		print "$prefix1 Found the following:\n\n" unless ( $check );
 
-		#	060407 - Jake - for a better appearance, I now sort by path, process and machine, instead of the default, pid.
 		foreach $pid ( sort { 
 			$paths{$a} cmp $paths{$b} 
 							||
@@ -235,16 +227,12 @@ OPUSWORKDIR : foreach my $opuswork ( @opusworks ) {
 			printf ( "%-20s", "process=$processes{$pid}" );
 			printf ( "%-20s", "path=$paths{$pid}" );
 			printf ( "%-20s", "machine=$machines{$pid}" );
-			printf ( "%-20s", "pid=$foundpids{$pid}" ) if ( defined ( $foundpids{$pid} ) );	#	060501 - Jake - SCREW 1856
+			printf ( "%-20s", "pid=$foundpids{$pid}" ) if ( defined ( $foundpids{$pid} ) );
 			printf ( "%-30s", "Status=$stats{$pid}" ) if ( defined ( $stats{$pid} ) );
 			printf ( "%-20s", "CurrentCommand=$curcom{$pid}" ) if ( ( defined ( $curcom{$pid} ) ) && ( $curcom{$pid} =~ /[a-z]/ ) );
 			printf "\n";
 			
 			if ( $check ) {
-				#  Check if this is on the blackboard
-				#   Note [_-] after proc to tightly match adp not adpmon, but also
-				#   get cleanopus, which doesn't leave space for _'s after.
-				#	071113 - Jake - SPR 4762 - added the _ after machines
 				$runline = "$myls $ENV{OPUS_HOME_DIR}/*-*$processes{$pid}"."[_-]"."*.*-*$paths{$pid}*$machines{$pid}_* 2> /dev/null";
 				@list = `$runline`;
 				if ( ! ( @list ) ) {
@@ -266,7 +254,7 @@ OPUSWORKDIR : foreach my $opuswork ( @opusworks ) {
 				
 				foreach ( @list ) {
 					chomp;
-					next unless ( /$processes{$pid}/ ); # blanks
+					next unless ( /$processes{$pid}/ );
 					$_ = &File::Basename::basename ( $_ );	  
 					( $pid, $proc, $stat, $hex, $pth, $node, $com ) = &OPUSLIB::ParsePSTAT ( $_ );    
 					print "$prefix1 Found BB entry for:         ";
@@ -274,7 +262,7 @@ OPUSWORKDIR : foreach my $opuswork ( @opusworks ) {
 					printf ( "%-20s", "process=$proc" );
 					printf ( "%-20s", "path=$pth" );
 					printf ( "%-20s", "machine=$node" );
-					printf ( "%-20s", "pid=$foundpids{$pid}" );	#	060501 - Jake - SCREW 1856
+					printf ( "%-20s", "pid=$foundpids{$pid}" );
 					printf ( "%-30s", "Status=$stat" );
 					printf ( "%-20s", "CurrentCommand=$com" );
 					printf "\n";
@@ -284,9 +272,6 @@ OPUSWORKDIR : foreach my $opuswork ( @opusworks ) {
 						print "$prefix1 ERROR:  process $proc ABSENT according to BB!\n";
 						next;
 					}
-					#  Now check that it's really running:  ps -ef will return lines like:
-					#        UID   PID  PPID  C    STIME TTY      TIME CMD
-					#   ops_nrt  1538  1516  0   Feb 26 ?       72:58 xpoll -p /isdc/sw/nrt_sw/prod/opus//nrtrev//nrtrev.path -r nrvirn -v 4dded9a8fc
 					
 					# recall that cleanosf isn't an xpoll but an osfdelete task
 					#  Note space after proc to tightly match adp not adpmon
@@ -296,7 +281,6 @@ OPUSWORKDIR : foreach my $opuswork ( @opusworks ) {
 						$runcom = "rsh $node $myps axw | egrep -v grep";
 					} else {
 						$runcom = "$myssh $node $myps axw | egrep -v grep";
-#						$runcom = "$myssh -1 $node $myps axw | egrep -v grep";
 					}
 					print "$prefix1 \n$prefix1 $runcom \n";
 					
@@ -334,7 +318,7 @@ OPUSWORKDIR : foreach my $opuswork ( @opusworks ) {
 		#  
 		#  Confirm:
 		#
-		unless ( $donotconfirm ) {		#	040726 - Jake - SCREW 1524 - added to assist with --command=restart
+		unless ( $donotconfirm ) {
 			print "$prefix1 Do you want to $command these?  [y]:  ";
 			$reply = <STDIN>;
 			chomp $reply;
@@ -378,10 +362,7 @@ OPUSWORKDIR : foreach my $opuswork ( @opusworks ) {
 			delete $ENV{DISPLAY} if (defined $ENV{DISPLAY});
 			$runcom = "odcl_broker U $machines{$pid} $processes{$pid} OPUS_DEFINITIONS_DIR:$paths{$pid}.path";
 			
-		} elsif ( $command =~ /rest/ ) {		#	040726 - Jake - SCREW 1524
-			#/isdc/run/pipelines/nrt/opus//00002674-nswosm___-idle___________.41051348-nrtscw___-nrtscw3_____________-halt
-	
-			#	040809 - Jake - added this whole section to deal with restarting absent OSFs
+		} elsif ( $command =~ /rest/ ) {	
 			my $need2halt;
 			my $need2delete;
 			unless ( $donotabscheck ) {
@@ -401,7 +382,6 @@ OPUSWORKDIR : foreach my $opuswork ( @opusworks ) {
 					}
 				}
 			} else {
-				#	071113 - Jake - SPR 4762 - added the _ after machines
 				$runcom = "$myls $ENV{OPUS_HOME_DIR}/*-*$processes{$pid}"."[_-]"."*.*-*$paths{$pid}*$machines{$pid}_* 2> /dev/null";
 				my $restartingosf = `$runcom`;
 				chomp ( $restartingosf );
@@ -421,7 +401,7 @@ OPUSWORKDIR : foreach my $opuswork ( @opusworks ) {
 				print "$prefix1 Running \'$runcom\'\n";
 				print `$runcom`;
 			} elsif ( $need2halt ) {
-				$runcom = "$0 --path=$paths{$pid} --process=$processes{$pid} --machine=$machines{$pid} --command=halt --donotconfirm";#	040804 - Jake - SPR 3799
+				$runcom = "$0 --path=$paths{$pid} --process=$processes{$pid} --machine=$machines{$pid} --command=halt --donotconfirm";
 				print "$prefix1 Running \'$runcom\'\n";
 				print `$runcom`;
 	
@@ -481,19 +461,15 @@ OPUSWORKDIR : foreach my $opuswork ( @opusworks ) {
 		} else {
 			print     "$prefix1 Running \'$runcom\'\n";
 			print LOG "$prefix1 Running \'$runcom\'\n";
-			@result = `$runcom`;	#	040804 - Jake - @result here is actually ~ "[1] 14125"
+			@result = `$runcom`;
 			if ( $? ) {
 				print LOG "$prefix1 ERROR:  could not \'$runcom\': @result\n";
 				close LOG;
 				die "$prefix1 ERROR:  could not \'$runcom\': @result";
-#	061211 - Jake - push this in temporarily for something
-#			} else {
-#				print @result;
 			}
 		}
-	} # foreach process
-
-}	#	end of foreach my $opuswork ( @opusworks ) {
+	}
+}
 
 #  If no particular process was specified, or if "pipeline" was, then 
 close LOG;
@@ -529,7 +505,6 @@ sub GetParameters {
 		}  
 		elsif ( /^--m\w*=(.*)$/ ) {
 			$machine  = $1;
-			#	051114 - Jake - SCREW 1791
 			$machine =~ tr/A-Z/a-z/;
 			$machine =~ s/anab/anaB/i;
 			$machine =~ s/anas/anaS/i;
@@ -539,13 +514,13 @@ sub GetParameters {
 			$command = "check";
 		}
 		elsif ( /^--donotconfirm$/ ) {
-			$donotconfirm++; 		#	040726 - Jake - SCREW 1524 - added to assist with --command=restart
+			$donotconfirm++;
 		}
 		elsif ( /^--donotabscheck$/ ) {
-			$donotabscheck++;		#	040809 - Jake - Absent OSF checking
+			$donotabscheck++;
 		}
 		elsif ( /^--pi\w*=(.*)$/ ) {
-			$pipelinefile  = $1;	#	050307 - Jake - SCREW 1674
+			$pipelinefile  = $1;
 		}
 		elsif ( /--o\w*=(.*)$/ ) {
 			print "$prefix1 \n$prefix1 DO NOT USE THE --opuswork FEATURE WHEN DOING ANYTHING OTHER THAN LOOKING!!!\n$prefix1\n" unless ( $printedwarning );
