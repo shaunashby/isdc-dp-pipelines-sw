@@ -97,6 +97,7 @@ t/02-pipeline.t
 t/03-configuration.t
 t/04-load-legacy.t
 t/05-test-compile-legacy-scripts.t
+t/06-test-rev1000-nrvmon-legacy-script.t
 t/pipelines-test-config.yml
 test.pl
 config/paths/adp.path
