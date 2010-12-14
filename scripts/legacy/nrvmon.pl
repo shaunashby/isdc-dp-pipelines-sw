@@ -175,13 +175,12 @@ sub PSDcheck {
 	my $last_status;
 	
 	# Determine what revolution we're in;  last written good enough:
-	# FIXME: This is really lame and adding the 0 to make sure we don't pick up
-	# stray files is also a hack. Eventually fix by actually checking that
-	# we get directories returned....
-	my @revs = `$myls $ENV{REP_BASE_PROD}/scw/0* 2> /dev/null`;
-	my $revno = pop @revs;  
-	chomp $revno;
-	$revno = &File::Basename::basename ( $revno );
+	my $revno = 9999;
+	opendir (DIR, "$ENV{REP_BASE_PROD}/scw") || die "$ENV{REP_BASE_PROD}: cannot read: $!\n";
+	my @revs = map { $_ } sort { $b <=> $a } grep ($_ ne "." && $_ ne ".." && (-d "$ENV{REP_BASE_PROD}/scw/$_"), readdir(DIR) );
+	$revno = $revs[0];
+	closedir (DIR);
+		
 	print "*******     Current revolution is $revno\n";
 	
 	foreach $psdtype ("spa","spp","spe","sps") {  
