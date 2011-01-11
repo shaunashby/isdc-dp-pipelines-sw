@@ -1622,19 +1622,34 @@ sub RevArchiving {
 	&ISDCPipeline::PipelineStep (
 		"step"         => "adp - ERROR during revolution archiving",
 		"program_name" => "ERROR",
-		"error"        => "Problem cleaning attitude_snapshot files:  @result",
+		"error"        => "Problem cleaning time correlation files:  @result",
 		) if ($retval);
-	
+
+	# # Parameter file for  tcor_flag
+	# tcor_dol,s,h,,,,"DOL of the tcor file to be flagged"
+	# max_killed,i,h,200,0,10000,"Max number of record killed"
+	($retval, @result) = &ISDCPipeline::PipelineStep (
+	        "step"           => "adp - run tcor_flag on last time_correlation.fits",
+	        "program_name"   => "tcor_flag",
+	        "par_tcor_dol"   => "$ENV{OUTPATH}/aux/adp/$revnum.000/time_correlation.fits",
+	        );
+
+	&ISDCPipeline::PipelineStep (
+	        "step"         => "adp - ERROR running tcor_flag.",
+	        "program_name" => "ERROR",
+	        "error"        => "Problem running tcor_flag:  @result",
+	    ) if ($retval);
+
 	($retval,@result) = &ISDCPipeline::LinkReplace(
 		"root"   => "attitude_snapshot",
 		"subdir" => "$ENV{OUTPATH}/aux/adp/$revnum.000",
 		"proc"   => "adp",
 		);
-	
+
 	&ISDCPipeline::PipelineStep (
 		"step"         => "adp - ERROR during revolution archiving",
 		"program_name" => "ERROR",
-		"error"        => "Problem cleaning time_correlation files:  @result",
+		"error"        => "Problem cleaning attitude_snapshot files:  @result",
 		) if ($retval);
 	
 	&ISDCPipeline::PipelineStep (
