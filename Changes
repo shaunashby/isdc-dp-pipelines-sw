@@ -1,5 +1,8 @@
 Revision history for isdc-dp-pipelines-sw
 
+0.2	11/01/2011 15:14:13
+	Add extra step in ADP pipeline to run tor_flag.
+
 0.01    29/11/2010 13:15:44
         First version.
 

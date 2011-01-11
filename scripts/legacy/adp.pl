@@ -1625,9 +1625,6 @@ sub RevArchiving {
 		"error"        => "Problem cleaning time correlation files:  @result",
 		) if ($retval);
 
-	# # Parameter file for  tcor_flag
-	# tcor_dol,s,h,,,,"DOL of the tcor file to be flagged"
-	# max_killed,i,h,200,0,10000,"Max number of record killed"
 	($retval, @result) = &ISDCPipeline::PipelineStep (
 	        "step"           => "adp - run tcor_flag on last time_correlation.fits",
 	        "program_name"   => "tcor_flag",
