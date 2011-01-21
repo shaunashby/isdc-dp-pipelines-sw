@@ -1612,18 +1612,21 @@ sub RevArchiving {
 	### clean up time corr and snapshot att versions;  remove all but last,
 	### and move last to replace link
 	##
-	
+
 	($retval,@result) = &ISDCPipeline::LinkReplace(
 		"root"   => "time_correlation",
 		"subdir" => "$ENV{OUTPATH}/aux/adp/$revnum.000",
 		"proc"   => "adp",
 		);
-	
+
 	&ISDCPipeline::PipelineStep (
 		"step"         => "adp - ERROR during revolution archiving",
 		"program_name" => "ERROR",
 		"error"        => "Problem cleaning time correlation files:  @result",
 		) if ($retval);
+
+	# Make sure file is writeable:
+	&ISDCPipeline::RunProgram( "$mychmod +w $ENV{OUTPATH}/aux/adp/$revnum.000/time_correlation.fits*");
 
 	($retval, @result) = &ISDCPipeline::PipelineStep (
 	        "step"           => "adp - run tcor_flag on last time_correlation.fits",
@@ -1648,7 +1651,7 @@ sub RevArchiving {
 		"program_name" => "ERROR",
 		"error"        => "Problem cleaning attitude_snapshot files:  @result",
 		) if ($retval);
-	
+
 	&ISDCPipeline::PipelineStep (
 		"step"         => "adp - archiving check: snapshot attitudes and time correlation files cleaned successfully",
 		"program_name" => "NONE",
