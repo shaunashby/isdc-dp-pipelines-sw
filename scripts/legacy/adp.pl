@@ -1626,7 +1626,7 @@ sub RevArchiving {
 		) if ($retval);
 
 	# Make sure file is writeable:
-	&ISDCPipeline::RunProgram( "$mychmod +w $ENV{OUTPATH}/aux/adp/$revnum.000/time_correlation.fits*");
+	&ISDCPipeline::RunProgram( "$mychmod a+w $ENV{OUTPATH}/aux/adp/$revnum.000/time_correlation.fits*");
 
 	($retval, @result) = &ISDCPipeline::PipelineStep (
 	        "step"           => "adp - run tcor_flag on last time_correlation.fits",
