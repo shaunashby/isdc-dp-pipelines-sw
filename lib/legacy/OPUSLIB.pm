@@ -41,7 +41,7 @@ use vars qw( $VERSION @EXPORT_OK %EXPORT_TAGS );
 
 $VERSION = '0.1';
 
-my %osf_stati = (
+our %osf_stati = (
 	ADP_ST_X			=> "xww",
 	ADP_ST_C			=> "cww",
 	ADP_COMPLETE	=> "ccc",
