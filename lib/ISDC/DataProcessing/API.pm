@@ -21,7 +21,7 @@ use vars qw( $VERSION @EXPORT_OK %EXPORT_TAGS );
 
 @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 
-$VERSION = '0.2';
+$VERSION = '0.2.1';
 
 # Context exported as global variable using :context tag:
 %EXPORT_TAGS = (
