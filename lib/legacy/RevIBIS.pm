@@ -1422,7 +1422,7 @@ sub ICAiltNRT {
 		"par_minRT"        => "6.0",
 		"par_maxLT"        => "38.0",
 		"par_minLT"        => "14.7",
- 		"par_maxDead"      => "650",
+	        "par_maxDead"      => "730",
 		"par_maxNewDead"   => "9",
 		"par_maxLTM"       => "99",
 		"par_max_step_inc" => "12",
