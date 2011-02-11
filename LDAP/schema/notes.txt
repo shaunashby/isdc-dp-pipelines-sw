@@ -1,0 +1,4 @@
+http://www.zytrax.com/books/ldap/ch5/step2.html
+
+For more info about schemas.
+
