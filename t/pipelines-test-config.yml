@@ -1,321 +1,431 @@
 ---
+ldapbasedn: dc=integral,dc=ops
 pipelines:
   adp:
+    class: ADP
     processes:
     - name: adpst
       host: nrt
+      active: TRUE
       resource: adpst.resource
     - name: adpmon
       host: nrt
+      active: TRUE
       resource: adpmon.resource
     - name: adp
       host: nrt
+      active: TRUE
       resource: adp.resource
     - name: adpfin
       host: nrt
+      active: TRUE
       resource: adpfin.resource
     - name: cleanopus
       host: nrt
+      active: TRUE
       resource: cleanopus.resource
     - name: cleanosf
       host: nrt
+      active: TRUE
       resource: cleanosf.resource
   nrtinput:
+    class: NRT
     processes:
     - name: ninpst
       host: nrt
+      active: TRUE
       resource: ninpst.resource
     - name: ninput
       host: nrt
+      active: TRUE
       resource: ninput.resource
     - name: ninpmd
       host: nrt
+      active: TRUE
       resource: ninpmd.resource
     - name: ninpmp
       host: nrt
+      active: TRUE
       resource: ninpmp.resource
     - name: ninpmc
       host: nrt
+      active: TRUE
       resource: ninpmc.resource
     - name: ninpfi
       host: nrt
+      active: TRUE
       resource: ninpfi.resource
     - name: cleanopus
       host: nrt
+      active: TRUE
       resource: cleanopus.resource
     - name: cleanosf
       host: nrt
+      active: TRUE
       resource: cleanosf.resource
   nrtscw:
+    class: NRT
     processes:
     - name: nswst
       host: nrt
+      active: TRUE
       resource: nswst.resource
     - name: nswdp
       host: nrt
+      active: TRUE
       resource: nswdp.resource
     - name: nswosm
       host: nrt
+      active: TRUE
       resource: nswosm.resource
     - name: nswfin
       host: nrt
+      active: TRUE
       resource: nswfin.resource
     - name: nswmon
       host: nrt
+      active: TRUE
       resource: nswmon.resource
     - name: nswcor
       host: nrt
+      active: TRUE
       resource: nswcor.resource
     - name: cleanopus
       host: nrt
+      active: TRUE
       resource: cleanopus.resource
     - name: cleanosf
       host: nrt
+      active: TRUE
       resource: cleanosf.resource
   nrtrev:
+    class: NRT
     processes:
     - name: nrviii
       host: nrt
+      active: TRUE
       resource: nrviii.resource
     - name: nrvarc
       host: nrt
+      active: TRUE
       resource: nrvarc.resource
     - name: nrvfin
       host: nrt
+      active: TRUE
       resource: nrvfin.resource
     - name: nrvgen
       host: nrt
+      active: TRUE
       resource: nrvgen.resource
     - name: nrvidp
       host: nrt
+      active: TRUE
       resource: nrvidp.resource
     - name: nrvirc
       host: nrt
+      active: TRUE
       resource: nrvirc.resource
     - name: nrvire
       host: nrt
+      active: TRUE
       resource: nrvire.resource
     - name: nrvirn
       host: nrt
+      active: TRUE
       resource: nrvirn.resource
     - name: nrvirv
       host: nrt
+      active: TRUE
       resource: nrvirv.resource
     - name: nrvjme
       host: nrt
+      active: TRUE
       resource: nrvjme.resource
     - name: nrvjmf
       host: nrt
+      active: TRUE
       resource: nrvjmf.resource
     - name: nrvmon
       host: nrt
+      active: TRUE
       resource: nrvmon.resource
     - name: nrvspi
       host: nrt
+      active: TRUE
       resource: nrvspi.resource
     - name: nrvst
       host: nrt
+      active: TRUE
       resource: nrvst.resource
     - name: cleanopus
       host: nrt
+      active: TRUE
       resource: cleanopus.resource
     - name: cleanosf
       host: nrt
+      active: TRUE
       resource: cleanosf.resource
   nrtqla:
+    class: NRT
     processes:
     - name: nqlst
       host: nrt
+      active: TRUE
       resource: nqlst.resource
     - name: nqlscw
       host: nrt
+      active: TRUE
       resource: nqlscw.resource
     - name: nqlscw
       host: nrt
+      active: TRUE
       resource: nqlscw.resource
     - name: nqlscw
       host: nrt
+      active: TRUE
       resource: nqlscw.resource
     - name: nqlobs
       host: nrt
+      active: TRUE
       resource: nqlobs.resource
     - name: nqlfin
       host: nrt
+      active: TRUE
       resource: nqlfin.resource
     - name: nqlmon
       host: nrt
+      active: TRUE
       resource: nqlmon.resource
     - name: cleanopus
       host: nrt
+      active: TRUE
       resource: cleanopus.resource
     - name: cleanosf
       host: nrt
+      active: TRUE
       resource: cleanosf.resource
   consinput:
+    class: CONS
     processes:
     - name: cinpst
       host: cons
+      active: TRUE
       resource: cinpst.resource
     - name: cinput
       host: cons
+      active: TRUE
       resource: cinput.resource
     - name: cinpfi
       host: cons
+      active: TRUE
       resource: cinpfi.resource
     - name: cleanosf
       host: cons
+      active: TRUE
       resource: cleanosf.resource
     - name: cleanopus
       host: cons
+      active: TRUE
       resource: cleanopus.resource
   consscw:
+    class: CONS
     processes:
     - name: cswst
       host: cons
+      active: TRUE
       resource: cswst.resource
     - name: cswdp
       host: cons
+      active: TRUE
       resource: cswdp.resource
     - name: cswdp
       host: cons
+      active: TRUE
       resource: cswdp.resource
     - name: cswosm
       host: cons
+      active: TRUE
       resource: cswosm.resource
     - name: cswosm
       host: cons
+      active: TRUE
       resource: cswosm.resource
     - name: cswcor
       host: cons
+      active: TRUE
       resource: cswcor.resource
     - name: cswcor
       host: cons
+      active: TRUE
       resource: cswcor.resource
     - name: cswfin
       host: cons
+      active: TRUE
       resource: cswfin.resource
     - name: cleanosf
       host: cons
+      active: TRUE
       resource: cleanosf.resource
     - name: cleanopus
       host: cons
+      active: TRUE
       resource: cleanopus.resource
   consrev:
+    class: CONS
     processes:
     - name: crviii
       host: cons
+      active: TRUE
       resource: crviii.resource
     - name: crvarc
       host: cons
+      active: TRUE
       resource: crvarc.resource
     - name: crvfin
       host: cons
+      active: TRUE
       resource: crvfin.resource
     - name: crvgen
       host: cons
+      active: TRUE
       resource: crvgen.resource
     - name: crvidp
       host: cons
+      active: TRUE
       resource: crvidp.resource
     - name: crvirc
       host: cons
+      active: TRUE
       resource: crvirc.resource
     - name: crvire
       host: cons
+      active: TRUE
       resource: crvire.resource
     - name: crvirn
       host: cons
+      active: TRUE
       resource: crvirn.resource
     - name: crvirv
       host: cons
+      active: TRUE
       resource: crvirv.resource
     - name: crvjme
       host: cons
+      active: TRUE
       resource: crvjme.resource
     - name: crvjmf
       host: cons
+      active: TRUE
       resource: crvjmf.resource
     - name: crvspi
       host: cons
+      active: TRUE
       resource: crvspi.resource
     - name: crvst
       host: cons
+      active: TRUE
       resource: crvst.resource
     - name: crvmon
       host: cons
+      active: TRUE
       resource: crvmon.resource
     - name: cleanosf
       host: cons
+      active: TRUE
       resource: cleanosf.resource
     - name: cleanopus
       host: cons
+      active: TRUE
       resource: cleanopus.resource
   conssa:
+    class: CONS
     processes:
     - name: csast
       host: cons
+      active: TRUE
       resource: csast.resource
     - name: csaob1
       host: cons
+      active: TRUE
       resource: csaob1.resource
     - name: csaob2
       host: cons
+      active: TRUE
       resource: csaob2.resource
     - name: csasw1
       host: cons
+      active: TRUE
       resource: csasw1.resource
     - name: csasw2
       host: cons
+      active: TRUE
       resource: csasw2.resource
     - name: csafin
       host: cons
+      active: TRUE
       resource: csafin.resource
     - name: cleanopus
       host: cons
+      active: TRUE
       resource: cleanopus.resource
     - name: cleanosf
       host: cons
+      active: TRUE
       resource: cleanosf.resource
   consssa:
+    class: CONS
     processes:
     - name: cssst
       host: cons
+      active: TRUE
       resource: cssst.resource
     - name: cssfin
       host: cons
+      active: TRUE
       resource: cssfin.resource
     - name: cssfin
       host: cons
+      active: TRUE
       resource: cssfin.resource
     - name: cssfin
       host: cons
+      active: TRUE
       resource: cssfin.resource
     - name: cssfin
       host: cons
+      active: TRUE
       resource: cssfin.resource
     - name: cssfin
       host: cons
+      active: TRUE
       resource: cssfin.resource
     - name: cssscw
       host: cons
+      active: TRUE
       resource: cssscw.resource
     - name: cssscw
       host: cons
+      active: TRUE
       resource: cssscw.resource
     - name: cssscw
       host: cons
+      active: TRUE
       resource: cssscw.resource
     - name: cssscw
       host: cons
+      active: TRUE
       resource: cssscw.resource
     - name: cssscw
       host: cons
+      active: TRUE
       resource: cssscw.resource
     - name: cleanopus
       host: cons
+      active: TRUE
       resource: cleanopus.resource
     - name: cleanosf
       host: cons
+      active: TRUE
       resource: cleanosf.resource
 ---
 comments:

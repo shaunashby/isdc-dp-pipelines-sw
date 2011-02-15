@@ -15,9 +15,15 @@ use strict;
 
 use ISDC::DataProcessing::Pipeline;
 
+my $obj;
+
 for my $pipeline (qw( nrtinput nrtscw nrtrev nrtqla adp consinput consscw consrev ) ) {
     print $pipeline.":\n";
-    my $obj = ISDC::DataProcessing::Pipeline->new({ name => "$pipeline", config => "t/pipelines-test-config.yml" });
+    $obj = ISDC::DataProcessing::Pipeline->new({ name => "$pipeline", config => "t/pipelines-test-config.yml" });
     print "\n";
     print "$obj\n";
 }
+
+print "Dumping LDIF for ".$obj->name." pipeline:\n\n";
+
+print $obj->to_ldif(),"\n";
