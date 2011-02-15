@@ -38,7 +38,8 @@ sub new() {
 	(exists($fileconfig->{pipelines}) && ref($fileconfig->{pipelines}) eq 'HASH');
 
     $self->{configuration} = { pipelines => {} };
-
+    $self->{ldapbasedn} = $fileconfig->{ldapbasedn} || 'dc=local';
+    
     foreach my $pipeline (keys %{ $fileconfig->{pipelines} }) {
 	$self->{configuration}->{pipelines}->{$pipeline} = 
 	     ISDC::DataProcessing::Pipeline::Configuration::Pipeline->new(
@@ -62,6 +63,8 @@ sub getPipeline() {
 	(exists($self->{configuration}->{pipelines}->{$name}));
     return $self->{configuration}->{pipelines}->{$name};
 }
+
+sub ldapbasedn() { return shift->{ldapbasedn} };
 
 1;
 

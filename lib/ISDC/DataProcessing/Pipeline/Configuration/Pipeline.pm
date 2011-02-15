@@ -43,6 +43,8 @@ sub name() { return shift->{name} }
 
 sub processes() { return shift->{processes} || [] }
 
+sub class() { return shift->{class} || undef }
+
 1;
 
 __END__

@@ -34,6 +34,8 @@ sub name() { return shift->{name} }
 
 sub host() { return shift->{host} }
 
+sub active() { return shift->{active} }
+
 sub resource() { return shift->{resource} }
 
 sub to_string() {
