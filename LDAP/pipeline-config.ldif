@@ -10,8 +10,6 @@ pipelineMemberProcess: processName=ninpmd,ou=Processes,ou=Services,dc=integral,d
 pipelineMemberProcess: processName=ninpmp,ou=Processes,ou=Services,dc=integral,dc=ops
 pipelineMemberProcess: processName=ninpmc,ou=Processes,ou=Services,dc=integral,dc=ops
 pipelineMemberProcess: processName=ninpfi,ou=Processes,ou=Services,dc=integral,dc=ops
-pipelineMemberProcess: processName=cleanopus,ou=Processes,ou=Services,dc=integral,dc=ops
-pipelineMemberProcess: processName=cleanosf,ou=Processes,ou=Services,dc=integral,dc=ops
 
 dn: processName=ninpst,ou=Processes,ou=Services,dc=integral,dc=ops
 objectClass: top
@@ -61,23 +59,6 @@ processHost: nrt
 processActive: TRUE
 processResource: ninpfi.resource
 
-dn: processName=cleanopus,ou=Processes,ou=Services,dc=integral,dc=ops
-objectClass: top
-objectClass: pipelineProcess
-processName: cleanopus
-processHost: nrt
-processActive: TRUE
-processResource: cleanopus.resource
-
-dn: processName=cleanosf,ou=Processes,ou=Services,dc=integral,dc=ops
-objectClass: top
-objectClass: pipelineProcess
-processName: cleanosf
-processHost: nrt
-processActive: TRUE
-processResource: cleanosf.resource
-
-
 dn: pipelineName=nrtscw,ou=Pipelines,ou=Services,dc=integral,dc=ops
 objectClass: integralPipeline
 objectClass: top
@@ -90,8 +71,6 @@ pipelineMemberProcess: processName=nswosm,ou=Processes,ou=Services,dc=integral,d
 pipelineMemberProcess: processName=nswfin,ou=Processes,ou=Services,dc=integral,dc=ops
 pipelineMemberProcess: processName=nswmon,ou=Processes,ou=Services,dc=integral,dc=ops
 pipelineMemberProcess: processName=nswcor,ou=Processes,ou=Services,dc=integral,dc=ops
-pipelineMemberProcess: processName=cleanopus,ou=Processes,ou=Services,dc=integral,dc=ops
-pipelineMemberProcess: processName=cleanosf,ou=Processes,ou=Services,dc=integral,dc=ops
 
 dn: processName=nswst,ou=Processes,ou=Services,dc=integral,dc=ops
 objectClass: top
@@ -141,23 +120,6 @@ processHost: nrt
 processActive: TRUE
 processResource: nswcor.resource
 
-dn: processName=cleanopus,ou=Processes,ou=Services,dc=integral,dc=ops
-objectClass: top
-objectClass: pipelineProcess
-processName: cleanopus
-processHost: nrt
-processActive: TRUE
-processResource: cleanopus.resource
-
-dn: processName=cleanosf,ou=Processes,ou=Services,dc=integral,dc=ops
-objectClass: top
-objectClass: pipelineProcess
-processName: cleanosf
-processHost: nrt
-processActive: TRUE
-processResource: cleanosf.resource
-
-
 dn: pipelineName=nrtrev,ou=Pipelines,ou=Services,dc=integral,dc=ops
 objectClass: integralPipeline
 objectClass: top
@@ -178,8 +140,6 @@ pipelineMemberProcess: processName=nrvjmf,ou=Processes,ou=Services,dc=integral,d
 pipelineMemberProcess: processName=nrvmon,ou=Processes,ou=Services,dc=integral,dc=ops
 pipelineMemberProcess: processName=nrvspi,ou=Processes,ou=Services,dc=integral,dc=ops
 pipelineMemberProcess: processName=nrvst,ou=Processes,ou=Services,dc=integral,dc=ops
-pipelineMemberProcess: processName=cleanopus,ou=Processes,ou=Services,dc=integral,dc=ops
-pipelineMemberProcess: processName=cleanosf,ou=Processes,ou=Services,dc=integral,dc=ops
 
 dn: processName=nrviii,ou=Processes,ou=Services,dc=integral,dc=ops
 objectClass: top
@@ -293,23 +253,6 @@ processHost: nrt
 processActive: TRUE
 processResource: nrvst.resource
 
-dn: processName=cleanopus,ou=Processes,ou=Services,dc=integral,dc=ops
-objectClass: top
-objectClass: pipelineProcess
-processName: cleanopus
-processHost: nrt
-processActive: TRUE
-processResource: cleanopus.resource
-
-dn: processName=cleanosf,ou=Processes,ou=Services,dc=integral,dc=ops
-objectClass: top
-objectClass: pipelineProcess
-processName: cleanosf
-processHost: nrt
-processActive: TRUE
-processResource: cleanosf.resource
-
-
 dn: pipelineName=nrtqla,ou=Pipelines,ou=Services,dc=integral,dc=ops
 objectClass: integralPipeline
 objectClass: top
@@ -323,8 +266,6 @@ pipelineMemberProcess: processName=nqlscw,ou=Processes,ou=Services,dc=integral,d
 pipelineMemberProcess: processName=nqlobs,ou=Processes,ou=Services,dc=integral,dc=ops
 pipelineMemberProcess: processName=nqlfin,ou=Processes,ou=Services,dc=integral,dc=ops
 pipelineMemberProcess: processName=nqlmon,ou=Processes,ou=Services,dc=integral,dc=ops
-pipelineMemberProcess: processName=cleanopus,ou=Processes,ou=Services,dc=integral,dc=ops
-pipelineMemberProcess: processName=cleanosf,ou=Processes,ou=Services,dc=integral,dc=ops
 
 dn: processName=nqlst,ou=Processes,ou=Services,dc=integral,dc=ops
 objectClass: top
@@ -333,22 +274,6 @@ processName: nqlst
 processHost: nrt
 processActive: TRUE
 processResource: nqlst.resource
-
-dn: processName=nqlscw,ou=Processes,ou=Services,dc=integral,dc=ops
-objectClass: top
-objectClass: pipelineProcess
-processName: nqlscw
-processHost: nrt
-processActive: TRUE
-processResource: nqlscw.resource
-
-dn: processName=nqlscw,ou=Processes,ou=Services,dc=integral,dc=ops
-objectClass: top
-objectClass: pipelineProcess
-processName: nqlscw
-processHost: nrt
-processActive: TRUE
-processResource: nqlscw.resource
 
 dn: processName=nqlscw,ou=Processes,ou=Services,dc=integral,dc=ops
 objectClass: top
@@ -382,23 +307,6 @@ processHost: nrt
 processActive: TRUE
 processResource: nqlmon.resource
 
-dn: processName=cleanopus,ou=Processes,ou=Services,dc=integral,dc=ops
-objectClass: top
-objectClass: pipelineProcess
-processName: cleanopus
-processHost: nrt
-processActive: TRUE
-processResource: cleanopus.resource
-
-dn: processName=cleanosf,ou=Processes,ou=Services,dc=integral,dc=ops
-objectClass: top
-objectClass: pipelineProcess
-processName: cleanosf
-processHost: nrt
-processActive: TRUE
-processResource: cleanosf.resource
-
-
 dn: pipelineName=adp,ou=Pipelines,ou=Services,dc=integral,dc=ops
 objectClass: integralPipeline
 objectClass: top
@@ -409,8 +317,6 @@ pipelineMemberProcess: processName=adpst,ou=Processes,ou=Services,dc=integral,dc
 pipelineMemberProcess: processName=adpmon,ou=Processes,ou=Services,dc=integral,dc=ops
 pipelineMemberProcess: processName=adp,ou=Processes,ou=Services,dc=integral,dc=ops
 pipelineMemberProcess: processName=adpfin,ou=Processes,ou=Services,dc=integral,dc=ops
-pipelineMemberProcess: processName=cleanopus,ou=Processes,ou=Services,dc=integral,dc=ops
-pipelineMemberProcess: processName=cleanosf,ou=Processes,ou=Services,dc=integral,dc=ops
 
 dn: processName=adpst,ou=Processes,ou=Services,dc=integral,dc=ops
 objectClass: top
@@ -444,23 +350,6 @@ processHost: nrt
 processActive: TRUE
 processResource: adpfin.resource
 
-dn: processName=cleanopus,ou=Processes,ou=Services,dc=integral,dc=ops
-objectClass: top
-objectClass: pipelineProcess
-processName: cleanopus
-processHost: nrt
-processActive: TRUE
-processResource: cleanopus.resource
-
-dn: processName=cleanosf,ou=Processes,ou=Services,dc=integral,dc=ops
-objectClass: top
-objectClass: pipelineProcess
-processName: cleanosf
-processHost: nrt
-processActive: TRUE
-processResource: cleanosf.resource
-
-
 dn: pipelineName=consinput,ou=Pipelines,ou=Services,dc=integral,dc=ops
 objectClass: integralPipeline
 objectClass: top
@@ -470,8 +359,6 @@ pipelineName: consinput
 pipelineMemberProcess: processName=cinpst,ou=Processes,ou=Services,dc=integral,dc=ops
 pipelineMemberProcess: processName=cinput,ou=Processes,ou=Services,dc=integral,dc=ops
 pipelineMemberProcess: processName=cinpfi,ou=Processes,ou=Services,dc=integral,dc=ops
-pipelineMemberProcess: processName=cleanosf,ou=Processes,ou=Services,dc=integral,dc=ops
-pipelineMemberProcess: processName=cleanopus,ou=Processes,ou=Services,dc=integral,dc=ops
 
 dn: processName=cinpst,ou=Processes,ou=Services,dc=integral,dc=ops
 objectClass: top
@@ -497,23 +384,6 @@ processHost: cons
 processActive: TRUE
 processResource: cinpfi.resource
 
-dn: processName=cleanosf,ou=Processes,ou=Services,dc=integral,dc=ops
-objectClass: top
-objectClass: pipelineProcess
-processName: cleanosf
-processHost: cons
-processActive: TRUE
-processResource: cleanosf.resource
-
-dn: processName=cleanopus,ou=Processes,ou=Services,dc=integral,dc=ops
-objectClass: top
-objectClass: pipelineProcess
-processName: cleanopus
-processHost: cons
-processActive: TRUE
-processResource: cleanopus.resource
-
-
 dn: pipelineName=consscw,ou=Pipelines,ou=Services,dc=integral,dc=ops
 objectClass: integralPipeline
 objectClass: top
@@ -528,8 +398,6 @@ pipelineMemberProcess: processName=cswosm,ou=Processes,ou=Services,dc=integral,d
 pipelineMemberProcess: processName=cswcor,ou=Processes,ou=Services,dc=integral,dc=ops
 pipelineMemberProcess: processName=cswcor,ou=Processes,ou=Services,dc=integral,dc=ops
 pipelineMemberProcess: processName=cswfin,ou=Processes,ou=Services,dc=integral,dc=ops
-pipelineMemberProcess: processName=cleanosf,ou=Processes,ou=Services,dc=integral,dc=ops
-pipelineMemberProcess: processName=cleanopus,ou=Processes,ou=Services,dc=integral,dc=ops
 
 dn: processName=cswst,ou=Processes,ou=Services,dc=integral,dc=ops
 objectClass: top
@@ -547,14 +415,6 @@ processHost: cons
 processActive: TRUE
 processResource: cswdp.resource
 
-dn: processName=cswdp,ou=Processes,ou=Services,dc=integral,dc=ops
-objectClass: top
-objectClass: pipelineProcess
-processName: cswdp
-processHost: cons
-processActive: TRUE
-processResource: cswdp.resource
-
 dn: processName=cswosm,ou=Processes,ou=Services,dc=integral,dc=ops
 objectClass: top
 objectClass: pipelineProcess
@@ -562,22 +422,6 @@ processName: cswosm
 processHost: cons
 processActive: TRUE
 processResource: cswosm.resource
-
-dn: processName=cswosm,ou=Processes,ou=Services,dc=integral,dc=ops
-objectClass: top
-objectClass: pipelineProcess
-processName: cswosm
-processHost: cons
-processActive: TRUE
-processResource: cswosm.resource
-
-dn: processName=cswcor,ou=Processes,ou=Services,dc=integral,dc=ops
-objectClass: top
-objectClass: pipelineProcess
-processName: cswcor
-processHost: cons
-processActive: TRUE
-processResource: cswcor.resource
 
 dn: processName=cswcor,ou=Processes,ou=Services,dc=integral,dc=ops
 objectClass: top
@@ -594,23 +438,6 @@ processName: cswfin
 processHost: cons
 processActive: TRUE
 processResource: cswfin.resource
-
-dn: processName=cleanosf,ou=Processes,ou=Services,dc=integral,dc=ops
-objectClass: top
-objectClass: pipelineProcess
-processName: cleanosf
-processHost: cons
-processActive: TRUE
-processResource: cleanosf.resource
-
-dn: processName=cleanopus,ou=Processes,ou=Services,dc=integral,dc=ops
-objectClass: top
-objectClass: pipelineProcess
-processName: cleanopus
-processHost: cons
-processActive: TRUE
-processResource: cleanopus.resource
-
 
 dn: pipelineName=consrev,ou=Pipelines,ou=Services,dc=integral,dc=ops
 objectClass: integralPipeline
@@ -632,8 +459,6 @@ pipelineMemberProcess: processName=crvjmf,ou=Processes,ou=Services,dc=integral,d
 pipelineMemberProcess: processName=crvspi,ou=Processes,ou=Services,dc=integral,dc=ops
 pipelineMemberProcess: processName=crvst,ou=Processes,ou=Services,dc=integral,dc=ops
 pipelineMemberProcess: processName=crvmon,ou=Processes,ou=Services,dc=integral,dc=ops
-pipelineMemberProcess: processName=cleanosf,ou=Processes,ou=Services,dc=integral,dc=ops
-pipelineMemberProcess: processName=cleanopus,ou=Processes,ou=Services,dc=integral,dc=ops
 
 dn: processName=crviii,ou=Processes,ou=Services,dc=integral,dc=ops
 objectClass: top
@@ -746,21 +571,3 @@ processName: crvmon
 processHost: cons
 processActive: TRUE
 processResource: crvmon.resource
-
-dn: processName=cleanosf,ou=Processes,ou=Services,dc=integral,dc=ops
-objectClass: top
-objectClass: pipelineProcess
-processName: cleanosf
-processHost: cons
-processActive: TRUE
-processResource: cleanosf.resource
-
-dn: processName=cleanopus,ou=Processes,ou=Services,dc=integral,dc=ops
-objectClass: top
-objectClass: pipelineProcess
-processName: cleanopus
-processHost: cons
-processActive: TRUE
-processResource: cleanopus.resource
-
-
