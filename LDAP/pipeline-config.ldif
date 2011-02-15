@@ -1,0 +1,766 @@
+dn: pipelineName=nrtinput,ou=Pipelines,ou=Services,dc=integral,dc=ops
+objectClass: integralPipeline
+objectClass: top
+objectClass: pipelineProcessList
+pipelineClass: NRT
+pipelineName: nrtinput
+pipelineMemberProcess: processName=ninpst,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=ninput,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=ninpmd,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=ninpmp,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=ninpmc,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=ninpfi,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=cleanopus,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=cleanosf,ou=Processes,ou=Services,dc=integral,dc=ops
+
+dn: processName=ninpst,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: ninpst
+processHost: nrt
+processActive: TRUE
+processResource: ninpst.resource
+
+dn: processName=ninput,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: ninput
+processHost: nrt
+processActive: TRUE
+processResource: ninput.resource
+
+dn: processName=ninpmd,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: ninpmd
+processHost: nrt
+processActive: TRUE
+processResource: ninpmd.resource
+
+dn: processName=ninpmp,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: ninpmp
+processHost: nrt
+processActive: TRUE
+processResource: ninpmp.resource
+
+dn: processName=ninpmc,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: ninpmc
+processHost: nrt
+processActive: TRUE
+processResource: ninpmc.resource
+
+dn: processName=ninpfi,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: ninpfi
+processHost: nrt
+processActive: TRUE
+processResource: ninpfi.resource
+
+dn: processName=cleanopus,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: cleanopus
+processHost: nrt
+processActive: TRUE
+processResource: cleanopus.resource
+
+dn: processName=cleanosf,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: cleanosf
+processHost: nrt
+processActive: TRUE
+processResource: cleanosf.resource
+
+
+dn: pipelineName=nrtscw,ou=Pipelines,ou=Services,dc=integral,dc=ops
+objectClass: integralPipeline
+objectClass: top
+objectClass: pipelineProcessList
+pipelineClass: NRT
+pipelineName: nrtscw
+pipelineMemberProcess: processName=nswst,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=nswdp,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=nswosm,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=nswfin,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=nswmon,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=nswcor,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=cleanopus,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=cleanosf,ou=Processes,ou=Services,dc=integral,dc=ops
+
+dn: processName=nswst,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: nswst
+processHost: nrt
+processActive: TRUE
+processResource: nswst.resource
+
+dn: processName=nswdp,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: nswdp
+processHost: nrt
+processActive: TRUE
+processResource: nswdp.resource
+
+dn: processName=nswosm,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: nswosm
+processHost: nrt
+processActive: TRUE
+processResource: nswosm.resource
+
+dn: processName=nswfin,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: nswfin
+processHost: nrt
+processActive: TRUE
+processResource: nswfin.resource
+
+dn: processName=nswmon,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: nswmon
+processHost: nrt
+processActive: TRUE
+processResource: nswmon.resource
+
+dn: processName=nswcor,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: nswcor
+processHost: nrt
+processActive: TRUE
+processResource: nswcor.resource
+
+dn: processName=cleanopus,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: cleanopus
+processHost: nrt
+processActive: TRUE
+processResource: cleanopus.resource
+
+dn: processName=cleanosf,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: cleanosf
+processHost: nrt
+processActive: TRUE
+processResource: cleanosf.resource
+
+
+dn: pipelineName=nrtrev,ou=Pipelines,ou=Services,dc=integral,dc=ops
+objectClass: integralPipeline
+objectClass: top
+objectClass: pipelineProcessList
+pipelineClass: NRT
+pipelineName: nrtrev
+pipelineMemberProcess: processName=nrviii,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=nrvarc,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=nrvfin,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=nrvgen,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=nrvidp,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=nrvirc,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=nrvire,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=nrvirn,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=nrvirv,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=nrvjme,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=nrvjmf,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=nrvmon,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=nrvspi,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=nrvst,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=cleanopus,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=cleanosf,ou=Processes,ou=Services,dc=integral,dc=ops
+
+dn: processName=nrviii,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: nrviii
+processHost: nrt
+processActive: TRUE
+processResource: nrviii.resource
+
+dn: processName=nrvarc,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: nrvarc
+processHost: nrt
+processActive: TRUE
+processResource: nrvarc.resource
+
+dn: processName=nrvfin,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: nrvfin
+processHost: nrt
+processActive: TRUE
+processResource: nrvfin.resource
+
+dn: processName=nrvgen,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: nrvgen
+processHost: nrt
+processActive: TRUE
+processResource: nrvgen.resource
+
+dn: processName=nrvidp,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: nrvidp
+processHost: nrt
+processActive: TRUE
+processResource: nrvidp.resource
+
+dn: processName=nrvirc,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: nrvirc
+processHost: nrt
+processActive: TRUE
+processResource: nrvirc.resource
+
+dn: processName=nrvire,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: nrvire
+processHost: nrt
+processActive: TRUE
+processResource: nrvire.resource
+
+dn: processName=nrvirn,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: nrvirn
+processHost: nrt
+processActive: TRUE
+processResource: nrvirn.resource
+
+dn: processName=nrvirv,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: nrvirv
+processHost: nrt
+processActive: TRUE
+processResource: nrvirv.resource
+
+dn: processName=nrvjme,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: nrvjme
+processHost: nrt
+processActive: TRUE
+processResource: nrvjme.resource
+
+dn: processName=nrvjmf,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: nrvjmf
+processHost: nrt
+processActive: TRUE
+processResource: nrvjmf.resource
+
+dn: processName=nrvmon,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: nrvmon
+processHost: nrt
+processActive: TRUE
+processResource: nrvmon.resource
+
+dn: processName=nrvspi,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: nrvspi
+processHost: nrt
+processActive: TRUE
+processResource: nrvspi.resource
+
+dn: processName=nrvst,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: nrvst
+processHost: nrt
+processActive: TRUE
+processResource: nrvst.resource
+
+dn: processName=cleanopus,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: cleanopus
+processHost: nrt
+processActive: TRUE
+processResource: cleanopus.resource
+
+dn: processName=cleanosf,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: cleanosf
+processHost: nrt
+processActive: TRUE
+processResource: cleanosf.resource
+
+
+dn: pipelineName=nrtqla,ou=Pipelines,ou=Services,dc=integral,dc=ops
+objectClass: integralPipeline
+objectClass: top
+objectClass: pipelineProcessList
+pipelineClass: NRT
+pipelineName: nrtqla
+pipelineMemberProcess: processName=nqlst,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=nqlscw,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=nqlscw,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=nqlscw,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=nqlobs,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=nqlfin,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=nqlmon,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=cleanopus,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=cleanosf,ou=Processes,ou=Services,dc=integral,dc=ops
+
+dn: processName=nqlst,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: nqlst
+processHost: nrt
+processActive: TRUE
+processResource: nqlst.resource
+
+dn: processName=nqlscw,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: nqlscw
+processHost: nrt
+processActive: TRUE
+processResource: nqlscw.resource
+
+dn: processName=nqlscw,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: nqlscw
+processHost: nrt
+processActive: TRUE
+processResource: nqlscw.resource
+
+dn: processName=nqlscw,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: nqlscw
+processHost: nrt
+processActive: TRUE
+processResource: nqlscw.resource
+
+dn: processName=nqlobs,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: nqlobs
+processHost: nrt
+processActive: TRUE
+processResource: nqlobs.resource
+
+dn: processName=nqlfin,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: nqlfin
+processHost: nrt
+processActive: TRUE
+processResource: nqlfin.resource
+
+dn: processName=nqlmon,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: nqlmon
+processHost: nrt
+processActive: TRUE
+processResource: nqlmon.resource
+
+dn: processName=cleanopus,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: cleanopus
+processHost: nrt
+processActive: TRUE
+processResource: cleanopus.resource
+
+dn: processName=cleanosf,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: cleanosf
+processHost: nrt
+processActive: TRUE
+processResource: cleanosf.resource
+
+
+dn: pipelineName=adp,ou=Pipelines,ou=Services,dc=integral,dc=ops
+objectClass: integralPipeline
+objectClass: top
+objectClass: pipelineProcessList
+pipelineClass: ADP
+pipelineName: adp
+pipelineMemberProcess: processName=adpst,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=adpmon,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=adp,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=adpfin,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=cleanopus,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=cleanosf,ou=Processes,ou=Services,dc=integral,dc=ops
+
+dn: processName=adpst,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: adpst
+processHost: nrt
+processActive: TRUE
+processResource: adpst.resource
+
+dn: processName=adpmon,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: adpmon
+processHost: nrt
+processActive: TRUE
+processResource: adpmon.resource
+
+dn: processName=adp,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: adp
+processHost: nrt
+processActive: TRUE
+processResource: adp.resource
+
+dn: processName=adpfin,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: adpfin
+processHost: nrt
+processActive: TRUE
+processResource: adpfin.resource
+
+dn: processName=cleanopus,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: cleanopus
+processHost: nrt
+processActive: TRUE
+processResource: cleanopus.resource
+
+dn: processName=cleanosf,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: cleanosf
+processHost: nrt
+processActive: TRUE
+processResource: cleanosf.resource
+
+
+dn: pipelineName=consinput,ou=Pipelines,ou=Services,dc=integral,dc=ops
+objectClass: integralPipeline
+objectClass: top
+objectClass: pipelineProcessList
+pipelineClass: CONS
+pipelineName: consinput
+pipelineMemberProcess: processName=cinpst,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=cinput,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=cinpfi,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=cleanosf,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=cleanopus,ou=Processes,ou=Services,dc=integral,dc=ops
+
+dn: processName=cinpst,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: cinpst
+processHost: cons
+processActive: TRUE
+processResource: cinpst.resource
+
+dn: processName=cinput,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: cinput
+processHost: cons
+processActive: TRUE
+processResource: cinput.resource
+
+dn: processName=cinpfi,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: cinpfi
+processHost: cons
+processActive: TRUE
+processResource: cinpfi.resource
+
+dn: processName=cleanosf,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: cleanosf
+processHost: cons
+processActive: TRUE
+processResource: cleanosf.resource
+
+dn: processName=cleanopus,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: cleanopus
+processHost: cons
+processActive: TRUE
+processResource: cleanopus.resource
+
+
+dn: pipelineName=consscw,ou=Pipelines,ou=Services,dc=integral,dc=ops
+objectClass: integralPipeline
+objectClass: top
+objectClass: pipelineProcessList
+pipelineClass: CONS
+pipelineName: consscw
+pipelineMemberProcess: processName=cswst,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=cswdp,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=cswdp,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=cswosm,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=cswosm,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=cswcor,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=cswcor,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=cswfin,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=cleanosf,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=cleanopus,ou=Processes,ou=Services,dc=integral,dc=ops
+
+dn: processName=cswst,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: cswst
+processHost: cons
+processActive: TRUE
+processResource: cswst.resource
+
+dn: processName=cswdp,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: cswdp
+processHost: cons
+processActive: TRUE
+processResource: cswdp.resource
+
+dn: processName=cswdp,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: cswdp
+processHost: cons
+processActive: TRUE
+processResource: cswdp.resource
+
+dn: processName=cswosm,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: cswosm
+processHost: cons
+processActive: TRUE
+processResource: cswosm.resource
+
+dn: processName=cswosm,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: cswosm
+processHost: cons
+processActive: TRUE
+processResource: cswosm.resource
+
+dn: processName=cswcor,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: cswcor
+processHost: cons
+processActive: TRUE
+processResource: cswcor.resource
+
+dn: processName=cswcor,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: cswcor
+processHost: cons
+processActive: TRUE
+processResource: cswcor.resource
+
+dn: processName=cswfin,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: cswfin
+processHost: cons
+processActive: TRUE
+processResource: cswfin.resource
+
+dn: processName=cleanosf,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: cleanosf
+processHost: cons
+processActive: TRUE
+processResource: cleanosf.resource
+
+dn: processName=cleanopus,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: cleanopus
+processHost: cons
+processActive: TRUE
+processResource: cleanopus.resource
+
+
+dn: pipelineName=consrev,ou=Pipelines,ou=Services,dc=integral,dc=ops
+objectClass: integralPipeline
+objectClass: top
+objectClass: pipelineProcessList
+pipelineClass: CONS
+pipelineName: consrev
+pipelineMemberProcess: processName=crviii,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=crvarc,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=crvfin,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=crvgen,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=crvidp,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=crvirc,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=crvire,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=crvirn,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=crvirv,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=crvjme,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=crvjmf,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=crvspi,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=crvst,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=crvmon,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=cleanosf,ou=Processes,ou=Services,dc=integral,dc=ops
+pipelineMemberProcess: processName=cleanopus,ou=Processes,ou=Services,dc=integral,dc=ops
+
+dn: processName=crviii,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: crviii
+processHost: cons
+processActive: TRUE
+processResource: crviii.resource
+
+dn: processName=crvarc,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: crvarc
+processHost: cons
+processActive: TRUE
+processResource: crvarc.resource
+
+dn: processName=crvfin,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: crvfin
+processHost: cons
+processActive: TRUE
+processResource: crvfin.resource
+
+dn: processName=crvgen,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: crvgen
+processHost: cons
+processActive: TRUE
+processResource: crvgen.resource
+
+dn: processName=crvidp,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: crvidp
+processHost: cons
+processActive: TRUE
+processResource: crvidp.resource
+
+dn: processName=crvirc,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: crvirc
+processHost: cons
+processActive: TRUE
+processResource: crvirc.resource
+
+dn: processName=crvire,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: crvire
+processHost: cons
+processActive: TRUE
+processResource: crvire.resource
+
+dn: processName=crvirn,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: crvirn
+processHost: cons
+processActive: TRUE
+processResource: crvirn.resource
+
+dn: processName=crvirv,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: crvirv
+processHost: cons
+processActive: TRUE
+processResource: crvirv.resource
+
+dn: processName=crvjme,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: crvjme
+processHost: cons
+processActive: TRUE
+processResource: crvjme.resource
+
+dn: processName=crvjmf,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: crvjmf
+processHost: cons
+processActive: TRUE
+processResource: crvjmf.resource
+
+dn: processName=crvspi,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: crvspi
+processHost: cons
+processActive: TRUE
+processResource: crvspi.resource
+
+dn: processName=crvst,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: crvst
+processHost: cons
+processActive: TRUE
+processResource: crvst.resource
+
+dn: processName=crvmon,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: crvmon
+processHost: cons
+processActive: TRUE
+processResource: crvmon.resource
+
+dn: processName=cleanosf,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: cleanosf
+processHost: cons
+processActive: TRUE
+processResource: cleanosf.resource
+
+dn: processName=cleanopus,ou=Processes,ou=Services,dc=integral,dc=ops
+objectClass: top
+objectClass: pipelineProcess
+processName: cleanopus
+processHost: cons
+processActive: TRUE
+processResource: cleanopus.resource
+
+
