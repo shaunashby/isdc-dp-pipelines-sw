@@ -18,7 +18,7 @@ use Carp qw(croak);
 
 use ISDC::DataProcessing::Pipeline::Configuration;
 
-our $VERSION = '0.2';
+our $VERSION = '0.3';
 
 use overload q{""} => \&to_string;
 
