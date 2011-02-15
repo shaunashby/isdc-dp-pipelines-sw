@@ -100,6 +100,7 @@ t/05-test-compile-legacy-scripts.t
 t/06-test-rev1000-nrvmon-legacy-script.t
 t/pipelines-test-config.yml
 test.pl
+dump-config-as-ldif.pl
 config/paths/adp.path
 config/paths/consinput.path
 config/paths/consrev.path
@@ -220,3 +221,6 @@ config/nrtscw.pipeline
 config/consinput.pipeline
 config/consrev.pipeline
 config/consscw.pipeline
+LDAP/pipeline-config.ldif
+LDAP/schema/INTEGRAL.schema
+LDAP/schema/notes.txt
