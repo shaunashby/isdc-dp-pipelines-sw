@@ -43,6 +43,12 @@ sub configuration() {
     return $self->{configuration}->getPipeline($self->{name});
 }
 
+sub stats() {
+    my $self = shift;
+    my $nprocs = scalar @{ $self->configuration->processes } - 2; # ignore clean/delete processes
+    my $string .= sprintf("%s : %d processes defined\n",$self->name, $nprocs); 
+}
+
 sub to_string() {
     my $self = shift;
     my $string = "";

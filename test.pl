@@ -1,4 +1,4 @@
-#!/opt/local/bin/perl
+#!perl
 #____________________________________________________________________ 
 # File: test.pl
 #____________________________________________________________________ 
@@ -27,3 +27,9 @@ for my $pipeline (qw( nrtinput nrtscw nrtrev nrtqla adp consinput consscw consre
 print "Dumping LDIF for ".$obj->name." pipeline:\n\n";
 
 print $obj->to_ldif(),"\n";
+
+# Also dump stats:
+for my $pipeline (qw( nrtinput nrtscw nrtrev nrtqla adp consinput consscw consrev ) ) {
+    $obj = ISDC::DataProcessing::Pipeline->new({ name => "$pipeline", config => "t/pipelines-test-config.yml" });
+    print $obj->stats,"\n";
+}
