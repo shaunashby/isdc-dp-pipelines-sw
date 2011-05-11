@@ -38,6 +38,7 @@ use UnixLIB;
 use ISDCLIB;
 use File::Basename;
 use TimeLIB;
+use OPUSLIB;
 
 $| = 1;
 
@@ -1550,7 +1551,7 @@ sub RevArcCheck {
 			@result = `$myls $ENV{OPUS_WORK}/adp/obs/*${i}_OLF* 2> /dev/null`;
 			die "*******     ERROR:  I'm confused, as there appear to be more than one OSF matching ${i}_OLF:  @result" if ($#result > 0);
 			if (@result) {
-				($hex,$status,$osfname,$type,$dcf,$com) = &ISDCPipeline::ParseOSF($result[0]);
+				($hex,$status,$osfname,$type,$dcf,$com) = &OPUSLIB::ParseOSF($result[0]);
 				$num++ unless ($status =~ /c$/);
 			} # end if OSF exists
 			else {
