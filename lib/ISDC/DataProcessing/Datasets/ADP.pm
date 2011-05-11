@@ -18,7 +18,7 @@ use base qw(Exporter);
 
 use vars qw( $VERSION @EXPORT_OK %EXPORT_TAGS );
 
-$VERSION='0.01';
+$VERSION='0.3.2';
 
 %EXPORT_TAGS = ( 'all' => [ qw(
 ahf

@@ -21,7 +21,7 @@ use Path::Class::File;
 
 use ISDC::DataProcessing::Pipeline::Configuration::Pipeline;
 
-our $VERSION = '0.01';
+our $VERSION = '0.3.2';
 
 sub new() {
     my $proto = shift;
