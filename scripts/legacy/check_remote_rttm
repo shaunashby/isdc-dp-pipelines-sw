@@ -1,0 +1,125 @@
+#!/bin/sh
+
+# file     : check_remote_rttm
+# version  : 1.6.4
+# date     : 23-May-2000
+# author   : Jerzy.Borkowski@obs.unige.ch
+
+# this script checks and eventually restarts rttmd process on
+# remote host. Algorithm :
+#
+# 1. Try ping remote machine. If this fails exit with errcode 20
+# 2. Try execute 'hostname' on remote machine (via ssh). If this
+#        fails exit with errcode 21
+# 3. Try execute '/bin/ps -e' on remote machine (via ssh). Then
+#        check if process list contains spvsrttm and rttmd. If
+#        this is not the case, try restart those processes by
+#        executing 'S96rttm start' on remote machine. If this
+#        is unsuccessful repeat this step 10 times, checking
+#        after each trial whether it was successful. If this
+#        did not succeed then exit with errcode 22.
+# 4. If all tests succeded exit with 0.
+
+
+######################### CONFIGURABLE ITEMS ##########################
+
+# host name (or IP number) on which NRT Data Receipt is running :
+
+S96_RTTMD_HOST=nrt.integral.ops
+
+# Use ID under which NRT Data Receipt is running (if root is specified
+# then rttmd process will switch to non-root uid)
+
+S96_RTTMD_UID=ops_nrt
+
+# Fall back to rsh due to OpenSSH bug (remote commands hanging on exit):
+SSH_CMD=/usr/bin/ssh
+REMOTE_HOSTNAME_CMD=/bin/hostname
+PING=/bin/ping
+
+#######################################################################
+
+
+export S96_RTTMD_UID
+export S96_RTTMD_HOST
+
+S96_RTTMD_NAME_EXE=rttmd ; export S96_RTTMD_NAME_EXE
+S96_RTTMD_NAME_SVC=spvsrttm ; export S96_RTTMD_NAME_SVC
+
+COMMONLOGFILE=/isdc/run/log/nrt_dr/rttmd_log.txt ; export COMMONLOGFILE
+
+listproc() {		# list process pids
+	pid=`/bin/ps -e |
+	     /bin/grep $S96_RTTMD_NAME_SVC |
+	     /bin/sed -e 's/^  *//' -e 's/ .*//'`
+	[ "$pid" != "" ] && echo "  process $1 running, pid(s): $pid"
+	[ "$pid" = "" ] && echo "  process $1 not running"
+}
+
+ping_test_ok=no
+
+if ( ${PING} -c 1 ${S96_RTTMD_HOST} >/dev/null 2>&1 ; exit ) ; then
+  ping_test_ok=yes
+fi
+
+if [ "xyes" != "x${ping_test_ok}" ] ; then
+  echo "ping test failed!"
+  exit 20
+fi
+
+echo "ping test ok"
+
+ssh_test_ok=no
+
+if ( ${SSH_CMD} -l ${S96_RTTMD_UID} ${S96_RTTMD_HOST} ${REMOTE_HOSTNAME_CMD} >/dev/null 2>&1 ; exit ) ; then
+  ssh_test_ok=yes
+fi
+
+if [ "xyes" != "x${ssh_test_ok}" ] ; then
+  echo "ssh test failed!"
+  exit 21
+fi
+
+echo "ssh test ok"
+
+
+for i in 1 2 3 4 5 6 7 8 9 10 last_iteration; do
+
+  svc_pid=`${SSH_CMD} -l ${S96_RTTMD_UID} ${S96_RTTMD_HOST} /bin/ps -e | 
+		/bin/grep ${S96_RTTMD_NAME_SVC} | 
+		/bin/sed -e 's/^  *//' -e 's/ .*//'`
+
+  rttmd_pid=`${SSH_CMD} -l ${S96_RTTMD_UID} ${S96_RTTMD_HOST} /bin/ps -e | 
+		/bin/grep ${S96_RTTMD_NAME_EXE} | 
+		/bin/sed -e 's/^  *//' -e 's/ .*//'`
+
+  if [ "x" != "x$svc_pid" -a "x" != "x$rttmd_pid" ] ; then
+    echo "spvsrttm and rttmd processes are running"
+    break
+  fi
+
+  if [ "last_iteration" = $i ] ; then
+    break
+  fi
+
+  echo "restarting rttm"
+  my_s96="S96rttmd"
+  sleep 1
+  ${SSH_CMD} -l ${S96_RTTMD_UID} ${S96_RTTMD_HOST} "$my_s96 stop ; $my_s96 start"
+
+done
+
+
+if [ "x" = "x$svc_pid" -o "x" = "x$rttmd_pid" ] ; then
+  echo "rttm restart failed (after 10 retries)!"
+  exit 22
+fi
+
+
+echo " "
+echo "Status information :"
+echo " "
+echo "spvsrttm pid = $svc_pid"
+echo "rttmd pid    = $rttmd_pid"
+
+exit 0
