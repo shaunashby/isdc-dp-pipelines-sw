@@ -91,6 +91,7 @@ scripts/legacy/sa_start.pl
 scripts/legacy/touchqlatriggers.pl
 scripts/legacy/touchssatriggers.pl
 scripts/legacy/Trigger2OSF.pl
+scripts/legacy/check_remote_rttm
 t/00-load.t
 t/01-api-load.t
 t/02-pipeline.t
