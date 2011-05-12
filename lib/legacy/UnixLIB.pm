@@ -75,6 +75,7 @@ $mygrep   = $root."grep";
 $mydate   = $root."date";
 $myrsh    = $root."rsh";
 $myuname  = $root."uname";
+$myps     = $root."ps";
 
 $root    = "/usr/bin/";
 $myw      = $root."w";
@@ -85,9 +86,6 @@ $myhead   = $root."head";
 $mytail   = $root."tail";
 $myptree  = $root."ptree";
 $mypstree = $root."pstree";
-
-$root    = "/usr/ucb/";
-$myps     = $root."ps";
 
 $myssh    = "ssh";
 
