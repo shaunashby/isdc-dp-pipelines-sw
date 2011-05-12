@@ -18,7 +18,7 @@ use Carp qw(croak);
 
 use ISDC::DataProcessing::Pipeline::Configuration::Process;
 
-our $VERSION = '0.3.2';
+our $VERSION = '0.3.3';
 
 sub new() {
     my $proto = shift;
